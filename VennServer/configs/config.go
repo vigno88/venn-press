@@ -2,6 +2,7 @@ package config
 
 import (
 	proto "github.com/vigno88/Venn/VennServer/pkg/api/v1"
+	"github.com/vigno88/Venn/VennServer/pkg/control"
 	"github.com/vigno88/Venn/VennServer/pkg/metrics"
 	recipe "github.com/vigno88/Venn/VennServer/pkg/recipes"
 )
@@ -25,8 +26,9 @@ func GetTarget(name string) float32 {
 }
 
 type ReadableConfig struct {
-	Recipe  recipe.Recipe
-	Metrics []metrics.Metric
+	Recipe   recipe.Recipe
+	Metrics  []metrics.Metric
+	Controls []control.Config
 }
 
 // This function is to be a human readable config
@@ -195,62 +197,87 @@ func GetDefaultConfig() *ReadableConfig {
 		},
 		Metrics: []metrics.Metric{
 			{
-				Name:      "Water",
+				Name:      " ",
+				Unit:      "mm",
+				Type:      "Distance",
+				SmallName: "d",
+				Info:      "Distance vertical parcourue depuis derniere mise a zero.",
+				HasTarget: false,
+				Value:     0,
+			},
+			{
+				Name:      "Plate",
+				Unit:      "kg",
+				Type:      "Weight",
+				Info:      "Poids vertical entre les 2 plaques.",
+				HasTarget: false,
+				Value:     0,
+			},
+			{
+				Name:      "Top",
 				Unit:      "°c",
 				Type:      "Temperature",
-				SmallName: "t",
-				Info:      "La temperature de l'eau",
-				HasTarget: true,
-				Target:    60,
-				Value:     0,
-			},
-			{
-				Name:      "Roller 1",
-				Unit:      "RPM",
-				Type:      "Speed",
-				Info:      "Vitesse du rouleau 1",
+				Info:      "Temperature de la plaque du haut.",
 				HasTarget: false,
 				Value:     0,
 			},
 			{
-				Name:      "Roller 2",
-				Unit:      "RPM",
-				Type:      "Speed",
-				Info:      "Vitesse du rouleau 2",
+				Name:      "Bottom",
+				Unit:      "°c",
+				Type:      "Temperature",
+				Info:      "Temperature de la plaque du bas.",
 				HasTarget: false,
 				Value:     0,
 			},
+		},
+		Controls: []control.Config{
 			{
-				Name:      "Roller 3",
-				Unit:      "RPM",
-				Type:      "Speed",
-				Info:      "Vitesse du rouleau 3",
-				HasTarget: false,
-				Value:     0,
+				// Id:                 `motion-up`,
+				Title:              `Motion`,
+				Type:               int(proto.ControlConfig_ICON_BUTTTON),
+				IconType:           "up_arrow",
+				ActionName:         "motor",
+				StateActionPayload: []string{"up"},
 			},
 			{
-				Name:      "Massage 1",
-				Unit:      "C/s",
-				Type:      "Speed",
-				Info:      "Vitesse du massage en cycle (aller-retour) par seconde",
-				HasTarget: false,
-				Value:     0,
+				// Id:                 `motion-down`,
+				Title:              `Motion`,
+				Type:               int(proto.ControlConfig_ICON_BUTTTON),
+				IconType:           "down_arrow",
+				ActionName:         "motor",
+				StateActionPayload: []string{"down"},
 			},
 			{
-				Name:      "Massage 2",
-				Unit:      "C/s",
-				Type:      "Speed",
-				Info:      "Vitesse du massage en cycle (aller-retour) par seconde",
-				HasTarget: false,
-				Value:     0,
+				// Id:                 `test`,
+				Title:              `Test`,
+				Type:               int(proto.ControlConfig_TWO_STATE_BUTTON),
+				StateText:          []string{"Start", "Stop"},
+				ActionName:         "test",
+				StateActionPayload: []string{"start", "stop"},
 			},
 			{
-				Name:      "Massage 3",
-				Unit:      "C/s",
-				Type:      "Speed",
-				Info:      "Vitesse du massage en cycle (aller-retour) par seconde",
-				HasTarget: false,
-				Value:     0,
+				// Id:                 `home`,
+				Title:              `Homing`,
+				Type:               int(proto.ControlConfig_SINGLE_STATE_BUTTON),
+				StateText:          []string{"Home"},
+				ActionName:         "home",
+				StateActionPayload: []string{"start"},
+			},
+			{
+				// Id:                 `weight-tare`,
+				Title:              `Weight`,
+				Type:               int(proto.ControlConfig_SINGLE_STATE_BUTTON),
+				StateText:          []string{"Tare"},
+				ActionName:         "weight",
+				StateActionPayload: []string{"tare"},
+			},
+			{
+				// Id:                 `distance-tare`,
+				Title:              `Distance`,
+				Type:               int(proto.ControlConfig_SINGLE_STATE_BUTTON),
+				StateText:          []string{"Tare"},
+				ActionName:         "distance",
+				StateActionPayload: []string{"tare"},
 			},
 		},
 	}

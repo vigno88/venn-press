@@ -8,6 +8,7 @@ import (
 	"log"
 
 	proto "github.com/vigno88/Venn/VennServer/pkg/api/v1"
+	"github.com/vigno88/Venn/VennServer/pkg/control"
 )
 
 // metricServiceServer is implementation of proto.metricServiceServer proto interface
@@ -55,4 +56,16 @@ func (s *controlServiceServer) Subscribe(e *proto.Empty, stream proto.ControlSer
 			return nil
 		}
 	}
+}
+
+func (s *controlServiceServer) ReadConfig(ctx context.Context, e *proto.Empty) (*proto.ControlConfigs, error) {
+	cs, err := control.ReadAll()
+	if err != nil {
+		return nil, err
+	}
+	var configs []*proto.ControlConfig
+	for _, c := range cs {
+		configs = append(configs, control.ToProto(&c))
+	}
+	return &proto.ControlConfigs{Configs: configs}, nil
 }

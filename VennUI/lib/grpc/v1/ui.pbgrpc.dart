@@ -610,6 +610,10 @@ class ControlServiceClient extends $grpc.Client {
       '/v1.ControlService/Subscribe',
       ($0.Empty value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.ControlEvent.fromBuffer(value));
+  static final _$readConfig = $grpc.ClientMethod<$0.Empty, $0.ControlConfigs>(
+      '/v1.ControlService/ReadConfig',
+      ($0.Empty value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.ControlConfigs.fromBuffer(value));
 
   ControlServiceClient($grpc.ClientChannel channel,
       {$grpc.CallOptions options,
@@ -626,6 +630,11 @@ class ControlServiceClient extends $grpc.Client {
     return $createStreamingCall(
         _$subscribe, $async.Stream.fromIterable([request]),
         options: options);
+  }
+
+  $grpc.ResponseFuture<$0.ControlConfigs> readConfig($0.Empty request,
+      {$grpc.CallOptions options}) {
+    return $createUnaryCall(_$readConfig, request, options: options);
   }
 }
 
@@ -647,6 +656,13 @@ abstract class ControlServiceBase extends $grpc.Service {
         true,
         ($core.List<$core.int> value) => $0.Empty.fromBuffer(value),
         ($0.ControlEvent value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.Empty, $0.ControlConfigs>(
+        'ReadConfig',
+        readConfig_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.Empty.fromBuffer(value),
+        ($0.ControlConfigs value) => value.writeToBuffer()));
   }
 
   $async.Future<$0.SendResponse> send_Pre(
@@ -659,9 +675,16 @@ abstract class ControlServiceBase extends $grpc.Service {
     yield* subscribe(call, await request);
   }
 
+  $async.Future<$0.ControlConfigs> readConfig_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.Empty> request) async {
+    return readConfig(call, await request);
+  }
+
   $async.Future<$0.SendResponse> send(
       $grpc.ServiceCall call, $0.Action request);
   $async.Stream<$0.ControlEvent> subscribe(
+      $grpc.ServiceCall call, $0.Empty request);
+  $async.Future<$0.ControlConfigs> readConfig(
       $grpc.ServiceCall call, $0.Empty request);
 }
 

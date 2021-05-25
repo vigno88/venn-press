@@ -269,9 +269,32 @@ message SendResponse {
   string error = 1;
 }
 
+message ControlConfig {
+  enum ControlType {
+    TWO_STATE_BUTTON = 0;
+    SINGLE_STATE_BUTTON = 1;
+    ICON_BUTTTON = 2;
+  }
+  ControlType type = 1;
+  string id = 2;
+  string title = 3;
+  // Used with the 2-state and 1-state buttons
+  repeated string state_text = 4;
+  string action_name = 5;
+  // Used with all button type
+  repeated string state_action_payload = 6;
+  // Used with Icon button
+  string iconType = 7;
+}
+
+message ControlConfigs {
+  repeated ControlConfig configs = 1;
+}
+
 service ControlService {
   rpc Send(Action) returns (SendResponse) {}
-  rpc Subscribe(Empty) returns (stream ControlEvent) {} 
+  rpc Subscribe(Empty) returns (stream ControlEvent) {}
+  rpc ReadConfig(Empty) returns (ControlConfigs) {}
 }
 
 

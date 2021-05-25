@@ -100,4 +100,29 @@ class ControlGrpcAPI {
       }
     }
   }
+
+  // Asynchronous function to get the current control configuration from the server
+  Future<proto.ControlConfigs> readConfig() async {
+    if (_clientSend == null) {
+      _clientSend = newClient(serverIP, serverPort);
+    }
+
+    var request = grpc.Empty().createEmptyInstance();
+
+    try {
+      var configs =
+          await grpc.ControlServiceClient(_clientSend).readConfig(request);
+      return configs;
+    } catch (e) {
+      if (!_isShutdown) {
+        // Invalidate current client
+        _shutdownSend();
+        print(e.toString());
+        // Try again
+        Future.delayed(retryDelay, () {
+          return readConfig();
+        });
+      }
+    }
+  }
 }

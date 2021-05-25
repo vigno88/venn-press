@@ -218,6 +218,36 @@ const SendResponse$json = const {
   ],
 };
 
+const ControlConfig$json = const {
+  '1': 'ControlConfig',
+  '2': const [
+    const {'1': 'type', '3': 1, '4': 1, '5': 14, '6': '.v1.ControlConfig.ControlType', '10': 'type'},
+    const {'1': 'id', '3': 2, '4': 1, '5': 9, '10': 'id'},
+    const {'1': 'title', '3': 3, '4': 1, '5': 9, '10': 'title'},
+    const {'1': 'state_text', '3': 4, '4': 3, '5': 9, '10': 'stateText'},
+    const {'1': 'action_name', '3': 5, '4': 1, '5': 9, '10': 'actionName'},
+    const {'1': 'state_action_payload', '3': 6, '4': 3, '5': 9, '10': 'stateActionPayload'},
+    const {'1': 'iconType', '3': 7, '4': 1, '5': 9, '10': 'iconType'},
+  ],
+  '4': const [ControlConfig_ControlType$json],
+};
+
+const ControlConfig_ControlType$json = const {
+  '1': 'ControlType',
+  '2': const [
+    const {'1': 'TWO_STATE_BUTTON', '2': 0},
+    const {'1': 'SINGLE_STATE_BUTTON', '2': 1},
+    const {'1': 'ICON_BUTTTON', '2': 2},
+  ],
+};
+
+const ControlConfigs$json = const {
+  '1': 'ControlConfigs',
+  '2': const [
+    const {'1': 'configs', '3': 1, '4': 3, '5': 11, '6': '.v1.ControlConfig', '10': 'configs'},
+  ],
+};
+
 const Empty$json = const {
   '1': 'Empty',
 };

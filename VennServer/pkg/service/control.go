@@ -4,12 +4,10 @@ package service
 
 import (
 	"context"
-	"fmt"
 	"log"
 
 	proto "github.com/vigno88/Venn/VennServer/pkg/api/v1"
-	"github.com/vigno88/Venn/VennServer/pkg/motors"
-	"github.com/vigno88/Venn/VennServer/pkg/serial"
+	"github.com/vigno88/Venn/VennServer/pkg/control"
 )
 
 // metricServiceServer is implementation of proto.metricServiceServer proto interface
@@ -22,50 +20,50 @@ func NewControlServiceServer(c chan *proto.ControlEvent) proto.ControlServiceSer
 }
 
 func (s *controlServiceServer) Send(c context.Context, a *proto.Action) (*proto.SendResponse, error) {
-	switch a.Name {
-	case "piston":
-		// Directly send the payload to the board as a string, TODO - nanopb
-		// The string is format as "piston #"#"action"
-		// fmt.Println("Send: " + a.Payload)
-		serial.SendString(a.Payload)
-		return &proto.SendResponse{}, nil
-	case "home":
-		if motors.IsCycling() {
-			fmt.Println("Cannot home the motors, they are currently cycling.")
-			return &proto.SendResponse{Error: "Cannot home the motors, they are currently cycling."}, nil
-		}
-		if motors.IsHoming() {
-			fmt.Println("Cannot home the motors, they are already currently homing.")
-			return &proto.SendResponse{Error: "Cannot home the motors, they are already currently homing."}, nil
-		}
-		fmt.Println("Trying to home the motors")
-		// Ask the motors to home
-		// TODO - check that the motor is not currently moving
-		go motors.Home()
-		return &proto.SendResponse{}, nil
-	case "cycle":
-		if a.Payload == "start" {
-			if motors.IsHoming() {
-				return &proto.SendResponse{Error: "Cannot start the cycle, the motors are homing."}, nil
-			}
-			fmt.Println("Received start command from UI")
-			motors.StartCycle()
-		}
-		if a.Payload == "stop" {
-			if motors.IsHoming() {
-				return &proto.SendResponse{Error: "Cannot stop the cycle, the motors are homing."}, nil
-			}
-			fmt.Println("Received stop command from UI")
-			motors.StopCycle()
-		}
-		return &proto.SendResponse{}, nil
-	case "water":
-		// Directly send the payload to the board as a string, TODO - nanopb
-		// The string is format as w#"action"
-		// fmt.Println("Send: " + a.Payload)
-		serial.SendString(a.Payload)
-		return &proto.SendResponse{}, nil
-	}
+	// switch a.Name {
+	// case "piston":
+	// 	// Directly send the payload to the board as a string, TODO - nanopb
+	// 	// The string is format as "piston #"#"action"
+	// 	// fmt.Println("Send: " + a.Payload)
+	// 	serial.SendString(a.Payload)
+	// 	return &proto.SendResponse{}, nil
+	// case "home":
+	// 	if motors.IsCycling() {
+	// 		fmt.Println("Cannot home the motors, they are currently cycling.")
+	// 		return &proto.SendResponse{Error: "Cannot home the motors, they are currently cycling."}, nil
+	// 	}
+	// 	if motors.IsHoming() {
+	// 		fmt.Println("Cannot home the motors, they are already currently homing.")
+	// 		return &proto.SendResponse{Error: "Cannot home the motors, they are already currently homing."}, nil
+	// 	}
+	// 	fmt.Println("Trying to home the motors")
+	// 	// Ask the motors to home
+	// 	// TODO - check that the motor is not currently moving
+	// 	go motors.Home()
+	// 	return &proto.SendResponse{}, nil
+	// case "cycle":
+	// 	if a.Payload == "start" {
+	// 		if motors.IsHoming() {
+	// 			return &proto.SendResponse{Error: "Cannot start the cycle, the motors are homing."}, nil
+	// 		}
+	// 		fmt.Println("Received start command from UI")
+	// 		motors.StartCycle()
+	// 	}
+	// 	if a.Payload == "stop" {
+	// 		if motors.IsHoming() {
+	// 			return &proto.SendResponse{Error: "Cannot stop the cycle, the motors are homing."}, nil
+	// 		}
+	// 		fmt.Println("Received stop command from UI")
+	// 		motors.StopCycle()
+	// 	}
+	// 	return &proto.SendResponse{}, nil
+	// case "water":
+	// 	// Directly send the payload to the board as a string, TODO - nanopb
+	// 	// The string is format as w#"action"
+	// 	// fmt.Println("Send: " + a.Payload)
+	// 	serial.SendString(a.Payload)
+	// 	return &proto.SendResponse{}, nil
+	// }
 	return &proto.SendResponse{}, nil
 }
 
@@ -82,4 +80,16 @@ func (s *controlServiceServer) Subscribe(e *proto.Empty, stream proto.ControlSer
 			return nil
 		}
 	}
+}
+
+func (s *controlServiceServer) ReadConfig(ctx context.Context, e *proto.Empty) (*proto.ControlConfigs, error) {
+	cs, err := control.ReadAll()
+	if err != nil {
+		return nil, err
+	}
+	var configs []*proto.ControlConfig
+	for _, c := range cs {
+		configs = append(configs, control.ToProto(&c))
+	}
+	return &proto.ControlConfigs{Configs: configs}, nil
 }

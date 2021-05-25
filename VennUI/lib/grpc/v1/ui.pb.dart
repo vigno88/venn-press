@@ -1489,6 +1489,166 @@ class SendResponse extends $pb.GeneratedMessage {
   void clearError() => clearField(1);
 }
 
+class ControlConfig extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'ControlConfig', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'v1'), createEmptyInstance: create)
+    ..e<ControlConfig_ControlType>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'type', $pb.PbFieldType.OE, defaultOrMaker: ControlConfig_ControlType.TWO_STATE_BUTTON, valueOf: ControlConfig_ControlType.valueOf, enumValues: ControlConfig_ControlType.values)
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
+    ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'title')
+    ..pPS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'stateText')
+    ..aOS(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'actionName')
+    ..pPS(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'stateActionPayload')
+    ..aOS(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'iconType', protoName: 'iconType')
+    ..hasRequiredFields = false
+  ;
+
+  ControlConfig._() : super();
+  factory ControlConfig({
+    ControlConfig_ControlType type,
+    $core.String id,
+    $core.String title,
+    $core.Iterable<$core.String> stateText,
+    $core.String actionName,
+    $core.Iterable<$core.String> stateActionPayload,
+    $core.String iconType,
+  }) {
+    final _result = create();
+    if (type != null) {
+      _result.type = type;
+    }
+    if (id != null) {
+      _result.id = id;
+    }
+    if (title != null) {
+      _result.title = title;
+    }
+    if (stateText != null) {
+      _result.stateText.addAll(stateText);
+    }
+    if (actionName != null) {
+      _result.actionName = actionName;
+    }
+    if (stateActionPayload != null) {
+      _result.stateActionPayload.addAll(stateActionPayload);
+    }
+    if (iconType != null) {
+      _result.iconType = iconType;
+    }
+    return _result;
+  }
+  factory ControlConfig.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ControlConfig.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  ControlConfig clone() => ControlConfig()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  ControlConfig copyWith(void Function(ControlConfig) updates) => super.copyWith((message) => updates(message as ControlConfig)); // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static ControlConfig create() => ControlConfig._();
+  ControlConfig createEmptyInstance() => create();
+  static $pb.PbList<ControlConfig> createRepeated() => $pb.PbList<ControlConfig>();
+  @$core.pragma('dart2js:noInline')
+  static ControlConfig getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ControlConfig>(create);
+  static ControlConfig _defaultInstance;
+
+  @$pb.TagNumber(1)
+  ControlConfig_ControlType get type => $_getN(0);
+  @$pb.TagNumber(1)
+  set type(ControlConfig_ControlType v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasType() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearType() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get id => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set id($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearId() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get title => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set title($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasTitle() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearTitle() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.List<$core.String> get stateText => $_getList(3);
+
+  @$pb.TagNumber(5)
+  $core.String get actionName => $_getSZ(4);
+  @$pb.TagNumber(5)
+  set actionName($core.String v) { $_setString(4, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasActionName() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearActionName() => clearField(5);
+
+  @$pb.TagNumber(6)
+  $core.List<$core.String> get stateActionPayload => $_getList(5);
+
+  @$pb.TagNumber(7)
+  $core.String get iconType => $_getSZ(6);
+  @$pb.TagNumber(7)
+  set iconType($core.String v) { $_setString(6, v); }
+  @$pb.TagNumber(7)
+  $core.bool hasIconType() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearIconType() => clearField(7);
+}
+
+class ControlConfigs extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'ControlConfigs', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'v1'), createEmptyInstance: create)
+    ..pc<ControlConfig>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'configs', $pb.PbFieldType.PM, subBuilder: ControlConfig.create)
+    ..hasRequiredFields = false
+  ;
+
+  ControlConfigs._() : super();
+  factory ControlConfigs({
+    $core.Iterable<ControlConfig> configs,
+  }) {
+    final _result = create();
+    if (configs != null) {
+      _result.configs.addAll(configs);
+    }
+    return _result;
+  }
+  factory ControlConfigs.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ControlConfigs.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  ControlConfigs clone() => ControlConfigs()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  ControlConfigs copyWith(void Function(ControlConfigs) updates) => super.copyWith((message) => updates(message as ControlConfigs)); // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static ControlConfigs create() => ControlConfigs._();
+  ControlConfigs createEmptyInstance() => create();
+  static $pb.PbList<ControlConfigs> createRepeated() => $pb.PbList<ControlConfigs>();
+  @$core.pragma('dart2js:noInline')
+  static ControlConfigs getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ControlConfigs>(create);
+  static ControlConfigs _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.List<ControlConfig> get configs => $_getList(0);
+}
+
 class Empty extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Empty', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'v1'), createEmptyInstance: create)
     ..hasRequiredFields = false

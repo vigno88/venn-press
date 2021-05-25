@@ -43,3 +43,20 @@ class User_Roles extends $pb.ProtobufEnum {
   const User_Roles._($core.int v, $core.String n) : super(v, n);
 }
 
+class ControlConfig_ControlType extends $pb.ProtobufEnum {
+  static const ControlConfig_ControlType TWO_STATE_BUTTON = ControlConfig_ControlType._(0, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'TWO_STATE_BUTTON');
+  static const ControlConfig_ControlType SINGLE_STATE_BUTTON = ControlConfig_ControlType._(1, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'SINGLE_STATE_BUTTON');
+  static const ControlConfig_ControlType ICON_BUTTTON = ControlConfig_ControlType._(2, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'ICON_BUTTTON');
+
+  static const $core.List<ControlConfig_ControlType> values = <ControlConfig_ControlType> [
+    TWO_STATE_BUTTON,
+    SINGLE_STATE_BUTTON,
+    ICON_BUTTTON,
+  ];
+
+  static final $core.Map<$core.int, ControlConfig_ControlType> _byValue = $pb.ProtobufEnum.initByValue(values);
+  static ControlConfig_ControlType valueOf($core.int value) => _byValue[value];
+
+  const ControlConfig_ControlType._($core.int v, $core.String n) : super(v, n);
+}
+

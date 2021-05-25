@@ -9,6 +9,7 @@ import (
 
 	proto "github.com/vigno88/Venn/VennServer/pkg/api/v1"
 	authentifaction "github.com/vigno88/Venn/VennServer/pkg/authentification"
+	"github.com/vigno88/Venn/VennServer/pkg/control"
 	metrics "github.com/vigno88/Venn/VennServer/pkg/metrics"
 	motors "github.com/vigno88/Venn/VennServer/pkg/motors"
 	recipes "github.com/vigno88/Venn/VennServer/pkg/recipes"
@@ -31,6 +32,8 @@ func Run(ctx context.Context, c chan *proto.MetricUpdates) {
 	err = metrics.Init(ctx, util.PathMetric)
 	handle(err)
 	err = wifi.Init(ctx, util.PathWifi)
+	handle(err)
+	err = control.Init(ctx, util.PathControl)
 	handle(err)
 	err = motors.Init()
 	handle(err)

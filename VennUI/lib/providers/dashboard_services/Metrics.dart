@@ -32,7 +32,7 @@ class MetricService {
     var c = await _metricAPI.readConfig();
     config = c.configs;
 
-    // Create the set of tile providers
+    // Create the list of metric data
     var m = await _metricAPI.getMetrics();
     for (int i = 0; i < m.updates.length; i++) {
       var t = MetricData(
@@ -117,13 +117,19 @@ class MetricData {
     // Set the right icon for the metric type
     switch (type) {
       case 'Temperature':
-        this._icon = Icon(FontAwesome5Solid.thermometer_half);
+        _icon = Icon(FontAwesome5Solid.thermometer_half);
         break;
       case 'Humidity':
-        this._icon = Icon(Ionicons.ios_water);
+        _icon = Icon(Ionicons.ios_water);
         break;
       case 'Speed':
-        this._icon = Icon(Ionicons.ios_speedometer);
+        _icon = Icon(Ionicons.ios_speedometer);
+        break;
+      case 'Weight':
+        _icon = Icon(MaterialCommunityIcons.weight);
+        break;
+      case 'Distance':
+        _icon = Icon(FontAwesome5Solid.ruler_vertical);
         break;
     }
   }

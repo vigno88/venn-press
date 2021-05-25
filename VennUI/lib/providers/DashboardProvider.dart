@@ -33,17 +33,13 @@ class DashboardProvider with ChangeNotifier {
 
   // tilePositions are the position of each of the widget on the grid
   List<Tuple2> _tilePositions = [
-    Tuple2(0, 0),
+    Tuple2(2, 1),
     Tuple2(0, 1),
     Tuple2(2, 0),
-    Tuple2(2, 1),
-    Tuple2(4, 0),
-    Tuple2(4, 1),
-    Tuple2(6, 0),
+    Tuple2(0, 0),
     Tuple2(0, 2),
-    Tuple2(4, 2),
-    Tuple2(5, 2),
-    Tuple2(6, 1), // Pression widget
+    // Tuple2(4, 2),
+    // Tuple2(5, 2),
   ];
 
   DashboardProvider(MetricService m, ControlService c) {
@@ -83,7 +79,7 @@ class DashboardProvider with ChangeNotifier {
   List<Tile> getTiles() {
     List<Tile> tiles = new List<Tile>.from(metricService.getTiles());
     tiles.addAll(controlService.getTiles());
-    tiles.add(Tile(PressionChip(), false, 2, 1));
+    // tiles.add(Tile(PressionChip(), false, 2, 1));
     return tiles;
   }
 
