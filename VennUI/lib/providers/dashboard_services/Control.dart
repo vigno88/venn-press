@@ -92,13 +92,16 @@ class ControlService {
     List<ActionButton> buttons = [];
     int i = 0;
     for (ButtonData d in _buttonsData) {
-      if (d.type == proto.ControlConfig_ControlType.ICON_BUTTTON) {
-        buttons.add(ActionButton.icon(d.title, d.iconType, i, 0));
+      if (d.type == proto.ControlConfig_ControlType.ICON_BUTTON) {
+        buttons.add(ActionButton.icon(
+            d.title, d.iconType, buttonType.ICON_BUTTON, i, 0));
       } else if (d.type ==
           proto.ControlConfig_ControlType.SINGLE_STATE_BUTTON) {
-        buttons.add(ActionButton.text(d.title, d.texts[0], i, 0));
+        buttons.add(ActionButton.text(
+            d.title, d.texts[0], buttonType.SINGLE_STATE_BUTTON, i, 0));
       } else {
-        buttons.add(ActionButton.text(d.title, d.texts[d.state], i, 0));
+        buttons.add(ActionButton.text(
+            d.title, d.texts[d.state], buttonType.TWO_STATE_BUTTON, i, 0));
       }
       i++;
     }

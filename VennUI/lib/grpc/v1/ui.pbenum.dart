@@ -46,12 +46,12 @@ class User_Roles extends $pb.ProtobufEnum {
 class ControlConfig_ControlType extends $pb.ProtobufEnum {
   static const ControlConfig_ControlType TWO_STATE_BUTTON = ControlConfig_ControlType._(0, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'TWO_STATE_BUTTON');
   static const ControlConfig_ControlType SINGLE_STATE_BUTTON = ControlConfig_ControlType._(1, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'SINGLE_STATE_BUTTON');
-  static const ControlConfig_ControlType ICON_BUTTTON = ControlConfig_ControlType._(2, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'ICON_BUTTTON');
+  static const ControlConfig_ControlType ICON_BUTTON = ControlConfig_ControlType._(2, const $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'ICON_BUTTON');
 
   static const $core.List<ControlConfig_ControlType> values = <ControlConfig_ControlType> [
     TWO_STATE_BUTTON,
     SINGLE_STATE_BUTTON,
-    ICON_BUTTTON,
+    ICON_BUTTON,
   ];
 
   static final $core.Map<$core.int, ControlConfig_ControlType> _byValue = $pb.ProtobufEnum.initByValue(values);

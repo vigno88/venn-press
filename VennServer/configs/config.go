@@ -234,18 +234,18 @@ func GetDefaultConfig() *ReadableConfig {
 			{
 				// Id:                 `motion-up`,
 				Title:              `Motion`,
-				Type:               int(proto.ControlConfig_ICON_BUTTTON),
+				Type:               int(proto.ControlConfig_ICON_BUTTON),
 				IconType:           "up_arrow",
 				ActionName:         "motor",
-				StateActionPayload: []string{"up"},
+				StateActionPayload: []string{"mUp", "mStop"},
 			},
 			{
 				// Id:                 `motion-down`,
 				Title:              `Motion`,
-				Type:               int(proto.ControlConfig_ICON_BUTTTON),
+				Type:               int(proto.ControlConfig_ICON_BUTTON),
 				IconType:           "down_arrow",
 				ActionName:         "motor",
-				StateActionPayload: []string{"down"},
+				StateActionPayload: []string{"mDown", "mStop"},
 			},
 			{
 				// Id:                 `test`,

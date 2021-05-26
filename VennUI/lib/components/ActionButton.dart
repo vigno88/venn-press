@@ -5,16 +5,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:provider/provider.dart';
 
+enum buttonType {
+  TWO_STATE_BUTTON,
+  SINGLE_STATE_BUTTON,
+  ICON_BUTTON,
+}
+
 class ActionButton extends StatefulWidget {
   final String text;
   final String title;
   final String iconType;
+  final buttonType type;
   final int tileIndex;
   final int buttonIndex;
 
-  ActionButton.text(this.title, this.text, this.buttonIndex, this.tileIndex)
+  ActionButton.text(
+      this.title, this.text, this.type, this.buttonIndex, this.tileIndex)
       : iconType = null;
-  ActionButton.icon(this.title, this.iconType, this.buttonIndex, this.tileIndex)
+  ActionButton.icon(
+      this.title, this.iconType, this.type, this.buttonIndex, this.tileIndex)
       : text = null;
 
   @override
@@ -52,11 +61,9 @@ class _ActionButtonState extends State<ActionButton> {
             height: 10,
           ),
           GestureDetector(
-              onTapDown: _tapDown,
-              onTapUp: _tapUp,
-              onTap: () => context
-                  .read<DashboardProvider>()
-                  .pressButton(context, widget.buttonIndex, widget.tileIndex),
+              onTapDown: (details) => _tapDown(context),
+              onTapUp: (details) => _tapUp(context),
+              onTap: () => _onTap(context),
               child: Container(
                   height: 110,
                   width: 110,
@@ -76,16 +83,35 @@ class _ActionButtonState extends State<ActionButton> {
     );
   }
 
-  void _tapUp(TapUpDetails details) {
+  void _tapUp(BuildContext context) {
     setState(() {
       colorButton = paleBlue.withOpacity(0.2);
     });
+    if (widget.type == buttonType.ICON_BUTTON) {
+      context
+          .read<DashboardProvider>()
+          .pressButton(context, widget.buttonIndex, widget.tileIndex);
+    }
   }
 
-  void _tapDown(TapDownDetails details) {
+  void _tapDown(BuildContext context) {
     setState(() {
       colorButton = paleBlue.withOpacity(0.25);
     });
+    if (widget.type == buttonType.ICON_BUTTON) {
+      context
+          .read<DashboardProvider>()
+          .pressButton(context, widget.buttonIndex, widget.tileIndex);
+    }
+  }
+
+  void _onTap(BuildContext context) {
+    // Icon button actions are sent on tap down and tap up
+    if (widget.type != buttonType.ICON_BUTTON) {
+      context
+          .read<DashboardProvider>()
+          .pressButton(context, widget.buttonIndex, widget.tileIndex);
+    }
   }
 
   Widget getContent() {

@@ -237,7 +237,7 @@ const ControlConfig_ControlType$json = const {
   '2': const [
     const {'1': 'TWO_STATE_BUTTON', '2': 0},
     const {'1': 'SINGLE_STATE_BUTTON', '2': 1},
-    const {'1': 'ICON_BUTTTON', '2': 2},
+    const {'1': 'ICON_BUTTON', '2': 2},
   ],
 };
 

@@ -273,7 +273,7 @@ message ControlConfig {
   enum ControlType {
     TWO_STATE_BUTTON = 0;
     SINGLE_STATE_BUTTON = 1;
-    ICON_BUTTTON = 2;
+    ICON_BUTTON = 2;
   }
   ControlType type = 1;
   string id = 2;
