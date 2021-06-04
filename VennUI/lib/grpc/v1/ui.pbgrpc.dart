@@ -162,6 +162,11 @@ class SettingServiceClient extends $grpc.Client {
       '/v1.SettingService/UpdateChoice',
       ($0.ChoiceUpdate value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.Empty.fromBuffer(value));
+  static final _$updateGraphSettings =
+      $grpc.ClientMethod<$0.GraphUpdate, $0.Empty>(
+          '/v1.SettingService/UpdateGraphSettings',
+          ($0.GraphUpdate value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) => $0.Empty.fromBuffer(value));
   static final _$updateCurrentRecipe =
       $grpc.ClientMethod<$0.StringValue, $0.Empty>(
           '/v1.SettingService/UpdateCurrentRecipe',
@@ -224,6 +229,11 @@ class SettingServiceClient extends $grpc.Client {
   $grpc.ResponseFuture<$0.Empty> updateChoice($0.ChoiceUpdate request,
       {$grpc.CallOptions options}) {
     return $createUnaryCall(_$updateChoice, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.Empty> updateGraphSettings($0.GraphUpdate request,
+      {$grpc.CallOptions options}) {
+    return $createUnaryCall(_$updateGraphSettings, request, options: options);
   }
 
   $grpc.ResponseFuture<$0.Empty> updateCurrentRecipe($0.StringValue request,
@@ -309,6 +319,13 @@ abstract class SettingServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.ChoiceUpdate.fromBuffer(value),
         ($0.Empty value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.GraphUpdate, $0.Empty>(
+        'UpdateGraphSettings',
+        updateGraphSettings_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.GraphUpdate.fromBuffer(value),
+        ($0.Empty value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.StringValue, $0.Empty>(
         'UpdateCurrentRecipe',
         updateCurrentRecipe_Pre,
@@ -377,6 +394,11 @@ abstract class SettingServiceBase extends $grpc.Service {
     return updateChoice(call, await request);
   }
 
+  $async.Future<$0.Empty> updateGraphSettings_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.GraphUpdate> request) async {
+    return updateGraphSettings(call, await request);
+  }
+
   $async.Future<$0.Empty> updateCurrentRecipe_Pre(
       $grpc.ServiceCall call, $async.Future<$0.StringValue> request) async {
     return updateCurrentRecipe(call, await request);
@@ -410,6 +432,8 @@ abstract class SettingServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $0.SelectorUpdate request);
   $async.Future<$0.Empty> updateChoice(
       $grpc.ServiceCall call, $0.ChoiceUpdate request);
+  $async.Future<$0.Empty> updateGraphSettings(
+      $grpc.ServiceCall call, $0.GraphUpdate request);
   $async.Future<$0.Empty> updateCurrentRecipe(
       $grpc.ServiceCall call, $0.StringValue request);
   $async.Future<$0.Empty> updateRecipe(

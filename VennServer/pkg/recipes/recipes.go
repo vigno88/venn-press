@@ -10,17 +10,22 @@ import (
 )
 
 // var defaultRecipe *proto.Recipe
-var pathDB string
+// var pathDB string
+var db storm.DB
+
+var currentRecipe *Recipe
 
 const currentKey = "current"
 const keyValueName = "recipe"
 
 type Recipe struct {
-	UUID      string `storm:"id"`
+	Id        int `storm:"id,increment"`
+	UUID      string
 	Name      string
 	Info      string
 	Selectors []*proto.Selector
-	Sliders   []*proto.Setting
+	Settings  []*proto.Setting
+	Graphs    []*proto.GraphSettings
 }
 
 func (r *Recipe) GetIndexSelector(name string) int {
@@ -32,9 +37,18 @@ func (r *Recipe) GetIndexSelector(name string) int {
 	return 0
 }
 
-func (r *Recipe) GetIndexSlider(name string) int {
-	for i, s := range r.Sliders {
+func (r *Recipe) GetIndexSetting(name string) int {
+	for i, s := range r.Settings {
 		if s.Name == name {
+			return i
+		}
+	}
+	return 0
+}
+
+func (r *Recipe) GetIndexGraph(name string) int {
+	for i, g := range r.Graphs {
+		if g.Name == name {
 			return i
 		}
 	}
@@ -43,13 +57,14 @@ func (r *Recipe) GetIndexSlider(name string) int {
 
 // Init opens the badgerDB
 func Init(ctx context.Context, path string) error {
-	pathDB = path
-	log.Printf("Initiating recipes store at %s", pathDB)
-	db, err := storm.Open(pathDB)
+	// pathDB = path
+	log.Printf("Initiating recipes store at %s", path)
+	newDB, err := storm.Open(path)
 	if err != nil {
 		return err
 	}
-	db.Close()
+	db = *newDB
+	// db.Close()
 	return err
 }
 
@@ -59,7 +74,8 @@ func ToRecipe(r *proto.Recipe) *Recipe {
 		Name:      r.Title,
 		Info:      r.Info,
 		Selectors: r.Selectors,
-		Sliders:   r.Settings,
+		Settings:  r.Settings,
+		Graphs:    r.Graphs,
 	}
 }
 
@@ -68,19 +84,20 @@ func ToProto(r *Recipe) *proto.Recipe {
 		Uuid:      r.UUID,
 		Title:     r.Name,
 		Info:      r.Info,
-		Settings:  r.Sliders,
+		Settings:  r.Settings,
 		Selectors: r.Selectors,
+		Graphs:    r.Graphs,
 	}
 }
 
 func ReadCurrentRecipeUUID() (string, error) {
-	db, err := storm.Open(pathDB)
-	if err != nil {
-		return "", err
-	}
-	defer db.Close()
+	// db, err := storm.Open(pathDB)
+	// if err != nil {
+	// 	return "", err
+	// }
+	// defer db.Close()
 	var uuid string
-	err = db.Get(keyValueName, currentKey, &uuid)
+	err := db.Get(keyValueName, currentKey, &uuid)
 	if err != nil {
 		return "", err
 	}
@@ -88,35 +105,40 @@ func ReadCurrentRecipeUUID() (string, error) {
 }
 
 func ReadCurrentRecipe() (*Recipe, error) {
-	uuid, err := ReadCurrentRecipeUUID()
-	if err != nil {
-		return nil, err
+	if currentRecipe == nil {
+		uuid, err := ReadCurrentRecipeUUID()
+		if err != nil {
+			return nil, err
+		}
+		currentRecipe, err = ReadRecipe(uuid)
 	}
-	return ReadRecipe(uuid)
+	return currentRecipe, nil
 }
 
 func UpdateCurrentRecipe(uuid string) error {
-	db, err := storm.Open(pathDB)
+	// db, err := storm.Open(pathDB)
+	// if err != nil {
+	// 	return err
+	// }
+	// defer db.Close()
+	// Update key of the current recipe
+	err := db.Set(keyValueName, currentKey, uuid)
 	if err != nil {
 		return err
 	}
-	defer db.Close()
-	err = db.Set(keyValueName, currentKey, uuid)
-	if err != nil {
-		return err
-	}
+	currentRecipe, err = ReadRecipe(uuid)
 	return err
 }
 
 func ReadRecipe(uuid string) (*Recipe, error) {
-	db, err := storm.Open(pathDB)
-	if err != nil {
-		return nil, err
-	}
-	defer db.Close()
+	// db, err := storm.Open(pathDB)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// defer db.Close()
 	// Get the recipe struct
 	recipe := &Recipe{}
-	err = db.One("UUID", uuid, recipe)
+	err := db.One("UUID", uuid, recipe)
 	if err != nil {
 		return nil, err
 	}
@@ -124,43 +146,43 @@ func ReadRecipe(uuid string) (*Recipe, error) {
 }
 
 func UpdateRecipe(r *Recipe) error {
-	db, err := storm.Open(pathDB)
-	if err != nil {
-		return err
-	}
-	defer db.Close()
-	err = db.Update(r)
+	// db, err := storm.Open(pathDB)
+	// if err != nil {
+	// 	return err
+	// }
+	// defer db.Close()
+	err := db.Update(r)
 	return err
 }
 
 func ReadAllRecipes() ([]Recipe, error) {
-	db, err := storm.Open(pathDB)
-	if err != nil {
-		return nil, err
-	}
-	defer db.Close()
+	// db, err := storm.Open(pathDB)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// defer db.Close()
 	var recipes []Recipe
-	err = db.All(&recipes)
+	err := db.All(&recipes)
 	return recipes, err
 }
 
 func SaveRecipe(r *Recipe) error {
-	db, err := storm.Open(pathDB)
-	if err != nil {
-		return err
-	}
-	defer db.Close()
-	err = db.Save(r)
+	// db, err := storm.Open(pathDB)
+	// if err != nil {
+	// 	return err
+	// }
+	// defer db.Close()
+	err := db.Save(r)
 	return err
 }
 
 func DeleteRecipe(r *Recipe) error {
-	db, err := storm.Open(pathDB)
-	if err != nil {
-		return err
-	}
-	defer db.Close()
-	err = db.DeleteStruct(r)
+	// db, err := storm.Open(pathDB)
+	// if err != nil {
+	// 	return err
+	// }
+	// defer db.Close()
+	err := db.DeleteStruct(r)
 	return err
 }
 
@@ -174,4 +196,16 @@ func recipeToString(r *proto.Recipe) []string {
 		settings = append(settings, str)
 	}
 	return settings
+}
+
+func (r *Recipe) Join(new *Recipe) {
+	for _, s := range new.Settings {
+		r.Settings = append(r.Settings, s)
+	}
+	for _, s := range new.Selectors {
+		r.Selectors = append(r.Selectors, s)
+	}
+	for _, g := range new.Graphs {
+		r.Graphs = append(r.Graphs, g)
+	}
 }

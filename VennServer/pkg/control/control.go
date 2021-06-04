@@ -8,7 +8,8 @@ import (
 	proto "github.com/vigno88/Venn/VennServer/pkg/api/v1"
 )
 
-var pathDB string
+// var pathDB string
+var db storm.DB
 
 type Config struct {
 	Id                 int `storm:"id,increment"`
@@ -46,22 +47,23 @@ func ToConfig(c *proto.ControlConfig) *Config {
 // the control configuration
 func Init(ctx context.Context, path string) error {
 	log.Printf("Initiating the control config store at %s\n", path)
-	pathDB = path
-	db, err := storm.Open(pathDB)
+	// pathDB = path
+	newDb, err := storm.Open(path)
+	db = *newDb
 	if err != nil {
 		return err
 	}
-	defer db.Close()
+	// defer db.Close()
 	return err
 }
 
 func Create(m *Config) error {
-	db, err := storm.Open(pathDB)
-	if err != nil {
-		return err
-	}
-	defer db.Close()
-	err = db.Save(m)
+	// db, err := storm.Open(pathDB)
+	// if err != nil {
+	// 	return err
+	// }
+	// defer db.Close()
+	err := db.Save(m)
 	if err == storm.ErrAlreadyExists {
 		return db.Update(m)
 	}
@@ -69,12 +71,12 @@ func Create(m *Config) error {
 }
 
 func Update(m *Config) error {
-	db, err := storm.Open(pathDB)
-	if err != nil {
-		return err
-	}
-	defer db.Close()
-	err = db.Save(m)
+	// db, err := storm.Open(pathDB)
+	// if err != nil {
+	// 	return err
+	// }
+	// defer db.Close()
+	err := db.Save(m)
 	if err == storm.ErrAlreadyExists {
 		return db.Update(m)
 	}
@@ -82,13 +84,13 @@ func Update(m *Config) error {
 }
 
 func Read(name string) (*Config, error) {
-	db, err := storm.Open(pathDB)
-	if err != nil {
-		return nil, err
-	}
-	defer db.Close()
+	// db, err := storm.Open(pathDB)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// defer db.Close()
 	var m Config
-	err = db.One("Id", name, &m)
+	err := db.One("Id", name, &m)
 	return &m, err
 
 }
@@ -99,12 +101,12 @@ func Delete(name string) *Config {
 }
 
 func ReadAll() ([]Config, error) {
-	db, err := storm.Open(pathDB)
-	if err != nil {
-		return nil, err
-	}
-	defer db.Close()
+	// db, err := storm.Open(pathDB)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// defer db.Close()
 	var metrics []Config
-	err = db.All(&metrics)
+	err := db.All(&metrics)
 	return metrics, err
 }

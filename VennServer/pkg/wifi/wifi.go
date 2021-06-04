@@ -11,7 +11,9 @@ import (
 	wifi "github.com/mark2b/wpa-connect"
 )
 
-var pathDB string
+// var pathDB string
+var db storm.DB
+
 var isConnected bool
 var currentSSID string
 
@@ -22,12 +24,13 @@ type Credential struct {
 
 func Init(ctx context.Context, path string) error {
 	log.Printf("Initiating the wifi store at %s\n", path)
-	pathDB = path
-	db, err := storm.Open(pathDB)
+	// pathDB = path
+	newDb, err := storm.Open(path)
 	if err != nil {
 		return err
 	}
-	defer db.Close()
+	db = *newDb
+	// defer db.Close()
 	// Look if db contains an entry
 	var credentials []Credential
 	err = db.All(&credentials)
@@ -95,11 +98,11 @@ func Connect(ssid string, password string) error {
 		fmt.Println("Connected", conn.NetInterface, conn.SSID, conn.IP4.String(),
 			conn.IP6.String())
 		// Save the credentials in the database
-		db, err := storm.Open(pathDB)
-		if err != nil {
-			return err
-		}
-		defer db.Close()
+		// db, err := storm.Open(pathDB)
+		// if err != nil {
+		// 	return err
+		// }
+		// defer db.Close()
 		// If the new SSID is different from the current one, replace by the new one
 		if ssid != currentSSID {
 			err = db.Delete("Credential", currentSSID)
@@ -124,14 +127,14 @@ func Connect(ssid string, password string) error {
 }
 
 func ConnectMostRecent() error {
-	db, err := storm.Open(pathDB)
-	if err != nil {
-		return err
-	}
-	defer db.Close()
+	// db, err := storm.Open(pathDB)
+	// if err != nil {
+	// 	return err
+	// }
+	// defer db.Close()
 	// Look if db contains an entry
 	var credentials []Credential
-	err = db.All(&credentials)
+	err := db.All(&credentials)
 	if err == storm.ErrNotFound || len(credentials) == 0 {
 		return nil
 	}

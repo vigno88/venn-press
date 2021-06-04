@@ -1,7 +1,7 @@
 import 'package:VennUI/components/BottomBar.dart';
 import 'package:VennUI/components/Notification.dart';
-import 'package:VennUI/dialogs/user_dialog.dart';
-import 'package:VennUI/dialogs/wifi_dialog.dart';
+import 'package:VennUI/dialogs/UserDialog.dart';
+import 'package:VennUI/dialogs/WifiDialog.dart';
 import 'package:VennUI/providers/NetworkProvider.dart';
 import 'package:VennUI/providers/DashboardProvider.dart';
 import 'package:VennUI/providers/NotificationProvider.dart';

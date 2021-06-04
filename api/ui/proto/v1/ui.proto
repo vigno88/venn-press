@@ -55,17 +55,18 @@ service MetricService {
 }
 
 //=============================================================================
-// Setting Service 
+// Recipe Service 
 //=============================================================================
 
-// Setting represents everything required to display a setting as a slider in
-// the UI 
+enum Destination {
+  NONE = 0;
+  MOTOR = 1;
+  MICROCONTROLLER = 2;
+}
+
+// This represent a setting that is a single bounded between a 
+// maximum and a minimum
 message Setting {
-  enum Destination {
-    NONE = 0;
-    MOTOR = 1;
-    MICROCONTROLLER = 2;
-  }
   Destination destination = 1;
   double value = 2;
   double max = 3;
@@ -74,6 +75,7 @@ message Setting {
   string info = 6;
   Target target = 7;
   string smallName = 8;
+  bool isStatic = 9;
 }
 
 // Target is an optional field that is used when the setting is used as a target
@@ -87,6 +89,7 @@ message Target {
 message SettingUpdate {
   string name = 1;
   double value = 2;
+  bool isStatic = 3;
 }
 
 // TargetUpdate is used to update the value of the uncertainty of a target by
@@ -94,21 +97,24 @@ message SettingUpdate {
 message TargetUpdate {
   string name = 1;
   double value = 2;
+  bool isStatic = 3;
 }
 
-// Choice is used to represent a possible choice in a selector, by default
-// all choices have an associated list of settings. 
-message Choice {
-  string name = 1;
-  repeated Setting settings = 2;
-}
+/* // Choice is used to represent a possible choice in a selector, by default */
+/* // all */
+/* message Choice { */
+/*   string name = 1; */
+/*   repeated Setting settings = 2; */
+/* } */
 
 // Selector represents all the information required to display a selector on
 // the settings page
 message Selector {
   string name = 1;
-  Choice selectedChoice = 2;
-  repeated Choice possibleChoices = 3;
+  string choice = 2;
+  /* Choice selectedChoice = 2; */
+  repeated string possibleChoices = 3;
+  bool isStatic = 9;
 }
 
 message Selectors {
@@ -119,12 +125,33 @@ message Selectors {
 message SelectorUpdate {
   string name = 1;
   string choiceName = 2;
+  bool isStatic = 3;
 }
 
 // ChoiceUpdate is used to update a choice and all its associated settings
 message ChoiceUpdate {
   string nameSelector = 1;
-  Choice newChoice = 2;
+  string newChoice = 2;
+  bool isStatic = 3;
+}
+
+message Point {
+  double x = 1;
+  double y = 2;
+}
+
+message GraphSettings {
+  string name = 1;
+  string unitVerticalAxis = 2;
+  string unitHorizontalAxis = 3;
+  repeated Point points = 4;
+  bool isStatic = 9;
+}
+
+message GraphUpdate {
+  string name = 1;
+  repeated Point newPoints = 2;
+  bool isStatic = 3;
 }
 
 // Recipe represents a collection of settings and selector choices that
@@ -134,7 +161,8 @@ message Recipe {
   string title = 2;
   string info = 3;
   repeated Setting settings = 4;
-  repeated Selector selectors = 5; 
+  repeated Selector selectors = 5;
+  repeated GraphSettings graphs = 6; 
 }
 
 // UUIDS is a collection of UUID string 
@@ -172,6 +200,9 @@ service SettingService {
 
   // UpdateChoice updates the settings of a choice 
   rpc UpdateChoice(ChoiceUpdate) returns (Empty) {}
+
+  // UpdateGraphSettings updates the settings of a graph
+  rpc UpdateGraphSettings(GraphUpdate) returns (Empty){}
   
   // UpdateCurrentRecipe tells the backend what is the active recipe
   rpc UpdateCurrentRecipe(StringValue) returns (Empty) {}

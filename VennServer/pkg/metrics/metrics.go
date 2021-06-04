@@ -2,14 +2,15 @@ package metrics
 
 import (
 	"context"
+	"fmt"
 	"log"
 
 	"github.com/asdine/storm/v3"
 	proto "github.com/vigno88/Venn/VennServer/pkg/api/v1"
-	// bolt "go.etcd.io/bbolt"
 )
 
-var pathDB string
+// var pathDB string
+var db storm.DB
 
 // var bucketName string
 
@@ -52,23 +53,25 @@ func ToMetric(m *proto.MetricConfig) *Metric {
 // the metric configuration as well as the most recent metrics
 func Init(ctx context.Context, path string) error {
 	log.Printf("Initiating the metrics store at %s\n", path)
-	pathDB = path
-	db, err := storm.Open(pathDB)
+	// pathDB = path
+	fmt.Println(path)
+	newDb, err := storm.Open(path)
 	if err != nil {
 		return err
 	}
-	defer db.Close()
+	db = *newDb
+	// defer db.Close()
 	// err = db.Init(&Metric{})
 	return err
 }
 
 func Create(m *Metric) error {
-	db, err := storm.Open(pathDB)
-	if err != nil {
-		return err
-	}
-	defer db.Close()
-	err = db.Save(m)
+	// db, err := storm.Open(pathDB)
+	// if err != nil {
+	// 	return err
+	// }
+	// defer db.Close()
+	err := db.Save(m)
 	if err == storm.ErrAlreadyExists {
 		return db.Update(m)
 	}
@@ -76,12 +79,12 @@ func Create(m *Metric) error {
 }
 
 func Update(m *Metric) error {
-	db, err := storm.Open(pathDB)
-	if err != nil {
-		return err
-	}
-	defer db.Close()
-	err = db.Save(m)
+	// db, err := storm.Open(pathDB)
+	// if err != nil {
+	// 	return err
+	// }
+	// defer db.Close()
+	err := db.Save(m)
 	if err == storm.ErrAlreadyExists {
 		return db.Update(m)
 	}
@@ -89,13 +92,13 @@ func Update(m *Metric) error {
 }
 
 func Read(name string) (*Metric, error) {
-	db, err := storm.Open(pathDB)
-	if err != nil {
-		return nil, err
-	}
-	defer db.Close()
+	// db, err := storm.Open(pathDB)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// defer db.Close()
 	var m Metric
-	err = db.One("Name", name, &m)
+	err := db.One("Name", name, &m)
 	return &m, err
 
 }
@@ -106,12 +109,12 @@ func Delete(name string) *Metric {
 }
 
 func ReadAll() ([]Metric, error) {
-	db, err := storm.Open(pathDB)
-	if err != nil {
-		return nil, err
-	}
-	defer db.Close()
+	// db, err := storm.Open(pathDB)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// defer db.Close()
 	var metrics []Metric
-	err = db.All(&metrics)
+	err := db.All(&metrics)
 	return metrics, err
 }

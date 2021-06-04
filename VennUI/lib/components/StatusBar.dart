@@ -46,7 +46,7 @@ class _StatusBarState extends State<StatusBar> {
                       "Recipe: " +
                           context
                               .watch<SettingsProvider>()
-                              .recipes[context
+                              .recipesInfo[context
                                   .watch<SettingsProvider>()
                                   .selectedRecipe]
                               .title,

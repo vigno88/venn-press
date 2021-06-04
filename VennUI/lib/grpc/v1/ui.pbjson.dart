@@ -5,6 +5,15 @@
 // @dart = 2.7
 // ignore_for_file: annotate_overrides,camel_case_types,unnecessary_const,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type,unnecessary_this,prefer_final_fields
 
+const Destination$json = const {
+  '1': 'Destination',
+  '2': const [
+    const {'1': 'NONE', '2': 0},
+    const {'1': 'MOTOR', '2': 1},
+    const {'1': 'MICROCONTROLLER', '2': 2},
+  ],
+};
+
 const MetricConfig$json = const {
   '1': 'MetricConfig',
   '2': const [
@@ -44,7 +53,7 @@ const MetricUpdates$json = const {
 const Setting$json = const {
   '1': 'Setting',
   '2': const [
-    const {'1': 'destination', '3': 1, '4': 1, '5': 14, '6': '.v1.Setting.Destination', '10': 'destination'},
+    const {'1': 'destination', '3': 1, '4': 1, '5': 14, '6': '.v1.Destination', '10': 'destination'},
     const {'1': 'value', '3': 2, '4': 1, '5': 1, '10': 'value'},
     const {'1': 'max', '3': 3, '4': 1, '5': 1, '10': 'max'},
     const {'1': 'min', '3': 4, '4': 1, '5': 1, '10': 'min'},
@@ -52,16 +61,7 @@ const Setting$json = const {
     const {'1': 'info', '3': 6, '4': 1, '5': 9, '10': 'info'},
     const {'1': 'target', '3': 7, '4': 1, '5': 11, '6': '.v1.Target', '10': 'target'},
     const {'1': 'smallName', '3': 8, '4': 1, '5': 9, '10': 'smallName'},
-  ],
-  '4': const [Setting_Destination$json],
-};
-
-const Setting_Destination$json = const {
-  '1': 'Destination',
-  '2': const [
-    const {'1': 'NONE', '2': 0},
-    const {'1': 'MOTOR', '2': 1},
-    const {'1': 'MICROCONTROLLER', '2': 2},
+    const {'1': 'isStatic', '3': 9, '4': 1, '5': 8, '10': 'isStatic'},
   ],
 };
 
@@ -78,6 +78,7 @@ const SettingUpdate$json = const {
   '2': const [
     const {'1': 'name', '3': 1, '4': 1, '5': 9, '10': 'name'},
     const {'1': 'value', '3': 2, '4': 1, '5': 1, '10': 'value'},
+    const {'1': 'isStatic', '3': 3, '4': 1, '5': 8, '10': 'isStatic'},
   ],
 };
 
@@ -86,14 +87,7 @@ const TargetUpdate$json = const {
   '2': const [
     const {'1': 'name', '3': 1, '4': 1, '5': 9, '10': 'name'},
     const {'1': 'value', '3': 2, '4': 1, '5': 1, '10': 'value'},
-  ],
-};
-
-const Choice$json = const {
-  '1': 'Choice',
-  '2': const [
-    const {'1': 'name', '3': 1, '4': 1, '5': 9, '10': 'name'},
-    const {'1': 'settings', '3': 2, '4': 3, '5': 11, '6': '.v1.Setting', '10': 'settings'},
+    const {'1': 'isStatic', '3': 3, '4': 1, '5': 8, '10': 'isStatic'},
   ],
 };
 
@@ -101,8 +95,9 @@ const Selector$json = const {
   '1': 'Selector',
   '2': const [
     const {'1': 'name', '3': 1, '4': 1, '5': 9, '10': 'name'},
-    const {'1': 'selectedChoice', '3': 2, '4': 1, '5': 11, '6': '.v1.Choice', '10': 'selectedChoice'},
-    const {'1': 'possibleChoices', '3': 3, '4': 3, '5': 11, '6': '.v1.Choice', '10': 'possibleChoices'},
+    const {'1': 'choice', '3': 2, '4': 1, '5': 9, '10': 'choice'},
+    const {'1': 'possibleChoices', '3': 3, '4': 3, '5': 9, '10': 'possibleChoices'},
+    const {'1': 'isStatic', '3': 9, '4': 1, '5': 8, '10': 'isStatic'},
   ],
 };
 
@@ -118,6 +113,7 @@ const SelectorUpdate$json = const {
   '2': const [
     const {'1': 'name', '3': 1, '4': 1, '5': 9, '10': 'name'},
     const {'1': 'choiceName', '3': 2, '4': 1, '5': 9, '10': 'choiceName'},
+    const {'1': 'isStatic', '3': 3, '4': 1, '5': 8, '10': 'isStatic'},
   ],
 };
 
@@ -125,7 +121,36 @@ const ChoiceUpdate$json = const {
   '1': 'ChoiceUpdate',
   '2': const [
     const {'1': 'nameSelector', '3': 1, '4': 1, '5': 9, '10': 'nameSelector'},
-    const {'1': 'newChoice', '3': 2, '4': 1, '5': 11, '6': '.v1.Choice', '10': 'newChoice'},
+    const {'1': 'newChoice', '3': 2, '4': 1, '5': 9, '10': 'newChoice'},
+    const {'1': 'isStatic', '3': 3, '4': 1, '5': 8, '10': 'isStatic'},
+  ],
+};
+
+const Point$json = const {
+  '1': 'Point',
+  '2': const [
+    const {'1': 'x', '3': 1, '4': 1, '5': 1, '10': 'x'},
+    const {'1': 'y', '3': 2, '4': 1, '5': 1, '10': 'y'},
+  ],
+};
+
+const GraphSettings$json = const {
+  '1': 'GraphSettings',
+  '2': const [
+    const {'1': 'name', '3': 1, '4': 1, '5': 9, '10': 'name'},
+    const {'1': 'unitVerticalAxis', '3': 2, '4': 1, '5': 9, '10': 'unitVerticalAxis'},
+    const {'1': 'unitHorizontalAxis', '3': 3, '4': 1, '5': 9, '10': 'unitHorizontalAxis'},
+    const {'1': 'points', '3': 4, '4': 3, '5': 11, '6': '.v1.Point', '10': 'points'},
+    const {'1': 'isStatic', '3': 9, '4': 1, '5': 8, '10': 'isStatic'},
+  ],
+};
+
+const GraphUpdate$json = const {
+  '1': 'GraphUpdate',
+  '2': const [
+    const {'1': 'name', '3': 1, '4': 1, '5': 9, '10': 'name'},
+    const {'1': 'newPoints', '3': 2, '4': 3, '5': 11, '6': '.v1.Point', '10': 'newPoints'},
+    const {'1': 'isStatic', '3': 3, '4': 1, '5': 8, '10': 'isStatic'},
   ],
 };
 
@@ -137,6 +162,7 @@ const Recipe$json = const {
     const {'1': 'info', '3': 3, '4': 1, '5': 9, '10': 'info'},
     const {'1': 'settings', '3': 4, '4': 3, '5': 11, '6': '.v1.Setting', '10': 'settings'},
     const {'1': 'selectors', '3': 5, '4': 3, '5': 11, '6': '.v1.Selector', '10': 'selectors'},
+    const {'1': 'graphs', '3': 6, '4': 3, '5': 11, '6': '.v1.GraphSettings', '10': 'graphs'},
   ],
 };
 

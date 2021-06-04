@@ -11,7 +11,8 @@ import (
 	proto "github.com/vigno88/Venn/VennServer/pkg/api/v1"
 )
 
-var pathDB string
+// var pathDB string
+var db storm.DB
 
 const currentKey = "current"
 const keyValueName = "users"
@@ -29,14 +30,15 @@ type User struct {
 }
 
 func Init(ctx context.Context, path string) error {
-	pathDB = path
-	log.Printf("Initiating authentifaction store at %s", pathDB)
-	db, err := storm.Open(pathDB)
+	// pathDB = path
+	log.Printf("Initiating authentifaction store at %s", path)
+	newDb, err := storm.Open(path)
 	if err != nil {
 		return err
 	}
-	// db.Init(&User{})
-	db.Close()
+	db = *newDb
+	// // db.Init(&User{})
+	// db.Close()
 	return nil
 }
 
@@ -76,12 +78,12 @@ func UserToProto(u *User) *proto.User {
 }
 
 func CreateUser(u *User) error {
-	db, err := storm.Open(pathDB)
-	if err != nil {
-		return err
-	}
-	defer db.Close()
-	err = db.Save(u)
+	// db, err := storm.Open(pathDB)
+	// if err != nil {
+	// 	return err
+	// }
+	// defer db.Close()
+	err := db.Save(u)
 	if err == nil {
 		return err
 	}
@@ -89,13 +91,13 @@ func CreateUser(u *User) error {
 }
 
 func ReadUsers() ([]User, error) {
-	db, err := storm.Open(pathDB)
-	if err != nil {
-		return nil, err
-	}
-	defer db.Close()
+	// db, err := storm.Open(pathDB)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// defer db.Close()
 	var users []User
-	err = db.All(&users)
+	err := db.All(&users)
 	if err != nil {
 		return nil, err
 	}
@@ -103,12 +105,12 @@ func ReadUsers() ([]User, error) {
 }
 
 func UpdateCurrentUser(name string) error {
-	db, err := storm.Open(pathDB)
-	if err != nil {
-		return err
-	}
-	defer db.Close()
-	err = db.Set(keyValueName, currentKey, name)
+	// db, err := storm.Open(pathDB)
+	// if err != nil {
+	// 	return err
+	// }
+	// defer db.Close()
+	err := db.Set(keyValueName, currentKey, name)
 	if err != nil {
 		return err
 	}
@@ -116,13 +118,13 @@ func UpdateCurrentUser(name string) error {
 }
 
 func ReadCurrentUser() (string, error) {
-	db, err := storm.Open(pathDB)
-	if err != nil {
-		return "", err
-	}
-	defer db.Close()
+	// db, err := storm.Open(pathDB)
+	// if err != nil {
+	// 	return "", err
+	// }
+	// defer db.Close()
 	var name string
-	err = db.Get(keyValueName, currentKey, &name)
+	err := db.Get(keyValueName, currentKey, &name)
 	if err != nil {
 		return "", err
 	}
@@ -130,14 +132,14 @@ func ReadCurrentUser() (string, error) {
 }
 
 func ReadUser(name string) (*User, error) {
-	db, err := storm.Open(pathDB)
-	if err != nil {
-		return nil, err
-	}
-	defer db.Close()
+	// db, err := storm.Open(pathDB)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// defer db.Close()
 	user := User{}
 	fmt.Printf("Trying to read user : %s", name)
-	err = db.One("Title", name, &user)
+	err := db.One("Title", name, &user)
 	if err != nil {
 		return nil, err
 	}

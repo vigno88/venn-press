@@ -31,7 +31,8 @@ class ActionButton extends StatefulWidget {
 }
 
 class _ActionButtonState extends State<ActionButton> {
-  Color colorButton = paleBlue.withOpacity(0.2);
+  // Color colorButton = paleBlue.withOpacity(0.2);
+  Color colorButton = paleBlueNew;
   @override
   void initState() {
     super.initState();
@@ -85,7 +86,8 @@ class _ActionButtonState extends State<ActionButton> {
 
   void _tapUp(BuildContext context) {
     setState(() {
-      colorButton = paleBlue.withOpacity(0.2);
+      colorButton = paleBlueNew;
+      // colorButton = paleBlue.withOpacity(0.2);
     });
     if (widget.type == buttonType.ICON_BUTTON) {
       context
@@ -96,7 +98,8 @@ class _ActionButtonState extends State<ActionButton> {
 
   void _tapDown(BuildContext context) {
     setState(() {
-      colorButton = paleBlue.withOpacity(0.25);
+      colorButton = paleBlueDarkerNew;
+      // colorButton = paleBlue.withOpacity(0.25);
     });
     if (widget.type == buttonType.ICON_BUTTON) {
       context
@@ -119,7 +122,7 @@ class _ActionButtonState extends State<ActionButton> {
       return AutoSizeText(
         widget.text,
         style: TextStyle(
-            color: darkBlue, fontSize: 30, fontWeight: FontWeight.bold),
+            color: darkBlueNew, fontSize: 30, fontWeight: FontWeight.bold),
         minFontSize: 5,
         maxLines: 1,
       );
@@ -128,7 +131,7 @@ class _ActionButtonState extends State<ActionButton> {
         case "up_arrow":
           return Icon(
             Ionicons.md_arrow_up,
-            color: darkBlue,
+            color: darkBlueNew,
             size: 50,
           );
         case "down_arrow":

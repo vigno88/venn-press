@@ -50,6 +50,13 @@ func (s *settingServiceServer) ReadCurrentRecipe(ctx context.Context, e *proto.E
 		log.Printf("Error while reading this recipe %s: %s ", r.Name, err.Error())
 		return nil, err
 	}
+	// Get the static recipe
+	staticR, err := recipe.ReadRecipe("static")
+	if err != nil {
+		log.Printf("Error while reading this recipe %s: %s ", "static", err.Error())
+		return nil, err
+	}
+	r.Join(staticR)
 	return recipe.ToProto(r), nil
 }
 
@@ -59,73 +66,84 @@ func (s *settingServiceServer) UpdateCurrentRecipe(ctx context.Context, uuid *pr
 }
 
 func (s *settingServiceServer) UpdateSetting(ctx context.Context, u *proto.SettingUpdate) (*proto.Empty, error) {
-	r, err := recipe.ReadCurrentRecipe()
+	r, err := getCurrentRecipe(u.IsStatic)
 	if err != nil {
 		log.Printf("Error while reading this recipe %s: %s ", r.Name, err.Error())
 		return &proto.Empty{}, err
 	}
-	index := r.GetIndexSlider(u.Name)
-	r.Sliders[index].Value = u.Value
-	switch r.Sliders[index].Destination {
-	case proto.Setting_NONE:
+	index := r.GetIndexSetting(u.Name)
+	r.Settings[index].Value = u.Value
+	switch r.Settings[index].Destination {
+	case proto.Destination_NONE:
 		break
-	case proto.Setting_MICROCONTROLLER:
-		// serial.SendSetting(r.Sliders[index])
+	case proto.Destination_MICROCONTROLLER:
+		fmt.Printf("Send setting %s to serial\n", r.Settings[index].Name)
 		break
-	case proto.Setting_MOTOR:
-		// motors.ProcessNewSetting(r.Sliders[index], u.Value)
+	case proto.Destination_MOTOR:
+		fmt.Printf("Send setting %s to motor\n", r.Settings[index].Name)
 		break
 	}
 	return &proto.Empty{}, recipe.UpdateRecipe(r)
 }
 
 func (s *settingServiceServer) UpdateUncertainty(ctx context.Context, u *proto.TargetUpdate) (*proto.Empty, error) {
-	r, err := recipe.ReadCurrentRecipe()
+	r, err := getCurrentRecipe(u.IsStatic)
 	if err != nil {
 		log.Printf("Error while reading this recipe %s: %s ", r.Name, err.Error())
 		return &proto.Empty{}, err
 	}
-	index := r.GetIndexSlider(u.Name)
-	r.Sliders[index].Target.Uncertainty = u.GetValue()
+	index := r.GetIndexSetting(u.Name)
+	r.Settings[index].Target.Uncertainty = u.GetValue()
 	return &proto.Empty{}, recipe.UpdateRecipe(r)
 }
 
 func (s *settingServiceServer) UpdateSelectedChoice(ctx context.Context, u *proto.SelectorUpdate) (*proto.Empty, error) {
-	r, err := recipe.ReadCurrentRecipe()
+	r, err := getCurrentRecipe(u.IsStatic)
 	if err != nil {
 		log.Printf("Error while reading this recipe %s: %s ", r.Name, err.Error())
 		return &proto.Empty{}, err
 	}
-	var choice *proto.Choice
+	var choice string
 	index := r.GetIndexSelector(u.Name)
 	for _, v := range r.Selectors[index].PossibleChoices {
-		if v.Name == u.ChoiceName {
+		if v == u.ChoiceName {
 			choice = v
 			break
 		}
 	}
-	r.Selectors[index].SelectedChoice = choice
+	r.Selectors[index].Choice = choice
 	return &proto.Empty{}, recipe.UpdateRecipe(r)
 }
 
 func (s *settingServiceServer) UpdateChoice(ctx context.Context, u *proto.ChoiceUpdate) (*proto.Empty, error) {
-	r, err := recipe.ReadCurrentRecipe()
+	r, err := getCurrentRecipe(u.IsStatic)
 	if err != nil {
 		log.Printf("Error while reading this recipe %s: %s ", r.Name, err.Error())
 		return &proto.Empty{}, err
 	}
 	index := r.GetIndexSelector(u.NameSelector)
 	for i, v := range r.Selectors[index].PossibleChoices {
-		if v.Name == u.NewChoice.Name {
+		if v == u.NewChoice {
 			// Update the possible choice
 			r.Selectors[index].PossibleChoices[i] = u.NewChoice
 			// Update the selected choice if it is also the one
-			if r.Selectors[index].SelectedChoice.Name == u.NewChoice.Name {
-				r.Selectors[index].SelectedChoice = u.NewChoice
+			if r.Selectors[index].Choice == u.NewChoice {
+				r.Selectors[index].Choice = u.NewChoice
 			}
 			break
 		}
 	}
+	return &proto.Empty{}, recipe.UpdateRecipe(r)
+}
+
+func (s *settingServiceServer) UpdateGraphSettings(ctx context.Context, u *proto.GraphUpdate) (*proto.Empty, error) {
+	r, err := getCurrentRecipe(u.IsStatic)
+	if err != nil {
+		log.Printf("Error while reading this recipe %s: %s ", r.Name, err.Error())
+		return &proto.Empty{}, err
+	}
+	index := r.GetIndexGraph(u.Name)
+	r.Graphs[index].Points = u.NewPoints
 	return &proto.Empty{}, recipe.UpdateRecipe(r)
 }
 
@@ -143,17 +161,18 @@ func (s *settingServiceServer) ReadRecipesUUID(ctx context.Context, e *proto.Emp
 }
 
 func (s *settingServiceServer) UpdateRecipe(ctx context.Context, u *proto.Recipe) (*proto.Empty, error) {
-	r, err := recipe.ReadRecipe(u.Uuid)
+	// It is only possible to modify the current recipe from the ui
+	r, err := getCurrentRecipe(false)
 	if err != nil {
 		log.Printf("Error while reading this recipe %s: %s ", r.Name, err.Error())
 		return &proto.Empty{}, err
 	}
-	// Update the recipe with the attributes of the new recipe
+	// Update the current recipe with the attributes of the new recipe
 	newR := recipe.ToRecipe(u)
 	r.Info = newR.Info
 	r.Name = newR.Name
 	r.Selectors = newR.Selectors
-	r.Sliders = newR.Sliders
+	r.Settings = newR.Settings
 	return &proto.Empty{}, recipe.UpdateRecipe(r)
 }
 
@@ -176,4 +195,23 @@ func (s *settingServiceServer) ReadSelectorList(ctx context.Context, e *proto.Em
 	}
 	p := recipe.ToProto(r)
 	return &proto.Selectors{Selectors: p.Selectors}, nil
+}
+
+func getCurrentRecipe(isStatic bool) (*recipe.Recipe, error) {
+	var r *recipe.Recipe
+	var err error
+	// Look if the setting is from the static recipe
+	if isStatic {
+		r, err = recipe.ReadRecipe(`static`)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		r, err = recipe.ReadCurrentRecipe()
+		if err != nil {
+			log.Printf("Error while reading this recipe %s: %s ", r.Name, err.Error())
+			return nil, err
+		}
+	}
+	return r, err
 }

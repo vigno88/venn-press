@@ -21,11 +21,8 @@ class _SelectorSettingsState extends State<SelectorSettings> {
 
   @override
   Widget build(BuildContext context) {
-    _selectedItem = context
-        .watch<SettingsProvider>()
-        .selectors[widget._index]
-        .selectedChoice
-        .name;
+    _selectedItem =
+        context.watch<SettingsProvider>().selectors[widget._index].name;
     _name = context.watch<SettingsProvider>().selectors[widget._index].name;
     _items =
         context.watch<SettingsProvider>().selectorChoicesName[widget._index];

@@ -304,7 +304,7 @@ class MetricUpdates extends $pb.GeneratedMessage {
 
 class Setting extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Setting', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'v1'), createEmptyInstance: create)
-    ..e<Setting_Destination>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'destination', $pb.PbFieldType.OE, defaultOrMaker: Setting_Destination.NONE, valueOf: Setting_Destination.valueOf, enumValues: Setting_Destination.values)
+    ..e<Destination>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'destination', $pb.PbFieldType.OE, defaultOrMaker: Destination.NONE, valueOf: Destination.valueOf, enumValues: Destination.values)
     ..a<$core.double>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'value', $pb.PbFieldType.OD)
     ..a<$core.double>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'max', $pb.PbFieldType.OD)
     ..a<$core.double>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'min', $pb.PbFieldType.OD)
@@ -312,12 +312,13 @@ class Setting extends $pb.GeneratedMessage {
     ..aOS(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'info')
     ..aOM<Target>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'target', subBuilder: Target.create)
     ..aOS(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'smallName', protoName: 'smallName')
+    ..aOB(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isStatic', protoName: 'isStatic')
     ..hasRequiredFields = false
   ;
 
   Setting._() : super();
   factory Setting({
-    Setting_Destination destination,
+    Destination destination,
     $core.double value,
     $core.double max,
     $core.double min,
@@ -325,6 +326,7 @@ class Setting extends $pb.GeneratedMessage {
     $core.String info,
     Target target,
     $core.String smallName,
+    $core.bool isStatic,
   }) {
     final _result = create();
     if (destination != null) {
@@ -351,6 +353,9 @@ class Setting extends $pb.GeneratedMessage {
     if (smallName != null) {
       _result.smallName = smallName;
     }
+    if (isStatic != null) {
+      _result.isStatic = isStatic;
+    }
     return _result;
   }
   factory Setting.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
@@ -375,9 +380,9 @@ class Setting extends $pb.GeneratedMessage {
   static Setting _defaultInstance;
 
   @$pb.TagNumber(1)
-  Setting_Destination get destination => $_getN(0);
+  Destination get destination => $_getN(0);
   @$pb.TagNumber(1)
-  set destination(Setting_Destination v) { setField(1, v); }
+  set destination(Destination v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasDestination() => $_has(0);
   @$pb.TagNumber(1)
@@ -447,6 +452,15 @@ class Setting extends $pb.GeneratedMessage {
   $core.bool hasSmallName() => $_has(7);
   @$pb.TagNumber(8)
   void clearSmallName() => clearField(8);
+
+  @$pb.TagNumber(9)
+  $core.bool get isStatic => $_getBF(8);
+  @$pb.TagNumber(9)
+  set isStatic($core.bool v) { $_setBool(8, v); }
+  @$pb.TagNumber(9)
+  $core.bool hasIsStatic() => $_has(8);
+  @$pb.TagNumber(9)
+  void clearIsStatic() => clearField(9);
 }
 
 class Target extends $pb.GeneratedMessage {
@@ -514,6 +528,7 @@ class SettingUpdate extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'SettingUpdate', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'name')
     ..a<$core.double>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'value', $pb.PbFieldType.OD)
+    ..aOB(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isStatic', protoName: 'isStatic')
     ..hasRequiredFields = false
   ;
 
@@ -521,6 +536,7 @@ class SettingUpdate extends $pb.GeneratedMessage {
   factory SettingUpdate({
     $core.String name,
     $core.double value,
+    $core.bool isStatic,
   }) {
     final _result = create();
     if (name != null) {
@@ -528,6 +544,9 @@ class SettingUpdate extends $pb.GeneratedMessage {
     }
     if (value != null) {
       _result.value = value;
+    }
+    if (isStatic != null) {
+      _result.isStatic = isStatic;
     }
     return _result;
   }
@@ -569,12 +588,22 @@ class SettingUpdate extends $pb.GeneratedMessage {
   $core.bool hasValue() => $_has(1);
   @$pb.TagNumber(2)
   void clearValue() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.bool get isStatic => $_getBF(2);
+  @$pb.TagNumber(3)
+  set isStatic($core.bool v) { $_setBool(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasIsStatic() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearIsStatic() => clearField(3);
 }
 
 class TargetUpdate extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'TargetUpdate', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'name')
     ..a<$core.double>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'value', $pb.PbFieldType.OD)
+    ..aOB(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isStatic', protoName: 'isStatic')
     ..hasRequiredFields = false
   ;
 
@@ -582,6 +611,7 @@ class TargetUpdate extends $pb.GeneratedMessage {
   factory TargetUpdate({
     $core.String name,
     $core.double value,
+    $core.bool isStatic,
   }) {
     final _result = create();
     if (name != null) {
@@ -589,6 +619,9 @@ class TargetUpdate extends $pb.GeneratedMessage {
     }
     if (value != null) {
       _result.value = value;
+    }
+    if (isStatic != null) {
+      _result.isStatic = isStatic;
     }
     return _result;
   }
@@ -630,86 +663,45 @@ class TargetUpdate extends $pb.GeneratedMessage {
   $core.bool hasValue() => $_has(1);
   @$pb.TagNumber(2)
   void clearValue() => clearField(2);
-}
 
-class Choice extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Choice', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'v1'), createEmptyInstance: create)
-    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'name')
-    ..pc<Setting>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'settings', $pb.PbFieldType.PM, subBuilder: Setting.create)
-    ..hasRequiredFields = false
-  ;
-
-  Choice._() : super();
-  factory Choice({
-    $core.String name,
-    $core.Iterable<Setting> settings,
-  }) {
-    final _result = create();
-    if (name != null) {
-      _result.name = name;
-    }
-    if (settings != null) {
-      _result.settings.addAll(settings);
-    }
-    return _result;
-  }
-  factory Choice.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory Choice.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
-  Choice clone() => Choice()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
-  Choice copyWith(void Function(Choice) updates) => super.copyWith((message) => updates(message as Choice)); // ignore: deprecated_member_use
-  $pb.BuilderInfo get info_ => _i;
-  @$core.pragma('dart2js:noInline')
-  static Choice create() => Choice._();
-  Choice createEmptyInstance() => create();
-  static $pb.PbList<Choice> createRepeated() => $pb.PbList<Choice>();
-  @$core.pragma('dart2js:noInline')
-  static Choice getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Choice>(create);
-  static Choice _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $core.String get name => $_getSZ(0);
-  @$pb.TagNumber(1)
-  set name($core.String v) { $_setString(0, v); }
-  @$pb.TagNumber(1)
-  $core.bool hasName() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearName() => clearField(1);
-
-  @$pb.TagNumber(2)
-  $core.List<Setting> get settings => $_getList(1);
+  @$pb.TagNumber(3)
+  $core.bool get isStatic => $_getBF(2);
+  @$pb.TagNumber(3)
+  set isStatic($core.bool v) { $_setBool(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasIsStatic() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearIsStatic() => clearField(3);
 }
 
 class Selector extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Selector', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'name')
-    ..aOM<Choice>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'selectedChoice', protoName: 'selectedChoice', subBuilder: Choice.create)
-    ..pc<Choice>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'possibleChoices', $pb.PbFieldType.PM, protoName: 'possibleChoices', subBuilder: Choice.create)
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'choice')
+    ..pPS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'possibleChoices', protoName: 'possibleChoices')
+    ..aOB(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isStatic', protoName: 'isStatic')
     ..hasRequiredFields = false
   ;
 
   Selector._() : super();
   factory Selector({
     $core.String name,
-    Choice selectedChoice,
-    $core.Iterable<Choice> possibleChoices,
+    $core.String choice,
+    $core.Iterable<$core.String> possibleChoices,
+    $core.bool isStatic,
   }) {
     final _result = create();
     if (name != null) {
       _result.name = name;
     }
-    if (selectedChoice != null) {
-      _result.selectedChoice = selectedChoice;
+    if (choice != null) {
+      _result.choice = choice;
     }
     if (possibleChoices != null) {
       _result.possibleChoices.addAll(possibleChoices);
+    }
+    if (isStatic != null) {
+      _result.isStatic = isStatic;
     }
     return _result;
   }
@@ -744,18 +736,25 @@ class Selector extends $pb.GeneratedMessage {
   void clearName() => clearField(1);
 
   @$pb.TagNumber(2)
-  Choice get selectedChoice => $_getN(1);
+  $core.String get choice => $_getSZ(1);
   @$pb.TagNumber(2)
-  set selectedChoice(Choice v) { setField(2, v); }
+  set choice($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasSelectedChoice() => $_has(1);
+  $core.bool hasChoice() => $_has(1);
   @$pb.TagNumber(2)
-  void clearSelectedChoice() => clearField(2);
-  @$pb.TagNumber(2)
-  Choice ensureSelectedChoice() => $_ensure(1);
+  void clearChoice() => clearField(2);
 
   @$pb.TagNumber(3)
-  $core.List<Choice> get possibleChoices => $_getList(2);
+  $core.List<$core.String> get possibleChoices => $_getList(2);
+
+  @$pb.TagNumber(9)
+  $core.bool get isStatic => $_getBF(3);
+  @$pb.TagNumber(9)
+  set isStatic($core.bool v) { $_setBool(3, v); }
+  @$pb.TagNumber(9)
+  $core.bool hasIsStatic() => $_has(3);
+  @$pb.TagNumber(9)
+  void clearIsStatic() => clearField(9);
 }
 
 class Selectors extends $pb.GeneratedMessage {
@@ -803,6 +802,7 @@ class SelectorUpdate extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'SelectorUpdate', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'name')
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'choiceName', protoName: 'choiceName')
+    ..aOB(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isStatic', protoName: 'isStatic')
     ..hasRequiredFields = false
   ;
 
@@ -810,6 +810,7 @@ class SelectorUpdate extends $pb.GeneratedMessage {
   factory SelectorUpdate({
     $core.String name,
     $core.String choiceName,
+    $core.bool isStatic,
   }) {
     final _result = create();
     if (name != null) {
@@ -817,6 +818,9 @@ class SelectorUpdate extends $pb.GeneratedMessage {
     }
     if (choiceName != null) {
       _result.choiceName = choiceName;
+    }
+    if (isStatic != null) {
+      _result.isStatic = isStatic;
     }
     return _result;
   }
@@ -858,19 +862,30 @@ class SelectorUpdate extends $pb.GeneratedMessage {
   $core.bool hasChoiceName() => $_has(1);
   @$pb.TagNumber(2)
   void clearChoiceName() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.bool get isStatic => $_getBF(2);
+  @$pb.TagNumber(3)
+  set isStatic($core.bool v) { $_setBool(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasIsStatic() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearIsStatic() => clearField(3);
 }
 
 class ChoiceUpdate extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'ChoiceUpdate', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'v1'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'nameSelector', protoName: 'nameSelector')
-    ..aOM<Choice>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'newChoice', protoName: 'newChoice', subBuilder: Choice.create)
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'newChoice', protoName: 'newChoice')
+    ..aOB(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isStatic', protoName: 'isStatic')
     ..hasRequiredFields = false
   ;
 
   ChoiceUpdate._() : super();
   factory ChoiceUpdate({
     $core.String nameSelector,
-    Choice newChoice,
+    $core.String newChoice,
+    $core.bool isStatic,
   }) {
     final _result = create();
     if (nameSelector != null) {
@@ -878,6 +893,9 @@ class ChoiceUpdate extends $pb.GeneratedMessage {
     }
     if (newChoice != null) {
       _result.newChoice = newChoice;
+    }
+    if (isStatic != null) {
+      _result.isStatic = isStatic;
     }
     return _result;
   }
@@ -912,15 +930,249 @@ class ChoiceUpdate extends $pb.GeneratedMessage {
   void clearNameSelector() => clearField(1);
 
   @$pb.TagNumber(2)
-  Choice get newChoice => $_getN(1);
+  $core.String get newChoice => $_getSZ(1);
   @$pb.TagNumber(2)
-  set newChoice(Choice v) { setField(2, v); }
+  set newChoice($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
   $core.bool hasNewChoice() => $_has(1);
   @$pb.TagNumber(2)
   void clearNewChoice() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.bool get isStatic => $_getBF(2);
+  @$pb.TagNumber(3)
+  set isStatic($core.bool v) { $_setBool(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasIsStatic() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearIsStatic() => clearField(3);
+}
+
+class Point extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Point', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'v1'), createEmptyInstance: create)
+    ..a<$core.double>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'x', $pb.PbFieldType.OD)
+    ..a<$core.double>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'y', $pb.PbFieldType.OD)
+    ..hasRequiredFields = false
+  ;
+
+  Point._() : super();
+  factory Point({
+    $core.double x,
+    $core.double y,
+  }) {
+    final _result = create();
+    if (x != null) {
+      _result.x = x;
+    }
+    if (y != null) {
+      _result.y = y;
+    }
+    return _result;
+  }
+  factory Point.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory Point.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  Point clone() => Point()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  Point copyWith(void Function(Point) updates) => super.copyWith((message) => updates(message as Point)); // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static Point create() => Point._();
+  Point createEmptyInstance() => create();
+  static $pb.PbList<Point> createRepeated() => $pb.PbList<Point>();
+  @$core.pragma('dart2js:noInline')
+  static Point getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Point>(create);
+  static Point _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.double get x => $_getN(0);
+  @$pb.TagNumber(1)
+  set x($core.double v) { $_setDouble(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasX() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearX() => clearField(1);
+
   @$pb.TagNumber(2)
-  Choice ensureNewChoice() => $_ensure(1);
+  $core.double get y => $_getN(1);
+  @$pb.TagNumber(2)
+  set y($core.double v) { $_setDouble(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasY() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearY() => clearField(2);
+}
+
+class GraphSettings extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GraphSettings', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'name')
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'unitVerticalAxis', protoName: 'unitVerticalAxis')
+    ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'unitHorizontalAxis', protoName: 'unitHorizontalAxis')
+    ..pc<Point>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'points', $pb.PbFieldType.PM, subBuilder: Point.create)
+    ..aOB(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isStatic', protoName: 'isStatic')
+    ..hasRequiredFields = false
+  ;
+
+  GraphSettings._() : super();
+  factory GraphSettings({
+    $core.String name,
+    $core.String unitVerticalAxis,
+    $core.String unitHorizontalAxis,
+    $core.Iterable<Point> points,
+    $core.bool isStatic,
+  }) {
+    final _result = create();
+    if (name != null) {
+      _result.name = name;
+    }
+    if (unitVerticalAxis != null) {
+      _result.unitVerticalAxis = unitVerticalAxis;
+    }
+    if (unitHorizontalAxis != null) {
+      _result.unitHorizontalAxis = unitHorizontalAxis;
+    }
+    if (points != null) {
+      _result.points.addAll(points);
+    }
+    if (isStatic != null) {
+      _result.isStatic = isStatic;
+    }
+    return _result;
+  }
+  factory GraphSettings.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GraphSettings.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  GraphSettings clone() => GraphSettings()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  GraphSettings copyWith(void Function(GraphSettings) updates) => super.copyWith((message) => updates(message as GraphSettings)); // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static GraphSettings create() => GraphSettings._();
+  GraphSettings createEmptyInstance() => create();
+  static $pb.PbList<GraphSettings> createRepeated() => $pb.PbList<GraphSettings>();
+  @$core.pragma('dart2js:noInline')
+  static GraphSettings getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GraphSettings>(create);
+  static GraphSettings _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get name => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set name($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasName() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearName() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get unitVerticalAxis => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set unitVerticalAxis($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasUnitVerticalAxis() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearUnitVerticalAxis() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get unitHorizontalAxis => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set unitHorizontalAxis($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasUnitHorizontalAxis() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearUnitHorizontalAxis() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.List<Point> get points => $_getList(3);
+
+  @$pb.TagNumber(9)
+  $core.bool get isStatic => $_getBF(4);
+  @$pb.TagNumber(9)
+  set isStatic($core.bool v) { $_setBool(4, v); }
+  @$pb.TagNumber(9)
+  $core.bool hasIsStatic() => $_has(4);
+  @$pb.TagNumber(9)
+  void clearIsStatic() => clearField(9);
+}
+
+class GraphUpdate extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'GraphUpdate', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'v1'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'name')
+    ..pc<Point>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'newPoints', $pb.PbFieldType.PM, protoName: 'newPoints', subBuilder: Point.create)
+    ..aOB(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isStatic', protoName: 'isStatic')
+    ..hasRequiredFields = false
+  ;
+
+  GraphUpdate._() : super();
+  factory GraphUpdate({
+    $core.String name,
+    $core.Iterable<Point> newPoints,
+    $core.bool isStatic,
+  }) {
+    final _result = create();
+    if (name != null) {
+      _result.name = name;
+    }
+    if (newPoints != null) {
+      _result.newPoints.addAll(newPoints);
+    }
+    if (isStatic != null) {
+      _result.isStatic = isStatic;
+    }
+    return _result;
+  }
+  factory GraphUpdate.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GraphUpdate.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  GraphUpdate clone() => GraphUpdate()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  GraphUpdate copyWith(void Function(GraphUpdate) updates) => super.copyWith((message) => updates(message as GraphUpdate)); // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static GraphUpdate create() => GraphUpdate._();
+  GraphUpdate createEmptyInstance() => create();
+  static $pb.PbList<GraphUpdate> createRepeated() => $pb.PbList<GraphUpdate>();
+  @$core.pragma('dart2js:noInline')
+  static GraphUpdate getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GraphUpdate>(create);
+  static GraphUpdate _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get name => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set name($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasName() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearName() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.List<Point> get newPoints => $_getList(1);
+
+  @$pb.TagNumber(3)
+  $core.bool get isStatic => $_getBF(2);
+  @$pb.TagNumber(3)
+  set isStatic($core.bool v) { $_setBool(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasIsStatic() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearIsStatic() => clearField(3);
 }
 
 class Recipe extends $pb.GeneratedMessage {
@@ -930,6 +1182,7 @@ class Recipe extends $pb.GeneratedMessage {
     ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'info')
     ..pc<Setting>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'settings', $pb.PbFieldType.PM, subBuilder: Setting.create)
     ..pc<Selector>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'selectors', $pb.PbFieldType.PM, subBuilder: Selector.create)
+    ..pc<GraphSettings>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'graphs', $pb.PbFieldType.PM, subBuilder: GraphSettings.create)
     ..hasRequiredFields = false
   ;
 
@@ -940,6 +1193,7 @@ class Recipe extends $pb.GeneratedMessage {
     $core.String info,
     $core.Iterable<Setting> settings,
     $core.Iterable<Selector> selectors,
+    $core.Iterable<GraphSettings> graphs,
   }) {
     final _result = create();
     if (uuid != null) {
@@ -956,6 +1210,9 @@ class Recipe extends $pb.GeneratedMessage {
     }
     if (selectors != null) {
       _result.selectors.addAll(selectors);
+    }
+    if (graphs != null) {
+      _result.graphs.addAll(graphs);
     }
     return _result;
   }
@@ -1012,6 +1269,9 @@ class Recipe extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(5)
   $core.List<Selector> get selectors => $_getList(4);
+
+  @$pb.TagNumber(6)
+  $core.List<GraphSettings> get graphs => $_getList(5);
 }
 
 class UUIDS extends $pb.GeneratedMessage {

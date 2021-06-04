@@ -1,9 +1,9 @@
 import 'package:VennUI/components/SelectorSettings.dart';
 import 'package:VennUI/components/StatusBar.dart';
 import 'package:VennUI/components/TopBarIcon.dart';
-import 'package:VennUI/dialogs/edit_recipe_dialog.dart';
-import 'package:VennUI/dialogs/user_dialog.dart';
-import 'package:VennUI/dialogs/wifi_dialog.dart';
+import 'package:VennUI/dialogs/EditRecipeDialog.dart';
+import 'package:VennUI/dialogs/UserDialog.dart';
+import 'package:VennUI/dialogs/WifiDialog.dart';
 import 'package:VennUI/providers/NetworkProvider.dart';
 import 'package:VennUI/providers/NotificationProvider.dart';
 import 'package:VennUI/providers/SettingsProvider.dart';
@@ -49,15 +49,16 @@ class SettingsPage extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Column(
-                                  children: [
-                                    SettingsPanel(),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    SelectorPanel(),
-                                  ],
-                                ),
+                                SettingsPanel(),
+                                // Column(
+                                //   children: [
+                                //     SettingsPanelOld(),
+                                //     SizedBox(
+                                //       height: 10,
+                                //     ),
+                                //     SelectorPanel(),
+                                //   ],
+                                // ),
                                 RecipePanel(),
                               ]),
                         ],
@@ -95,12 +96,19 @@ class RecipePanel extends StatelessWidget {
                   separatorBuilder: (BuildContext context, int index) =>
                       const Divider(),
                   padding: const EdgeInsets.all(8),
-                  itemCount: context.watch<SettingsProvider>().recipes.length,
+                  itemCount:
+                      context.watch<SettingsProvider>().recipesInfo.length,
                   itemBuilder: (BuildContext context, int index) {
                     return RecipeItem(
                         index,
-                        context.watch<SettingsProvider>().recipes[index].title,
-                        context.watch<SettingsProvider>().recipes[index].info,
+                        context
+                            .watch<SettingsProvider>()
+                            .recipesInfo[index]
+                            .title,
+                        context
+                            .watch<SettingsProvider>()
+                            .recipesInfo[index]
+                            .info,
                         index == hoverRecipe);
                   }),
             ),
@@ -133,7 +141,7 @@ class RecipeItem extends StatelessWidget {
             padding: EdgeInsets.fromLTRB(10, 5, 10, 0),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(20)),
-              color: _isSelected ? paleBlue.withOpacity(0.2) : Colors.white,
+              color: _isSelected ? paleBlueNew : Colors.white,
               border: _isSelected
                   ? blueBorderDecoration
                   : transparentBorderDecoration,
@@ -145,8 +153,9 @@ class RecipeItem extends StatelessWidget {
                 Text(
                   (_index + 1).toString(),
                   style: TextStyle(
-                      color:
-                          _isSelected ? darkBlue : paleColor.withOpacity(0.6),
+                      color: _isSelected
+                          ? darkBlueNew
+                          : paleColor.withOpacity(0.6),
                       fontWeight: FontWeight.bold,
                       fontSize: 80),
                 ),
@@ -405,6 +414,52 @@ class SettingsPanel extends StatelessWidget {
                     borderRadius: BorderRadius.all(Radius.circular(20)),
                     boxShadow: tileShadows(3, 1, 3, paleColor),
                   ),
+                  height: 910,
+                  width: 1000,
+                  child: Selector<SettingsProvider, bool>(
+                    selector:
+                        (BuildContext context, SettingsProvider provider) =>
+                            provider.isLoading,
+                    builder: (context, bool isLoading, _) {
+                      if (isLoading) {
+                        return Container();
+                      } else {
+                        return Selector<SettingsProvider, String>(
+                            selector: (BuildContext context,
+                                    SettingsProvider provider) =>
+                                provider.currentPage,
+                            builder: (context, String currentPage, _) {
+                              return context
+                                  .watch<SettingsProvider>()
+                                  .getSettingsPage(currentPage);
+                            });
+                      }
+                    },
+                  ),
+                ),
+              ]),
+          SettingsButtons(),
+        ]);
+  }
+}
+
+class SettingsPanelOld extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                    boxShadow: tileShadows(3, 1, 3, paleColor),
+                  ),
                   height: 460,
                   width: 1000,
                   child: Selector<SettingsProvider, bool>(
@@ -500,8 +555,9 @@ class RecipeButtons extends StatelessWidget {
               height: 15,
             ),
             SettingButton('Edit', (arg) {
-              // context.read<SettingsProvider>().editRecipe();
-              //  onPressed: () {
+              if (context.read<SettingsProvider>().hoverRecipe < 0) {
+                return;
+              }
               final provider =
                   Provider.of<SettingsProvider>(context, listen: false);
               showDialog(

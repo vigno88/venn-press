@@ -26,15 +26,16 @@ func GetTarget(name string) float32 {
 }
 
 type ReadableConfig struct {
-	Recipe   recipe.Recipe
-	Metrics  []metrics.Metric
-	Controls []control.Config
+	DefaultRecipe recipe.Recipe
+	StaticRecipe  recipe.Recipe
+	Metrics       []metrics.Metric
+	Controls      []control.Config
 }
 
 // This function is to be a human readable config
 func GetDefaultConfig() *ReadableConfig {
 	temp := &proto.Setting{
-		Destination: proto.Setting_MICROCONTROLLER,
+		Destination: proto.Destination_MICROCONTROLLER,
 		Value:       20,
 		Max:         95,
 		Min:         20,
@@ -45,7 +46,7 @@ func GetDefaultConfig() *ReadableConfig {
 	}
 
 	tm1 := &proto.Setting{
-		Destination: proto.Setting_MOTOR,
+		Destination: proto.Destination_MOTOR,
 		Value:       2000,
 		Max:         5000,
 		Min:         100,
@@ -54,7 +55,7 @@ func GetDefaultConfig() *ReadableConfig {
 		Info:        "This slider controls the travel distance of first module's masseur.",
 	}
 	tm2 := &proto.Setting{
-		Destination: proto.Setting_MOTOR,
+		Destination: proto.Destination_MOTOR,
 		Value:       2000,
 		Max:         5000,
 		Min:         100,
@@ -63,7 +64,7 @@ func GetDefaultConfig() *ReadableConfig {
 		Info:        "This slider controls the travel distance of second module's masseur.",
 	}
 	tm3 := &proto.Setting{
-		Destination: proto.Setting_MOTOR,
+		Destination: proto.Destination_MOTOR,
 		Value:       2000,
 		Max:         5000,
 		Min:         100,
@@ -72,7 +73,7 @@ func GetDefaultConfig() *ReadableConfig {
 		Info:        "This slider controls the travel distance of third module's masseur.",
 	}
 	dt1 := &proto.Setting{
-		Destination: proto.Setting_MOTOR,
+		Destination: proto.Destination_MOTOR,
 		Value:       10,
 		Max:         200,
 		Min:         5,
@@ -81,7 +82,7 @@ func GetDefaultConfig() *ReadableConfig {
 		Info:        "The speed of Traction 1 is the one of Masseur 1 divided by Divisor Traction 1",
 	}
 	dt2 := &proto.Setting{
-		Destination: proto.Setting_MOTOR,
+		Destination: proto.Destination_MOTOR,
 		Value:       10,
 		Max:         200,
 		Min:         5,
@@ -90,7 +91,7 @@ func GetDefaultConfig() *ReadableConfig {
 		Info:        "The speed of Traction 2 is the one of Masseur 2 divided by Divisor Traction 2",
 	}
 	dt3 := &proto.Setting{
-		Destination: proto.Setting_MOTOR,
+		Destination: proto.Destination_MOTOR,
 		Value:       10,
 		Max:         200,
 		Min:         5,
@@ -99,7 +100,7 @@ func GetDefaultConfig() *ReadableConfig {
 		Info:        "The speed of Traction 3 is the one of Masseur 3 divided by Divisor Traction 3",
 	}
 	pm1 := &proto.Setting{
-		Destination: proto.Setting_NONE,
+		Destination: proto.Destination_NONE,
 		Value:       0,
 		Max:         100,
 		Min:         0,
@@ -109,7 +110,7 @@ func GetDefaultConfig() *ReadableConfig {
 	}
 
 	pm2 := &proto.Setting{
-		Destination: proto.Setting_NONE,
+		Destination: proto.Destination_NONE,
 		Value:       0,
 		Max:         100,
 		Min:         0,
@@ -118,7 +119,7 @@ func GetDefaultConfig() *ReadableConfig {
 		Info:        "This slider records the pression of second module's masseur.",
 	}
 	pm3 := &proto.Setting{
-		Destination: proto.Setting_NONE,
+		Destination: proto.Destination_NONE,
 		Value:       0,
 		Max:         100,
 		Min:         0,
@@ -127,7 +128,7 @@ func GetDefaultConfig() *ReadableConfig {
 		Info:        "This slider records the pression of third module's masseur.",
 	}
 	pt1 := &proto.Setting{
-		Destination: proto.Setting_NONE,
+		Destination: proto.Destination_NONE,
 		Value:       0,
 		Max:         100,
 		Min:         0,
@@ -137,7 +138,7 @@ func GetDefaultConfig() *ReadableConfig {
 	}
 
 	pt2 := &proto.Setting{
-		Destination: proto.Setting_NONE,
+		Destination: proto.Destination_NONE,
 		Value:       0,
 		Max:         100,
 		Min:         0,
@@ -146,7 +147,7 @@ func GetDefaultConfig() *ReadableConfig {
 		Info:        "This slider records the pression of second module's traction.",
 	}
 	pt3 := &proto.Setting{
-		Destination: proto.Setting_NONE,
+		Destination: proto.Destination_NONE,
 		Value:       0,
 		Max:         100,
 		Min:         0,
@@ -155,31 +156,50 @@ func GetDefaultConfig() *ReadableConfig {
 		Info:        "This slider records the pression of third module's traction.",
 	}
 
-	c1 := &proto.Choice{
-		Name: "One",
+	// Static settings
+	pTopPlate := &proto.Setting{
+		Destination: proto.Destination_MICROCONTROLLER,
+		Value:       0,
+		Max:         1000,
+		Min:         -1000,
+		Name:        "PID - P - Top plate",
+		SmallName:   "pTop",
+		Info:        "Proportional constant of the PID of the top hot plate",
 	}
-	c2 := &proto.Choice{
-		Name: "Two",
+	iTopPlate := &proto.Setting{
+		Destination: proto.Destination_MICROCONTROLLER,
+		Value:       0,
+		Max:         1000,
+		Min:         -1000,
+		Name:        "PID - I - Top plate",
+		SmallName:   "iTop",
+		Info:        "Integral constant of the PID of the top hot plate",
 	}
-	c3 := &proto.Choice{
-		Name: "Three",
+	dTopPlate := &proto.Setting{
+		Destination: proto.Destination_MICROCONTROLLER,
+		Value:       0,
+		Max:         1000,
+		Min:         -1000,
+		Name:        "PID - D - Top plate",
+		SmallName:   "dTop",
+		Info:        "Derivative constant of the PID of the top hot plate",
 	}
 
 	return &ReadableConfig{
-		Recipe: recipe.Recipe{
+		DefaultRecipe: recipe.Recipe{
 			UUID: "",
 			Name: "Default",
 			Info: "This is the default recipe from config.",
 			Selectors: []*proto.Selector{
 				{
-					Name:           "Active Module Count",
-					SelectedChoice: c3,
-					PossibleChoices: []*proto.Choice{
-						c1, c2, c3,
+					Name:   "Active Module Count",
+					Choice: "three",
+					PossibleChoices: []string{
+						"one", "two", "three",
 					},
 				},
 			},
-			Sliders: []*proto.Setting{
+			Settings: []*proto.Setting{
 				temp,
 				tm1,
 				tm2,
@@ -193,6 +213,14 @@ func GetDefaultConfig() *ReadableConfig {
 				pt1,
 				pt2,
 				pt3,
+			},
+		},
+		StaticRecipe: recipe.Recipe{
+			UUID: "static",
+			Name: "static",
+			Info: "",
+			Settings: []*proto.Setting{
+				pTopPlate, iTopPlate, dTopPlate,
 			},
 		},
 		Metrics: []metrics.Metric{
