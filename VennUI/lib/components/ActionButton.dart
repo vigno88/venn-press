@@ -21,18 +21,17 @@ class ActionButton extends StatefulWidget {
 
   ActionButton.text(
       this.title, this.text, this.type, this.buttonIndex, this.tileIndex)
-      : iconType = null;
+      : iconType = "";
   ActionButton.icon(
       this.title, this.iconType, this.type, this.buttonIndex, this.tileIndex)
-      : text = null;
+      : text = "";
 
   @override
   _ActionButtonState createState() => _ActionButtonState();
 }
 
 class _ActionButtonState extends State<ActionButton> {
-  // Color colorButton = paleBlue.withOpacity(0.2);
-  Color colorButton = paleBlueNew;
+  Color colorButton = paleBlue;
   @override
   void initState() {
     super.initState();
@@ -86,8 +85,7 @@ class _ActionButtonState extends State<ActionButton> {
 
   void _tapUp(BuildContext context) {
     setState(() {
-      colorButton = paleBlueNew;
-      // colorButton = paleBlue.withOpacity(0.2);
+      colorButton = paleBlue;
     });
     if (widget.type == buttonType.ICON_BUTTON) {
       context
@@ -98,8 +96,7 @@ class _ActionButtonState extends State<ActionButton> {
 
   void _tapDown(BuildContext context) {
     setState(() {
-      colorButton = paleBlueDarkerNew;
-      // colorButton = paleBlue.withOpacity(0.25);
+      colorButton = paleBlueDarker;
     });
     if (widget.type == buttonType.ICON_BUTTON) {
       context
@@ -117,12 +114,12 @@ class _ActionButtonState extends State<ActionButton> {
     }
   }
 
-  Widget getContent() {
-    if (widget.text != null) {
+  Widget? getContent() {
+    if (widget.text != "") {
       return AutoSizeText(
         widget.text,
         style: TextStyle(
-            color: darkBlueNew, fontSize: 30, fontWeight: FontWeight.bold),
+            color: darkBlue, fontSize: 30, fontWeight: FontWeight.bold),
         minFontSize: 5,
         maxLines: 1,
       );
@@ -131,12 +128,13 @@ class _ActionButtonState extends State<ActionButton> {
         case "up_arrow":
           return Icon(
             Ionicons.md_arrow_up,
-            color: darkBlueNew,
+            color: darkBlue,
             size: 50,
           );
         case "down_arrow":
           return Icon(Ionicons.md_arrow_down, color: darkBlue, size: 50);
       }
     }
+    return null;
   }
 }

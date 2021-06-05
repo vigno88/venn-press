@@ -12,11 +12,11 @@ import 'package:tuple/tuple.dart';
 class DashboardProvider with ChangeNotifier {
   // grid contains information about our current grid setup
   final grid = Grid();
-  MetricService metricService;
-  ControlService controlService;
+  MetricService? metricService;
+  ControlService? controlService;
 
   // modifiedTileIndex tells to the Selector (of this provider) which tiles needs to be updated
-  int modifiedTileIndex;
+  int modifiedTileIndex = 0;
   // numPages tells the number of pages there is in the dashboard
   int numPages = 1;
   // activeIndex tells the current active page
@@ -48,10 +48,10 @@ class DashboardProvider with ChangeNotifier {
     initiate();
   }
 
-  void initiate() async {
+  Future<void> initiate() async {
     // Wait until both service initiate
-    await metricService.initiate();
-    await controlService.initiate();
+    await metricService!.initiate();
+    await controlService!.initiate();
     _dragTargets = getDragTargets();
     isLoading = false;
     // Get the list of widgets to display on dashboard
@@ -59,7 +59,7 @@ class DashboardProvider with ChangeNotifier {
     notifyListeners();
 
     // Listen to the update stream of the metric service
-    metricService.updateStream.listen((update) {
+    metricService!.updateStream.listen((update) {
       modifiedTileIndex = _dragTargets.length + update;
       // Get the updated list of widgets
       widgets[modifiedTileIndex] = getWidgets()[modifiedTileIndex];
@@ -67,9 +67,9 @@ class DashboardProvider with ChangeNotifier {
     });
 
     // Listen to the update stream of the control service
-    controlService.updateStream.listen((update) {
+    controlService!.updateStream.listen((update) {
       modifiedTileIndex =
-          _dragTargets.length + metricService.numberOfTiles + update;
+          _dragTargets.length + metricService!.numberOfTiles + update;
       // Get the updated list of widgets
       widgets[modifiedTileIndex] = getWidgets()[modifiedTileIndex];
       notifyListeners();
@@ -77,8 +77,8 @@ class DashboardProvider with ChangeNotifier {
   }
 
   List<Tile> getTiles() {
-    List<Tile> tiles = new List<Tile>.from(metricService.getTiles());
-    tiles.addAll(controlService.getTiles());
+    List<Tile> tiles = new List<Tile>.from(metricService!.getTiles());
+    tiles.addAll(controlService!.getTiles());
     // tiles.add(Tile(PressionChip(), false, 2, 1));
     return tiles;
   }
@@ -117,6 +117,6 @@ class DashboardProvider with ChangeNotifier {
   }
 
   void pressButton(BuildContext context, int buttonIndex, int tileIndex) {
-    controlService.pressButton(context, buttonIndex, tileIndex);
+    controlService!.pressButton(context, buttonIndex, tileIndex);
   }
 }

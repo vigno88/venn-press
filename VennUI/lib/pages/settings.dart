@@ -141,7 +141,7 @@ class RecipeItem extends StatelessWidget {
             padding: EdgeInsets.fromLTRB(10, 5, 10, 0),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(20)),
-              color: _isSelected ? paleBlueNew : Colors.white,
+              color: _isSelected ? paleBlue : Colors.white,
               border: _isSelected
                   ? blueBorderDecoration
                   : transparentBorderDecoration,
@@ -153,9 +153,8 @@ class RecipeItem extends StatelessWidget {
                 Text(
                   (_index + 1).toString(),
                   style: TextStyle(
-                      color: _isSelected
-                          ? darkBlueNew
-                          : paleColor.withOpacity(0.6),
+                      color:
+                          _isSelected ? darkBlue : paleColor.withOpacity(0.6),
                       fontWeight: FontWeight.bold,
                       fontSize: 80),
                 ),
@@ -271,7 +270,7 @@ class SelectorPanel extends StatelessWidget {
     return pagesContainer;
   }
 
-  Widget getSelectorPage(Widget w1, Widget w2, Widget w3, w4) {
+  Container getSelectorPage(Widget w1, Widget w2, Widget w3, w4) {
     return Container(
       child: Row(
         children: [
@@ -643,8 +642,8 @@ class SettingButton extends StatefulWidget {
 
 class _SettingButtonState extends State<SettingButton>
     with SingleTickerProviderStateMixin {
-  double _scale;
-  AnimationController _controller;
+  double _scale = 0;
+  AnimationController? _controller;
   @override
   void initState() {
     _controller = AnimationController(
@@ -663,12 +662,12 @@ class _SettingButtonState extends State<SettingButton>
   @override
   void dispose() {
     super.dispose();
-    _controller.dispose();
+    _controller!.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    _scale = 1 - _controller.value;
+    _scale = 1 - _controller!.value;
     return GestureDetector(
       onTapDown: _tapDown,
       onTapUp: _tapUp,
@@ -704,11 +703,11 @@ class _SettingButtonState extends State<SettingButton>
   }
 
   void _tapUp(TapUpDetails details) {
-    _controller.reverse();
+    _controller!.reverse();
   }
 
   void _tapDown(TapDownDetails details) {
-    _controller.forward();
+    _controller!.forward();
   }
 }
 
@@ -717,9 +716,9 @@ class SliderContainer extends StatelessWidget {
   final int index;
 
   SliderContainer({
-    Key key,
-    this.setting,
-    this.index,
+    Key? key,
+    required this.setting,
+    required this.index,
   }) : super(key: key);
 
   @override

@@ -10,10 +10,10 @@ class NetworkGrpcAPI {
   bool _isShutdown = false;
 
   // gRPC client channel to send messages to the server
-  ClientChannel _clientSend;
+  ClientChannel? _clientSend;
 
   // gRPC client channel to receive messages from the server
-  ClientChannel _clientReceive;
+  ClientChannel? _clientReceive;
 
   NetworkGrpcAPI() {
     _clientSend = newClient(serverIP, serverPort);
@@ -29,7 +29,7 @@ class NetworkGrpcAPI {
   // Shutdown client (send channel)
   void _shutdownSend() {
     if (_clientSend != null) {
-      _clientSend.shutdown();
+      _clientSend!.shutdown();
       _clientSend = null;
     }
   }
@@ -37,7 +37,7 @@ class NetworkGrpcAPI {
   // Shutdown client (receive channel)
   void _shutdownReceive() {
     if (_clientReceive != null) {
-      _clientReceive.shutdown();
+      _clientReceive!.shutdown();
       _clientReceive = null;
     }
   }
@@ -63,10 +63,11 @@ class NetworkGrpcAPI {
         });
       }
     }
+    return proto.WifiNames();
   }
 
   // Asynchronous function to connect to the wifi
-  void connectWifi(proto.WifiCredentials c) async {
+  Future<void> connectWifi(proto.WifiCredentials c) async {
     if (_clientSend == null) {
       _clientSend = newClient(serverIP, serverPort);
     }
@@ -105,5 +106,6 @@ class NetworkGrpcAPI {
         });
       }
     }
+    return proto.WifiStatus();
   }
 }

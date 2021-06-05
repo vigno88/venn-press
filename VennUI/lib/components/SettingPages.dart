@@ -14,9 +14,9 @@ class ListSettings extends StatelessWidget {
         child: ListView(
           padding: const EdgeInsets.all(8),
           children: <Widget>[
-            SettingsListElement("General", "general", "cog"),
-            SettingsListElement("Heating Profile", "heating", "graph"),
-            SettingsListElement("Pressure Profile", "pressure", "graph"),
+            SettingsListElement("General", "general", IconType.Cog),
+            SettingsListElement("Heating Profile", "heating", IconType.Graph),
+            SettingsListElement("Pressure Profile", "pressure", IconType.Graph),
           ],
         ));
   }
@@ -145,12 +145,17 @@ class HeatingSettings extends StatelessWidget {
   }
 }
 
+enum IconType {
+  Cog,
+  Graph,
+}
+
 class SettingsListElement extends StatelessWidget {
   final String title;
   final String pageName;
-  final String iconType;
+  final IconType icon;
 
-  SettingsListElement(this.title, this.pageName, this.iconType);
+  SettingsListElement(this.title, this.pageName, this.icon);
 
   @override
   Widget build(BuildContext context) {
@@ -164,7 +169,11 @@ class SettingsListElement extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
-                child: getIcon(),
+                child: Icon(
+                  getIconData(),
+                  color: baseColor,
+                  size: 50,
+                ),
               ),
               Expanded(
                 flex: 6,
@@ -195,23 +204,12 @@ class SettingsListElement extends StatelessWidget {
     );
   }
 
-  Icon getIcon() {
-    switch (this.iconType) {
-      case "cog":
-        return Icon(
-          SimpleLineIcons.settings,
-          color: baseColor,
-          size: 50,
-        );
-        break;
-      case "graph":
-        return Icon(
-          SimpleLineIcons.graph,
-          size: 50,
-          color: baseColor,
-        );
-        break;
-      default:
+  IconData? getIconData() {
+    switch (this.icon) {
+      case IconType.Cog:
+        return SimpleLineIcons.settings;
+      case IconType.Graph:
+        return SimpleLineIcons.graph;
     }
     return null;
   }

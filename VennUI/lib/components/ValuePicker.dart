@@ -24,7 +24,7 @@ class _ValuePickerState extends State<ValuePicker> {
         height: 90,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(40)),
-          border: Border.all(color: Color(0xffc5c6c7), width: 2.0),
+          border: Border.all(color: greyBorder, width: 2.0),
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -96,13 +96,13 @@ class _ValuePickerButtonState extends State<ValuePickerButton> {
           height: 80,
           margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
           decoration: BoxDecoration(
-            // color: Color(0xfff6f8f9),
-            color: paleBlueNew,
+            // color: greyBackground,
+            color: paleBlue,
             borderRadius: BorderRadius.all(Radius.circular(40)),
           ),
           child: Icon(this.widget.data,
-              // color: Color(0xff767c7d),
-              color: darkBlueNew,
+              // color: greyIcon,
+              color: darkBlue,
               size: 50),
         ));
   }

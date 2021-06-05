@@ -117,7 +117,7 @@ class VennNotification extends StatelessWidget {
     }
   }
 
-  Widget getIcon() {
+  Widget? getIcon() {
     switch (notif.type) {
       case NotificationType.Success:
         return Icon(

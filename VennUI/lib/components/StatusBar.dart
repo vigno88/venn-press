@@ -11,7 +11,8 @@ class StatusBar extends StatefulWidget {
 }
 
 class _StatusBarState extends State<StatusBar> {
-  String _timeString;
+  String _timeString = "";
+
   @override
   void initState() {
     _timeString = _formatDateTime(DateTime.now());

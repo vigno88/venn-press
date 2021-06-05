@@ -11,7 +11,7 @@ class ConfigurationGrpcAPI {
   bool _isShutdown = false;
 
   /// gRPC client channel to send messages to the server
-  ClientChannel _clientSend;
+  ClientChannel? _clientSend;
 
   // Contstructor
   ConfigurationGrpcAPI() {
@@ -35,7 +35,7 @@ class ConfigurationGrpcAPI {
   // Shutdown client (send channel)
   void _shutdownSend() {
     if (_clientSend != null) {
-      _clientSend.shutdown();
+      _clientSend!.shutdown();
       _clientSend = null;
     }
   }

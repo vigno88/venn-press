@@ -21,19 +21,19 @@ class MetricService {
   List<MetricData> _metricData = [];
 
   // Configuration and metric service API object
-  MetricGrpcAPI _metricAPI;
+  MetricGrpcAPI? _metricAPI;
 
   MetricService(MetricGrpcAPI m) {
     _metricAPI = m;
   }
 
-  void initiate() async {
+  Future<void> initiate() async {
     // Get the config from the server
-    var c = await _metricAPI.readConfig();
+    var c = await _metricAPI!.readConfig();
     config = c.configs;
 
     // Create the list of metric data
-    var m = await _metricAPI.getMetrics();
+    var m = await _metricAPI!.getMetrics();
     for (int i = 0; i < m.updates.length; i++) {
       var t = MetricData(
         m.updates[i].name,
@@ -48,7 +48,7 @@ class MetricService {
     }
 
     // Listen for new metrics from the backend
-    _metricAPI.getMetricStream().listen((metric) {
+    _metricAPI!.getMetricStream().listen((metric) {
       processNewMetric(metric);
     });
   }
@@ -86,15 +86,15 @@ class MetricService {
 }
 
 class MetricData {
-  double _value;
-  String _name;
-  String _unit;
-  String _type;
-  String _info;
-  double _target;
-  Icon _icon;
-  bool _hasTarget;
-  bool _isAlert;
+  double _value = 0;
+  String _name = "";
+  String _unit = "";
+  String _type = "";
+  String _info = "";
+  double _target = 0;
+  late Icon _icon;
+  bool _hasTarget = false;
+  bool _isAlert = false;
   double _uncertainty = 2;
 
   MetricData(
@@ -141,8 +141,8 @@ class MetricData {
   String get info => _info;
   double get target => _target;
   bool get hasTarget => _hasTarget;
-  Icon get icon => _icon;
   bool get isAlert => _isAlert;
+  Icon get icon => _icon;
 
   void update(proto.MetricUpdate u) {
     // The target is not update at the same time as the value

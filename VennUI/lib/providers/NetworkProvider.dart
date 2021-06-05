@@ -4,7 +4,7 @@ import 'package:VennUI/grpc/v1/ui.pb.dart' as proto;
 
 // Network provider is used to connect the raspberry PI to the internet
 class NetworkProvider with ChangeNotifier {
-  NetworkGrpcAPI _networkAPI;
+  NetworkGrpcAPI? _networkAPI;
 
   List<String> wifiSSIDs = [];
   int hoverSSID = -1;
@@ -16,9 +16,9 @@ class NetworkProvider with ChangeNotifier {
     initiate();
   }
 
-  void initiate() async {
+  Future<void> initiate() async {
     // Get the current WiFi status
-    var status = await _networkAPI.readStatus();
+    var status = await _networkAPI!.readStatus();
     if (status.hasIsConnected()) {
       if (status.isConnected == true) {
         currentWifi = status.sSID;
@@ -27,7 +27,7 @@ class NetworkProvider with ChangeNotifier {
       }
     }
     // Get the list of wifi
-    var wifis = await _networkAPI.readWifiList();
+    var wifis = await _networkAPI!.readWifiList();
     if (wifis.sSIDs != null) {
       wifiSSIDs = wifis.sSIDs;
     }
@@ -48,6 +48,6 @@ class NetworkProvider with ChangeNotifier {
       return;
     }
     var c = proto.WifiCredentials(password: password, sSID: wifiSSIDs[i]);
-    _networkAPI.connectWifi(c);
+    _networkAPI!.connectWifi(c);
   }
 }

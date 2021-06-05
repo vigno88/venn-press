@@ -9,10 +9,10 @@ class AuthentificationGrpcAPI {
   bool _isShutdown = false;
 
   // gRPC client channel to send messages to the server
-  ClientChannel _clientSend;
+  ClientChannel? _clientSend;
 
   // gRPC client channel to receive messages from the server
-  ClientChannel _clientReceive;
+  ClientChannel? _clientReceive;
 
   AuthentificationGrpcAPI() {
     _clientSend = newClient(serverIP, serverPort);
@@ -28,7 +28,7 @@ class AuthentificationGrpcAPI {
   // Shutdown client (send channel)
   void _shutdownSend() {
     if (_clientSend != null) {
-      _clientSend.shutdown();
+      _clientSend!.shutdown();
       _clientSend = null;
     }
   }
@@ -36,7 +36,7 @@ class AuthentificationGrpcAPI {
   // Shutdown client (receive channel)
   void _shutdownReceive() {
     if (_clientReceive != null) {
-      _clientReceive.shutdown();
+      _clientReceive!.shutdown();
       _clientReceive = null;
     }
   }
@@ -62,6 +62,7 @@ class AuthentificationGrpcAPI {
         });
       }
     }
+    return proto.Users();
   }
 
   // Asynchronous function to read the list of user from the backend
@@ -105,5 +106,6 @@ class AuthentificationGrpcAPI {
         });
       }
     }
+    return proto.User();
   }
 }

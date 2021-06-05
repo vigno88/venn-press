@@ -17,7 +17,7 @@ class SliderWidget extends StatelessWidget {
     this.min = 0,
     this.fullWidth = false,
     this.value = 0,
-    this.index,
+    this.index = 0,
   });
 
   final Color baseColor = Color(0xff222f3e);
@@ -93,7 +93,7 @@ class SliderWidget extends StatelessWidget {
               borderRadius: new BorderRadius.all(
                 Radius.circular(30),
               ),
-              color: paleBlue.withOpacity(0.2),
+              color: paleBlue,
             ),
             child: Icon(
               Icons.arrow_upward,
@@ -198,7 +198,7 @@ class SliderWidget extends StatelessWidget {
               borderRadius: new BorderRadius.all(
                 Radius.circular(30),
               ),
-              color: paleBlue.withOpacity(0.2),
+              color: paleBlue,
             ),
             child: Icon(
               Icons.arrow_downward,
@@ -219,10 +219,10 @@ class CustomSliderThumbRect extends SliderComponentShape {
   final int max;
 
   const CustomSliderThumbRect({
-    this.thumbRadius,
+    required this.thumbRadius,
     this.thumbHeight,
-    this.min,
-    this.max,
+    required this.min,
+    required this.max,
   });
 
   @override
@@ -234,16 +234,16 @@ class CustomSliderThumbRect extends SliderComponentShape {
   void paint(
     PaintingContext context,
     Offset center, {
-    Animation<double> activationAnimation,
-    Animation<double> enableAnimation,
-    bool isDiscrete,
-    TextPainter labelPainter,
-    RenderBox parentBox,
-    SliderThemeData sliderTheme,
-    TextDirection textDirection,
-    double value,
-    double textScaleFactor,
-    Size sizeWithOverflow,
+    Animation<double>? activationAnimation,
+    Animation<double>? enableAnimation,
+    bool? isDiscrete,
+    TextPainter? labelPainter,
+    RenderBox? parentBox,
+    SliderThemeData? sliderTheme,
+    TextDirection? textDirection,
+    double? value,
+    double? textScaleFactor,
+    Size? sizeWithOverflow,
   }) {
     final Canvas canvas = context.canvas;
 

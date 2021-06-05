@@ -12,7 +12,7 @@ class SettingGrpcAPI {
   bool _isShutdown = false;
 
   // gRPC client channel to send messages to the server
-  ClientChannel _clientSend;
+  ClientChannel? _clientSend;
 
   // Shutdown client
   Future<void> shutdown() async {
@@ -23,13 +23,13 @@ class SettingGrpcAPI {
   // Shutdown client (send channel)
   void _shutdownSend() {
     if (_clientSend != null) {
-      _clientSend.shutdown();
+      _clientSend!.shutdown();
       _clientSend = null;
     }
   }
 
   // Asynchronous function to Update a setting in the backend
-  void updateSetting(proto.SettingUpdate s) async {
+  Future<void> updateSetting(proto.SettingUpdate s) async {
     if (_clientSend == null) {
       _clientSend = newClient(serverIP, serverPort);
     }
@@ -49,7 +49,7 @@ class SettingGrpcAPI {
   }
 
   // Asynchronous function to update the uncertainty on a setting target
-  void updateUncertainty(proto.TargetUpdate u) async {
+  Future<void> updateUncertainty(proto.TargetUpdate u) async {
     if (_clientSend == null) {
       _clientSend = newClient(serverIP, serverPort);
     }
@@ -69,7 +69,7 @@ class SettingGrpcAPI {
   }
 
   // Asynchronous function to Update the selected choice of a selector
-  void updateSelectedChoice(proto.SelectorUpdate u) async {
+  Future<void> updateSelectedChoice(proto.SelectorUpdate u) async {
     if (_clientSend == null) {
       _clientSend = newClient(serverIP, serverPort);
     }
@@ -89,7 +89,7 @@ class SettingGrpcAPI {
   }
 
   // Asynchronous function to update a choice settings
-  void updateChoice(proto.ChoiceUpdate u) async {
+  Future<void> updateChoice(proto.ChoiceUpdate u) async {
     if (_clientSend == null) {
       _clientSend = newClient(serverIP, serverPort);
     }
@@ -132,6 +132,7 @@ class SettingGrpcAPI {
         });
       }
     }
+    return proto.UUIDS();
   }
 
   // Asynchronous function read a recipe from the backend
@@ -153,6 +154,7 @@ class SettingGrpcAPI {
         });
       }
     }
+    return proto.Recipe();
   }
 
   // Asynchronous function read a recipe from the backend
@@ -174,6 +176,7 @@ class SettingGrpcAPI {
         });
       }
     }
+    return proto.Recipe();
   }
 
   // Asynchronous function get a recipe from the backend
@@ -195,10 +198,11 @@ class SettingGrpcAPI {
         });
       }
     }
+    return proto.Recipe();
   }
 
   // Asynchronous function to update the current recipe from the backend
-  void updateCurrentRecipe(String uuid) async {
+  Future<void> updateCurrentRecipe(String uuid) async {
     if (_clientSend == null) {
       _clientSend = newClient(serverIP, serverPort);
     }
@@ -219,7 +223,7 @@ class SettingGrpcAPI {
   }
 
   // Asynchronous function to update a recipe in the backend
-  void updateRecipe(proto.Recipe r) async {
+  Future<void> updateRecipe(proto.Recipe r) async {
     if (_clientSend == null) {
       _clientSend = newClient(serverIP, serverPort);
     }
@@ -239,7 +243,7 @@ class SettingGrpcAPI {
   }
 
   // Asynchronous function to update a recipe in the backend
-  void deleteRecipe(String uuid) async {
+  Future<void> deleteRecipe(String uuid) async {
     if (_clientSend == null) {
       _clientSend = newClient(serverIP, serverPort);
     }
@@ -279,5 +283,6 @@ class SettingGrpcAPI {
         });
       }
     }
+    return proto.Selectors();
   }
 }

@@ -6,14 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class UserDialogBox extends StatefulWidget {
-  const UserDialogBox({Key key}) : super(key: key);
+  const UserDialogBox({Key? key}) : super(key: key);
 
   @override
   _UserDialogBoxState createState() => _UserDialogBoxState();
 }
 
 class _UserDialogBoxState extends State<UserDialogBox> {
-  int hoverUser;
+  int hoverUser = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -163,7 +163,7 @@ class UserItem extends StatelessWidget {
             padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(10)),
-              color: _isSelected ? paleBlueNew : Colors.white,
+              color: _isSelected ? paleBlue : Colors.white,
               border: _isSelected ? blueBorderDecoration : null,
             ),
             child: Row(
@@ -173,9 +173,8 @@ class UserItem extends StatelessWidget {
                 Text(
                   (_index + 1).toString(),
                   style: TextStyle(
-                      color: _isSelected
-                          ? darkBlueNew
-                          : paleColor.withOpacity(0.6),
+                      color:
+                          _isSelected ? darkBlue : paleColor.withOpacity(0.6),
                       fontWeight: FontWeight.bold,
                       fontSize: 25),
                 ),
@@ -214,8 +213,8 @@ class UserButton extends StatefulWidget {
 
 class _UserButtonState extends State<UserButton>
     with SingleTickerProviderStateMixin {
-  double _scale;
-  AnimationController _controller;
+  double _scale = 0;
+  late AnimationController _controller;
   @override
   void initState() {
     _controller = AnimationController(
@@ -248,7 +247,7 @@ class _UserButtonState extends State<UserButton>
         height: 60,
         width: 190,
         decoration: BoxDecoration(
-            color: paleBlueNew,
+            color: paleBlue,
             borderRadius: BorderRadius.all(Radius.circular(10)),
             boxShadow:
                 tileShadows(5 * _scale, 1 * _scale, 3 * _scale, paleColor)),

@@ -13,12 +13,12 @@ class ControlGrpcAPI {
   bool _isShutdown = false;
 
   // gRPC client channel to send messages to the server
-  ClientChannel _clientSend;
+  ClientChannel? _clientSend;
 
   // gRPC client channel to receive messages from the server
-  ClientChannel _clientReceive;
+  ClientChannel? _clientReceive;
 
-  StreamController<NotificationData> _notifStream;
+  StreamController<NotificationData>? _notifStream;
 
   ControlGrpcAPI(StreamController<NotificationData> stream) {
     _clientSend = newClient(serverIP, serverPort);
@@ -35,7 +35,7 @@ class ControlGrpcAPI {
   // Shutdown client (send channel)
   void _shutdownSend() {
     if (_clientSend != null) {
-      _clientSend.shutdown();
+      _clientSend!.shutdown();
       _clientSend = null;
     }
   }
@@ -43,7 +43,7 @@ class ControlGrpcAPI {
   // Shutdown client (receive channel)
   void _shutdownReceive() {
     if (_clientReceive != null) {
-      _clientReceive.shutdown();
+      _clientReceive!.shutdown();
       _clientReceive = null;
     }
   }
@@ -73,7 +73,7 @@ class ControlGrpcAPI {
   }
 
   // Asynchronous function to read the list of user from the backend
-  void send(BuildContext context, proto.Action a) async {
+  Future<void> send(BuildContext context, proto.Action a) async {
     if (_clientSend == null) {
       _clientSend = newClient(serverIP, serverPort);
     }
@@ -82,7 +82,7 @@ class ControlGrpcAPI {
           await grpc.ControlServiceClient(_clientSend).send(a);
       if (response.error != "") {
         print(response.error);
-        _notifStream
+        _notifStream!
             .add(NotificationData(NotificationType.Warning, response.error));
         print("Added a notif to the stream");
         // context.read()<NotificationProvider>().displayNotification(
@@ -124,5 +124,6 @@ class ControlGrpcAPI {
         });
       }
     }
+    return proto.ControlConfigs();
   }
 }

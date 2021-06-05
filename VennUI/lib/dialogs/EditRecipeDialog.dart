@@ -7,7 +7,7 @@ import 'package:VennUI/virtualKeyboard/virtualKeyboard.dart';
 import 'package:provider/provider.dart';
 
 class EditDialogBox extends StatefulWidget {
-  const EditDialogBox({Key key}) : super(key: key);
+  const EditDialogBox({Key? key}) : super(key: key);
 
   @override
   _EditDialogBoxState createState() => _EditDialogBoxState();
@@ -20,9 +20,9 @@ enum Field {
 }
 
 class _EditDialogBoxState extends State<EditDialogBox> {
-  RecipeInfo selectedRecipe;
-  TextEditingController titleController;
-  TextEditingController infoController;
+  late RecipeInfo selectedRecipe;
+  late TextEditingController titleController;
+  late TextEditingController infoController;
   Field selectedField = Field.None;
   bool isCapsOn = false;
 
@@ -132,12 +132,13 @@ class _EditDialogBoxState extends State<EditDialogBox> {
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  // color: paleBlue.withOpacity(0.4),
+                  color: greyBackground,
+                  border: Border.all(color: greyBorder, width: 2.0),
                 ),
                 child: VirtualKeyboard(
                     height: 450,
-                    textColor: Colors.black,
-                    fontSize: 35,
+                    textColor: greyIcon,
+                    fontSize: 45,
                     type: VirtualKeyboardType.Alphanumeric,
                     onKeyPress: (key) => updateKeyboard(key)),
               )
@@ -170,10 +171,10 @@ class _EditDialogBoxState extends State<EditDialogBox> {
     // Check if the key is a char value
     if (key.action == null) {
       if (isCapsOn) {
-        controller.text += key.capsText;
+        controller.text += key.capsText!;
         return;
       }
-      controller.text += key.text;
+      controller.text += key.text!;
       return;
     }
     if (key.action == VirtualKeyboardKeyAction.Backspace) {
@@ -207,8 +208,8 @@ class SaveButton extends StatefulWidget {
 
 class _SaveButtonState extends State<SaveButton>
     with SingleTickerProviderStateMixin {
-  double _scale;
-  AnimationController _controller;
+  late double _scale;
+  late AnimationController _controller;
   @override
   void initState() {
     _controller = AnimationController(
@@ -241,7 +242,7 @@ class _SaveButtonState extends State<SaveButton>
         height: 50,
         width: 130,
         decoration: BoxDecoration(
-            color: paleBlue.withOpacity(0.4),
+            color: paleBlue,
             borderRadius: BorderRadius.all(Radius.circular(10)),
             boxShadow:
                 tileShadows(5 * _scale, 1 * _scale, 3 * _scale, paleColor)),

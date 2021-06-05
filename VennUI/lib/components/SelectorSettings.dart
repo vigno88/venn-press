@@ -15,9 +15,9 @@ class SelectorSettings extends StatefulWidget {
 }
 
 class _SelectorSettingsState extends State<SelectorSettings> {
-  String _selectedItem;
-  List<String> _items;
-  String _name;
+  String _selectedItem = "";
+  List<String> _items = [];
+  String _name = "";
 
   @override
   Widget build(BuildContext context) {
@@ -81,8 +81,8 @@ class _SelectorSettingsState extends State<SelectorSettings> {
                                   ),
                                 );
                               }).toList(),
-                              onChanged: (selectedItem) =>
-                                  updateSelectedChoice(context, selectedItem)
+                              onChanged: (selectedItem) => updateSelectedChoice(
+                                  context, (selectedItem as String))
                               // onChanged: null,
                               )))),
               SizedBox(

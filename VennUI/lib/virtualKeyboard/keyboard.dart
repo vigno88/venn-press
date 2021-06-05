@@ -30,15 +30,15 @@ class VirtualKeyboard extends StatefulWidget {
   final double fontSize;
 
   /// The builder function will be called for each Key object.
-  final Widget Function(BuildContext context, VirtualKeyboardKey key) builder;
+  late Widget Function(BuildContext context, VirtualKeyboardKey key)? builder;
 
   /// Set to true if you want only to show Caps letters.
   final bool alwaysCaps;
 
   VirtualKeyboard(
-      {Key key,
-      @required this.type,
-      @required this.onKeyPress,
+      {Key? key,
+      required this.type,
+      required this.onKeyPress,
       this.builder,
       this.height = virtualKeyboardDefaultHeight,
       this.textColor = Colors.black,
@@ -54,23 +54,23 @@ class VirtualKeyboard extends StatefulWidget {
 
 /// Holds the state for Virtual Keyboard class.
 class _VirtualKeyboardState extends State<VirtualKeyboard> {
-  VirtualKeyboardType type;
-  Function onKeyPress;
+  late VirtualKeyboardType type;
+  late Function onKeyPress;
   // The builder function will be called for each Key object.
-  Widget Function(BuildContext context, VirtualKeyboardKey key) builder;
-  double height;
-  Color textColor;
-  double fontSize;
-  bool alwaysCaps;
+  Widget Function(BuildContext context, VirtualKeyboardKey key)? builder;
+  double height = 0;
+  late Color textColor;
+  double fontSize = 0;
+  bool alwaysCaps = false;
   // Text Style for keys.
-  TextStyle textStyle;
+  late TextStyle textStyle;
 
   // True if shift is enabled.
   bool isShiftEnabled = false;
 
   @override
   void didUpdateWidget(Widget oldWidget) {
-    super.didUpdateWidget(oldWidget);
+    super.didUpdateWidget((oldWidget as VirtualKeyboard));
     setState(() {
       type = widget.type;
       onKeyPress = widget.onKeyPress;
@@ -157,7 +157,7 @@ class _VirtualKeyboardState extends State<VirtualKeyboard> {
               VirtualKeyboardKey virtualKeyboardKey =
                   keyboardRows[rowNum][keyNum];
 
-              Widget keyWidget;
+              Widget? keyWidget;
 
               // Check if builder is specified.
               // Call builder function if specified or use default
@@ -173,17 +173,18 @@ class _VirtualKeyboardState extends State<VirtualKeyboard> {
                     // Draw action key.
                     keyWidget = keyboardDefaultActionKey(virtualKeyboardKey);
                     break;
+                  default:
                 }
               } else {
                 // Call the builder function, so the user can specify custom UI for keys.
-                keyWidget = builder(context, virtualKeyboardKey);
+                keyWidget = builder!(context, virtualKeyboardKey);
 
                 if (keyWidget == null) {
                   throw 'builder function must return Widget';
                 }
               }
 
-              return keyWidget;
+              return keyWidget!;
             },
           ),
         ),
@@ -194,7 +195,7 @@ class _VirtualKeyboardState extends State<VirtualKeyboard> {
   }
 
   // True if long press is enabled.
-  bool longPress;
+  bool longPress = false;
 
   /// Creates default UI element for keyboard Key.
   Widget keyboardDefaultKey(VirtualKeyboardKey key) {
@@ -207,9 +208,9 @@ class _VirtualKeyboardState extends State<VirtualKeyboard> {
         height: height / keyRows.length,
         child: Center(
             child: Text(
-          alwaysCaps
+          (alwaysCaps
               ? key.capsText
-              : (isShiftEnabled ? key.capsText : key.text),
+              : (isShiftEnabled ? key.capsText : key.text))!,
           style: textStyle,
         )),
       ),
@@ -219,7 +220,7 @@ class _VirtualKeyboardState extends State<VirtualKeyboard> {
   /// Creates default UI element for keyboard Action Key.
   Widget keyboardDefaultActionKey(VirtualKeyboardKey key) {
     // Holds the action key widget.
-    Widget actionKey;
+    Widget actionKey = GestureDetector();
 
     // Switch the action type to build action Key widget.
     switch (key.action) {
@@ -249,19 +250,29 @@ class _VirtualKeyboardState extends State<VirtualKeyboard> {
               child: Icon(
                 Icons.backspace,
                 color: textColor,
+                size: 40,
               ),
             ));
         break;
       case VirtualKeyboardKeyAction.Shift:
-        actionKey = Icon(Icons.arrow_upward, color: textColor);
+        actionKey = Icon(
+          Icons.arrow_upward,
+          color: textColor,
+          size: 40,
+        );
         break;
       case VirtualKeyboardKeyAction.Space:
-        actionKey = actionKey = Icon(Icons.space_bar, color: textColor);
+        actionKey = actionKey = Icon(
+          Icons.space_bar,
+          color: textColor,
+          size: 40,
+        );
         break;
       case VirtualKeyboardKeyAction.Return:
         actionKey = Icon(
           Icons.keyboard_return,
           color: textColor,
+          size: 40,
         );
         break;
     }

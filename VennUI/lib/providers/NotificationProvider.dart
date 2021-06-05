@@ -9,8 +9,8 @@ class NotificationProvider with ChangeNotifier {
   // This widget is the notification
   Widget notification = Container();
 
-  Stream<NotificationData> _notifications;
-  StreamController<NotificationData> _controller;
+  Stream<NotificationData>? _notifications;
+  StreamController<NotificationData>? _controller;
 
   NotificationProvider(StreamController<NotificationData> s) {
     _controller = s;
@@ -19,7 +19,7 @@ class NotificationProvider with ChangeNotifier {
   }
 
   void run() async {
-    _notifications.listen((notif) {
+    _notifications!.listen((notif) {
       displayNotification(notif);
     });
   }

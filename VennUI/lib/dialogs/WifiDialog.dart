@@ -7,14 +7,14 @@ import 'package:VennUI/virtualKeyboard/virtualKeyboard.dart';
 import 'package:provider/provider.dart';
 
 class WifiDialogBox extends StatefulWidget {
-  const WifiDialogBox({Key key}) : super(key: key);
+  const WifiDialogBox({Key? key}) : super(key: key);
 
   @override
   _WifiDialogBoxState createState() => _WifiDialogBoxState();
 }
 
 class _WifiDialogBoxState extends State<WifiDialogBox> {
-  int hoverRecipe;
+  int hoverRecipe = 0;
   var textController = TextEditingController();
   bool isCapsOn = false;
 
@@ -155,13 +155,17 @@ class _WifiDialogBoxState extends State<WifiDialogBox> {
               ),
               Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: paleBlue.withOpacity(0.4),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: greyBorder,
+                    width: 2.0,
+                  ),
+                  color: greyBackground,
                 ),
                 child: VirtualKeyboard(
                     height: 450,
-                    textColor: Colors.black,
-                    fontSize: 28,
+                    textColor: greyIcon,
+                    fontSize: 45,
                     type: VirtualKeyboardType.Alphanumeric,
                     onKeyPress: (key) => updateKeyboard(key)),
               )
@@ -183,14 +187,17 @@ class _WifiDialogBoxState extends State<WifiDialogBox> {
     // Check if the key is a char value
     if (key.action == null) {
       if (isCapsOn) {
-        textController.text += key.capsText;
+        textController.text += key.capsText!;
         return;
       }
-      textController.text += key.text;
+      textController.text += key.text!;
       return;
     }
     if (key.action == VirtualKeyboardKeyAction.Backspace) {
       String str = textController.text;
+      if (str.length == 0) {
+        return;
+      }
       textController.text = str.substring(0, str.length - 1);
       return;
     }
@@ -226,7 +233,7 @@ class WifiItem extends StatelessWidget {
             padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(10)),
-              color: _isSelected ? paleBlue.withOpacity(0.2) : Colors.white,
+              color: _isSelected ? paleBlue : Colors.white,
               border: _isSelected ? blueBorderDecoration : null,
             ),
             child: Row(
@@ -276,8 +283,8 @@ class WifiButton extends StatefulWidget {
 
 class _WifiButtonState extends State<WifiButton>
     with SingleTickerProviderStateMixin {
-  double _scale;
-  AnimationController _controller;
+  double _scale = 0;
+  late AnimationController _controller;
   @override
   void initState() {
     _controller = AnimationController(
@@ -310,7 +317,7 @@ class _WifiButtonState extends State<WifiButton>
         height: 50,
         width: 130,
         decoration: BoxDecoration(
-            color: paleBlue.withOpacity(0.4),
+            color: paleBlue,
             borderRadius: BorderRadius.all(Radius.circular(10)),
             boxShadow:
                 tileShadows(5 * _scale, 1 * _scale, 3 * _scale, paleColor)),

@@ -65,16 +65,16 @@ class ControlService {
 
   List<Tile> tiles = [];
 
-  ControlGrpcAPI _controlAPI;
+  ControlGrpcAPI? _controlAPI;
 
   ControlService(ControlGrpcAPI s) {
     _controlAPI = s;
     _updates = StreamController();
   }
 
-  void initiate() async {
+  Future<void> initiate() async {
     // Get the config from the server
-    var c = await _controlAPI.readConfig();
+    var c = await _controlAPI!.readConfig();
     config = c.configs;
 
     // Create the list of button data
@@ -83,7 +83,7 @@ class ControlService {
     }
 
     // Listen for new control event from the backend
-    _controlAPI.getEventStream().listen((event) {
+    _controlAPI!.getEventStream().listen((event) {
       processNewEvent(event);
     });
   }
@@ -130,9 +130,10 @@ class ControlService {
     ];
   }
 
-  void pressButton(BuildContext context, int buttonIndex, int tileIndex) async {
+  Future<void> pressButton(
+      BuildContext context, int buttonIndex, int tileIndex) async {
     // Send the button press to the API
-    await _controlAPI.send(context,
+    await _controlAPI!.send(context,
         _buttonsData[buttonIndex].actions[_buttonsData[buttonIndex].state]);
     // Update the button data to the other state
     _buttonsData[buttonIndex].updateState();
@@ -146,12 +147,12 @@ class ControlService {
 class ButtonData {
   // state is tell which information to use for the button to be displayed
   int state = 0;
-  String title;
-  String id;
-  proto.ControlConfig_ControlType type;
+  String title = "";
+  String id = "";
+  proto.ControlConfig_ControlType? type;
   List<String> texts = [];
   List<proto.Action> actions = [];
-  String iconType;
+  String iconType = "";
 
   ButtonData(proto.ControlConfig c) {
     title = c.title;

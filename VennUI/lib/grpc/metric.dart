@@ -9,10 +9,10 @@ class MetricGrpcAPI {
   bool _isShutdown = false;
 
   // gRPC client channel to send messages to the server
-  ClientChannel _clientSend;
+  ClientChannel? _clientSend;
 
   // gRPC client channel to receive messages from the server
-  ClientChannel _clientReceive;
+  ClientChannel? _clientReceive;
 
   MetricGrpcAPI() {
     _clientSend = newClient(serverIP, serverPort);
@@ -28,7 +28,7 @@ class MetricGrpcAPI {
   // Shutdown client (send channel)
   void _shutdownSend() {
     if (_clientSend != null) {
-      _clientSend.shutdown();
+      _clientSend!.shutdown();
       _clientSend = null;
     }
   }
@@ -36,7 +36,7 @@ class MetricGrpcAPI {
   // Shutdown client (receive channel)
   void _shutdownReceive() {
     if (_clientReceive != null) {
-      _clientReceive.shutdown();
+      _clientReceive!.shutdown();
       _clientReceive = null;
     }
   }
@@ -63,6 +63,7 @@ class MetricGrpcAPI {
         });
       }
     }
+    return proto.MetricUpdates();
   }
 
   // Asynchronous function to get the current metrics configuration from the server
@@ -88,6 +89,7 @@ class MetricGrpcAPI {
         });
       }
     }
+    return proto.MetricConfigs();
   }
 
   // Asynchronous function to update the current metrics configuration from the server

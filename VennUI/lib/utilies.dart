@@ -18,7 +18,7 @@ void showModal(BuildContext context, String title, String content) {
 }
 
 BoxBorder blueBorderDecoration = Border.all(
-  color: blueBorderNew,
+  color: blueBorder,
   width: 2,
 );
 
@@ -30,14 +30,18 @@ const Color baseColor = Color(0xff222f3e);
 const Color infoColor = Color(0xff576574);
 const Color paleColor = Color(0xff8395a7);
 const Color oldBaseColor = Color(0xff14121f);
-final Color paleBlue = Color(0xff54a0ff);
-final Color blueBorder = Color(0xffb3d4ff);
-final Color darkBlue = Color(0xff2e86de);
+// final Color paleBlue = Color(0xff54a0ff);
+// final Color blueBorder = Color(0xffb3d4ff);
+// final Color darkBlue = Color(0xff2e86de);
 
-final Color paleBlueNew = Color(0xffe0e9f7);
-final Color paleBlueDarkerNew = Color(0xffb3bac6);
-final Color darkBlueNew = Color(0xff4884c9);
-final Color blueBorderNew = Color(0xff4583cc);
+final Color paleBlue = Color(0xffe0e9f7);
+final Color paleBlueDarker = Color(0xffb3bac6);
+final Color darkBlue = Color(0xff4884c9);
+final Color blueBorder = Color(0xff4583cc);
+
+final Color greyBackground = Color(0xfff6f8f9);
+final Color greyIcon = Color(0xff767c7d);
+final Color greyBorder = Color(0xffc5c6c7);
 
 // const serverIP = "127.0.0.1";
 const serverIP = "10.0.2.2";

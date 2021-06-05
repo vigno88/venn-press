@@ -1,13 +1,11 @@
 import 'dart:ui';
-import 'package:VennUI/providers/SettingsProvider.dart';
 import 'package:VennUI/utilies.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:VennUI/virtualKeyboard/virtualKeyboard.dart';
-import 'package:provider/provider.dart';
 
 class ValuePickerDialogBox extends StatefulWidget {
-  const ValuePickerDialogBox({Key key}) : super(key: key);
+  const ValuePickerDialogBox({Key? key}) : super(key: key);
 
   @override
   _ValuePickerDialogBoxState createState() => _ValuePickerDialogBoxState();
@@ -80,8 +78,7 @@ class _ValuePickerDialogBoxState extends State<ValuePickerDialogBox> {
                           height: 130,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
-                            border: Border.all(
-                                color: Color(0xffc5c6c7), width: 2.0),
+                            border: Border.all(color: greyBorder, width: 2.0),
                           ),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -98,7 +95,7 @@ class _ValuePickerDialogBoxState extends State<ValuePickerDialogBox> {
                                           decoration: BoxDecoration(
                                               border: Border(
                                                   right: BorderSide(
-                                                      color: Color(0xffc5c6c7),
+                                                      color: greyBorder,
                                                       width: 2.0))),
                                           child: Center(
                                             child: Text(
@@ -142,7 +139,7 @@ class _ValuePickerDialogBoxState extends State<ValuePickerDialogBox> {
                                           decoration: BoxDecoration(
                                               border: Border(
                                                   left: BorderSide(
-                                                      color: Color(0xffc5c6c7),
+                                                      color: greyBorder,
                                                       width: 2.0))),
                                           child: Center(
                                             child: Text(
@@ -186,15 +183,16 @@ class _ValuePickerDialogBoxState extends State<ValuePickerDialogBox> {
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: greyBorder, width: 2.0),
                   // color: paleBlue.withOpacity(0.4),
-                  color: paleBlueNew,
+                  // color: paleBlueNew,
+                  color: greyBackground,
                 ),
-                // color: Color(0xfff6f8f9)),
                 child: VirtualKeyboard(
                     height: 450,
                     // textColor: Colors.black,
-                    // textColor: Color(0xff767c7d),
-                    textColor: darkBlueNew,
+                    textColor: greyIcon,
+                    // textColor: darkBlueNew,
                     fontSize: 40,
                     type: VirtualKeyboardType.Numeric,
                     onKeyPress: (key) => updateKeyboard(key)),
@@ -269,8 +267,8 @@ class SaveButton extends StatefulWidget {
 
 class _SaveButtonState extends State<SaveButton>
     with SingleTickerProviderStateMixin {
-  double _scale;
-  AnimationController _controller;
+  double _scale = 0;
+  late AnimationController _controller;
   @override
   void initState() {
     _controller = AnimationController(
@@ -304,7 +302,7 @@ class _SaveButtonState extends State<SaveButton>
         width: 130,
         decoration: BoxDecoration(
             // color: Colors.white,
-            color: paleBlueNew,
+            color: paleBlue,
             borderRadius: BorderRadius.all(Radius.circular(10)),
             boxShadow:
                 tileShadows(5 * _scale, 1 * _scale, 3 * _scale, paleColor)),

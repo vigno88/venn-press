@@ -37,8 +37,8 @@ class SettingsProvider with ChangeNotifier {
   int selectedRecipe = 0;
   List<RecipeInfo> recipesInfo = [];
 
-  SettingGrpcAPI _settingAPI;
-  MetricGrpcAPI _metricAPI;
+  SettingGrpcAPI? _settingAPI;
+  MetricGrpcAPI? _metricAPI;
 
   SettingsProvider(SettingGrpcAPI r, MetricGrpcAPI s) {
     _settingAPI = r;
@@ -46,10 +46,10 @@ class SettingsProvider with ChangeNotifier {
     initiate();
   }
 
-  void initiate() async {
+  Future<void> initiate() async {
     // Retrieve the initial settings
     // var currentRecipe = await _settingAPI.readRecipe('default');
-    var currentRecipe = await _settingAPI.readCurrentRecipe();
+    var currentRecipe = await _settingAPI!.readCurrentRecipe();
 
     settings = List.of(currentRecipe.settings);
     oldSettings =
@@ -58,12 +58,12 @@ class SettingsProvider with ChangeNotifier {
 
     // Send the initial settings to the backend
     for (var s in settings) {
-      _settingAPI.updateSetting(proto.SettingUpdate(
+      _settingAPI!.updateSetting(proto.SettingUpdate(
           name: s.name, value: s.value, isStatic: s.isStatic));
     }
 
     // Retrieve the set of selector
-    var s = await _settingAPI.readSelectorList();
+    var s = await _settingAPI!.readSelectorList();
     selectors = List.of(s.selectors);
     numPagesSelectors = (selectors.length / selectorPerPage).ceil();
     for (var selector in selectors) {
@@ -75,10 +75,10 @@ class SettingsProvider with ChangeNotifier {
     }
 
     // Retrieve Initial Set of recipe
-    var uuids = await _settingAPI.readRecipesUUID();
+    var uuids = await _settingAPI!.readRecipesUUID();
     List<String> listUuids = List.of(uuids.uuids);
     for (int i = 0; i < listUuids.length; i++) {
-      var r = await _settingAPI.readRecipe(listUuids[i]);
+      var r = await _settingAPI!.readRecipe(listUuids[i]);
       recipesInfo.add(RecipeInfo(r.uuid, r.title, r.info));
       if (currentRecipe.uuid == r.uuid) {
         selectedRecipe = i;
@@ -120,7 +120,7 @@ class SettingsProvider with ChangeNotifier {
     });
   }
 
-  void loadRecipe(BuildContext context) async {
+  Future<void> loadRecipe(BuildContext context) async {
     var same = await getCurrentSettings(context);
     if (same) {
       context.read<NotificationProvider>().displayNotification(NotificationData(
@@ -135,7 +135,7 @@ class SettingsProvider with ChangeNotifier {
   }
 
   Future<bool> getCurrentSettings(BuildContext context) async {
-    var recipe = await _settingAPI.readCurrentRecipe();
+    var recipe = await _settingAPI!.readCurrentRecipe();
     // Compare if the new recipe is different
     var same = settings == recipe.settings;
     settings = recipe.settings;
@@ -144,14 +144,14 @@ class SettingsProvider with ChangeNotifier {
     return same;
   }
 
-  void saveRecipe(BuildContext context) async {
+  Future<void> saveRecipe(BuildContext context) async {
     var modified = false;
     for (int i = 0; i < settings.length; i++) {
       if (settings[i].value != oldSettings[i]) {
         if (settings[i].hasTarget()) {
           updateTarget(settings[i]);
         }
-        _settingAPI.updateSetting(proto.SettingUpdate(
+        _settingAPI!.updateSetting(proto.SettingUpdate(
             name: settings[i].name,
             value: settings[i].value,
             isStatic: settings[i].isStatic));
@@ -170,12 +170,12 @@ class SettingsProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void updateTarget(proto.Setting setting) async {
-    proto.MetricConfigs M = await _metricAPI.readConfig();
+  Future<void> updateTarget(proto.Setting setting) async {
+    proto.MetricConfigs M = await _metricAPI!.readConfig();
     for (int i = 0; i < M.configs.length; i++) {
       if (M.configs[i].name == setting.target.name) {
         M.configs[i].target = setting.value;
-        await _metricAPI.updateConfig(M);
+        _metricAPI!.updateConfig(M);
         return;
       }
     }
@@ -200,19 +200,19 @@ class SettingsProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void createRecipe(BuildContext context) async {
+  Future<void> createRecipe(BuildContext context) async {
     if (recipesInfo.length >= 99) {
       context.read<NotificationProvider>().displayNotification(NotificationData(
           NotificationType.Error, "Cannot add more than 99 recipes."));
       return;
     }
-    proto.Recipe newRecipe = await _settingAPI.createRecipe();
+    proto.Recipe newRecipe = await _settingAPI!.createRecipe();
     recipesInfo
         .add(RecipeInfo(newRecipe.uuid, newRecipe.title, newRecipe.info));
     notifyListeners();
   }
 
-  void editRecipe(BuildContext context, RecipeInfo i) async {
+  Future<void> editRecipe(BuildContext context, RecipeInfo i) async {
     if (i.title.length > 25) {
       context.read<NotificationProvider>().displayNotification(NotificationData(
           NotificationType.Error,
@@ -226,10 +226,10 @@ class SettingsProvider with ChangeNotifier {
       return;
     }
     // Get the old recipe and updates its information text and title
-    proto.Recipe r = await _settingAPI.readRecipe(i.uuid);
+    proto.Recipe r = await _settingAPI!.readRecipe(i.uuid);
     r.info = i.info;
     r.title = i.info;
-    await _settingAPI.updateRecipe(r);
+    _settingAPI!.updateRecipe(r);
     recipesInfo[hoverRecipe] = i;
     context.read<NotificationProvider>().displayNotification(NotificationData(
         NotificationType.Success,
@@ -237,7 +237,7 @@ class SettingsProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void deleteRecipe(BuildContext context) async {
+  Future<void> deleteRecipe(BuildContext context) async {
     // Cannot delete a recipe if none is selected
     if (hoverRecipe == -1) {
       context.read<NotificationProvider>().displayNotification(NotificationData(
@@ -250,13 +250,13 @@ class SettingsProvider with ChangeNotifier {
           NotificationType.Error, "Cannot remove the default recipe."));
       return;
     }
-    _settingAPI.deleteRecipe(recipesInfo.elementAt(hoverRecipe).uuid);
+    _settingAPI!.deleteRecipe(recipesInfo.elementAt(hoverRecipe).uuid);
     recipesInfo.removeAt(hoverRecipe);
     hoverRecipe = -1;
     notifyListeners();
   }
 
-  void selectRecipe(BuildContext context) async {
+  Future<void> selectRecipe(BuildContext context) async {
     // Cannot select a recipe if none is selected
     if (hoverRecipe == -1) {
       context.read<NotificationProvider>().displayNotification(NotificationData(
@@ -264,8 +264,7 @@ class SettingsProvider with ChangeNotifier {
       return;
     }
     // Send the new recipe
-    await _settingAPI
-        .updateCurrentRecipe(recipesInfo.elementAt(hoverRecipe).uuid);
+    _settingAPI!.updateCurrentRecipe(recipesInfo.elementAt(hoverRecipe).uuid);
     selectedRecipe = hoverRecipe;
     // Load the new recipe settings
     await getCurrentSettings(context);
@@ -278,16 +277,12 @@ class SettingsProvider with ChangeNotifier {
     switch (page) {
       case "list":
         return ListSettings();
-        break;
       case "general":
         return GeneralSettings();
-        break;
       case "pressure":
         return PressureSettings();
-        break;
       case "heating":
         return HeatingSettings();
-        break;
       default:
     }
     return Container();
