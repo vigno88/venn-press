@@ -1,5 +1,4 @@
 import 'package:VennUI/components/BottomBar.dart';
-import 'package:VennUI/components/Notification.dart';
 import 'package:VennUI/dialogs/UserDialog.dart';
 import 'package:VennUI/dialogs/WifiDialog.dart';
 import 'package:VennUI/providers/NetworkProvider.dart';
@@ -9,6 +8,7 @@ import 'package:VennUI/providers/UserProvider.dart';
 import 'package:VennUI/utilies.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:typicons_flutter/typicons_flutter.dart';
 import 'package:VennUI/components/StatusBar.dart';
@@ -120,18 +120,21 @@ class DashboardPanel extends StatelessWidget {
       padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
       child: Stack(
           children: List.generate(
-              context.watch<DashboardProvider>().widgets.length,
-              (index) => Selector<DashboardProvider, int>(
-                    shouldRebuild: (_, next) =>
-                        // Next is the index of the tile that was modified
-                        next == index,
-                    selector:
-                        (BuildContext context, DashboardProvider provider) =>
-                            provider.modifiedTileIndex,
-                    builder: (context, __, _) {
-                      return context.watch<DashboardProvider>().widgets[index];
-                    },
-                  ))),
+        context.watch<DashboardProvider>().widgets.length,
+        (index) =>
+            //  Selector<DashboardProvider, int>(
+            //       shouldRebuild: (_, next) =>
+            //           // Next is the index of the tile that was modified
+            //           next == index,
+            //       selector:
+            //           (BuildContext context, DashboardProvider provider) =>
+            //               provider.modifiedTileIndex,
+            //       builder: (context, __, _) {
+            //         return context.watch<DashboardProvider>().widgets[index];
+            //       },
+            //     )
+            context.watch<DashboardProvider>().widgets[index],
+      )),
     );
   }
 }

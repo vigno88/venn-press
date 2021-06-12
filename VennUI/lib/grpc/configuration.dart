@@ -1,15 +1,10 @@
 import 'package:grpc/grpc.dart';
-import 'package:VennUI/grpc/v1/ui.pbgrpc.dart' as grpc;
-import 'package:VennUI/grpc/v1/ui.pb.dart' as proto;
 import 'package:VennUI/utilies.dart';
 
 import 'utilities.dart';
 
 /// ConfigurationService client implementation
 class ConfigurationGrpcAPI {
-  /// Flag is indicating that client is shutting down
-  bool _isShutdown = false;
-
   /// gRPC client channel to send messages to the server
   ClientChannel? _clientSend;
 
@@ -24,20 +19,6 @@ class ConfigurationGrpcAPI {
         idleTimeout: Duration(hours: 24),
       ),
     );
-  }
-
-  // Shutdown client
-  Future<void> shutdown() async {
-    _isShutdown = true;
-    _shutdownSend();
-  }
-
-  // Shutdown client (send channel)
-  void _shutdownSend() {
-    if (_clientSend != null) {
-      _clientSend!.shutdown();
-      _clientSend = null;
-    }
   }
 
   // // Asynchronous function to get configuration from the server

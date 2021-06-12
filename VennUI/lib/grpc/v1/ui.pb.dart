@@ -191,6 +191,7 @@ class MetricUpdate extends $pb.GeneratedMessage {
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'name')
     ..a<$core.double>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'value', $pb.PbFieldType.OD)
     ..a<$core.double>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'target', $pb.PbFieldType.OD)
+    ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'timestamp')
     ..hasRequiredFields = false
   ;
 
@@ -199,6 +200,7 @@ class MetricUpdate extends $pb.GeneratedMessage {
     $core.String name,
     $core.double value,
     $core.double target,
+    $core.String timestamp,
   }) {
     final _result = create();
     if (name != null) {
@@ -209,6 +211,9 @@ class MetricUpdate extends $pb.GeneratedMessage {
     }
     if (target != null) {
       _result.target = target;
+    }
+    if (timestamp != null) {
+      _result.timestamp = timestamp;
     }
     return _result;
   }
@@ -259,6 +264,15 @@ class MetricUpdate extends $pb.GeneratedMessage {
   $core.bool hasTarget() => $_has(2);
   @$pb.TagNumber(3)
   void clearTarget() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.String get timestamp => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set timestamp($core.String v) { $_setString(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasTimestamp() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearTimestamp() => clearField(4);
 }
 
 class MetricUpdates extends $pb.GeneratedMessage {
@@ -1014,8 +1028,10 @@ class GraphSettings extends $pb.GeneratedMessage {
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'name')
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'unitVerticalAxis', protoName: 'unitVerticalAxis')
     ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'unitHorizontalAxis', protoName: 'unitHorizontalAxis')
-    ..pc<Point>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'points', $pb.PbFieldType.PM, subBuilder: Point.create)
-    ..aOB(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isStatic', protoName: 'isStatic')
+    ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'verticalAxis', protoName: 'verticalAxis')
+    ..aOS(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'horizontalAxis', protoName: 'horizontalAxis')
+    ..pc<Point>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'points', $pb.PbFieldType.PM, subBuilder: Point.create)
+    ..aOB(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'isStatic', protoName: 'isStatic')
     ..hasRequiredFields = false
   ;
 
@@ -1024,6 +1040,8 @@ class GraphSettings extends $pb.GeneratedMessage {
     $core.String name,
     $core.String unitVerticalAxis,
     $core.String unitHorizontalAxis,
+    $core.String verticalAxis,
+    $core.String horizontalAxis,
     $core.Iterable<Point> points,
     $core.bool isStatic,
   }) {
@@ -1036,6 +1054,12 @@ class GraphSettings extends $pb.GeneratedMessage {
     }
     if (unitHorizontalAxis != null) {
       _result.unitHorizontalAxis = unitHorizontalAxis;
+    }
+    if (verticalAxis != null) {
+      _result.verticalAxis = verticalAxis;
+    }
+    if (horizontalAxis != null) {
+      _result.horizontalAxis = horizontalAxis;
     }
     if (points != null) {
       _result.points.addAll(points);
@@ -1094,16 +1118,34 @@ class GraphSettings extends $pb.GeneratedMessage {
   void clearUnitHorizontalAxis() => clearField(3);
 
   @$pb.TagNumber(4)
-  $core.List<Point> get points => $_getList(3);
+  $core.String get verticalAxis => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set verticalAxis($core.String v) { $_setString(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasVerticalAxis() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearVerticalAxis() => clearField(4);
 
-  @$pb.TagNumber(9)
-  $core.bool get isStatic => $_getBF(4);
-  @$pb.TagNumber(9)
-  set isStatic($core.bool v) { $_setBool(4, v); }
-  @$pb.TagNumber(9)
-  $core.bool hasIsStatic() => $_has(4);
-  @$pb.TagNumber(9)
-  void clearIsStatic() => clearField(9);
+  @$pb.TagNumber(5)
+  $core.String get horizontalAxis => $_getSZ(4);
+  @$pb.TagNumber(5)
+  set horizontalAxis($core.String v) { $_setString(4, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasHorizontalAxis() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearHorizontalAxis() => clearField(5);
+
+  @$pb.TagNumber(6)
+  $core.List<Point> get points => $_getList(5);
+
+  @$pb.TagNumber(7)
+  $core.bool get isStatic => $_getBF(6);
+  @$pb.TagNumber(7)
+  set isStatic($core.bool v) { $_setBool(6, v); }
+  @$pb.TagNumber(7)
+  $core.bool hasIsStatic() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearIsStatic() => clearField(7);
 }
 
 class GraphUpdate extends $pb.GeneratedMessage {

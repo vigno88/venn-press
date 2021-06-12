@@ -30,6 +30,7 @@ message MetricUpdate {
   string name = 1;
   double value = 2;
   double target = 3;
+  string timestamp = 4;
 }
 
 
@@ -144,8 +145,10 @@ message GraphSettings {
   string name = 1;
   string unitVerticalAxis = 2;
   string unitHorizontalAxis = 3;
-  repeated Point points = 4;
-  bool isStatic = 9;
+  string verticalAxis = 4;
+  string horizontalAxis = 5;
+  repeated Point points = 6;
+  bool isStatic = 7;
 }
 
 message GraphUpdate {

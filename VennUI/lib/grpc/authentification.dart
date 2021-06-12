@@ -1,6 +1,8 @@
 import 'package:VennUI/grpc/utilities.dart';
 import 'package:grpc/grpc.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:VennUI/grpc/v1/ui.pbgrpc.dart' as grpc;
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:VennUI/grpc/v1/ui.pb.dart' as proto;
 import 'package:VennUI/utilies.dart';
 

@@ -1,7 +1,9 @@
 import 'package:VennUI/providers/DashboardProvider.dart';
 import 'package:VennUI/utilies.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:provider/provider.dart';
 

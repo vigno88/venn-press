@@ -1,5 +1,7 @@
 import 'package:grpc/grpc.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:VennUI/grpc/v1/ui.pbgrpc.dart' as grpc;
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:VennUI/grpc/v1/ui.pb.dart' as proto;
 import 'package:VennUI/utilies.dart';
 
@@ -103,6 +105,26 @@ class SettingGrpcAPI {
         // Try again
         Future.delayed(retryDelay, () {
           return updateChoice(u);
+        });
+      }
+    }
+  }
+
+  // Asynchronous function to update a choice settings
+  Future<void> updateGraph(proto.GraphUpdate u) async {
+    if (_clientSend == null) {
+      _clientSend = newClient(serverIP, serverPort);
+    }
+    try {
+      await grpc.SettingServiceClient(_clientSend).updateGraphSettings(u);
+    } catch (e) {
+      if (!_isShutdown) {
+        // Invalidate current client
+        _shutdownSend();
+        print(e.toString());
+        // Try again
+        Future.delayed(retryDelay, () {
+          return updateGraph(u);
         });
       }
     }

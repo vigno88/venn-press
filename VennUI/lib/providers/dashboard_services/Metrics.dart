@@ -14,23 +14,17 @@ class MetricService {
   // isAlert is used as a flag to tell when one of the metric tiles is in alert
   bool isAlert = false;
 
-  // config is constant information about each metric tiles
-  List<proto.MetricConfig> config = [];
-
-  // metricChip is the list of metricChip widget
-  List<MetricData> _metricData = [];
+  List<MetricChip> chips = [];
 
   // Configuration and metric service API object
   MetricGrpcAPI? _metricAPI;
 
-  MetricService(MetricGrpcAPI m) {
-    _metricAPI = m;
-  }
+  MetricService(this._metricAPI);
 
   Future<void> initiate() async {
     // Get the config from the server
     var c = await _metricAPI!.readConfig();
-    config = c.configs;
+    List<proto.MetricConfig> config = c.configs;
 
     // Create the list of metric data
     var m = await _metricAPI!.getMetrics();
@@ -44,7 +38,7 @@ class MetricService {
         m.updates[i].target,
         config[i].hasTarget_6,
       );
-      _metricData.add(t);
+      chips.add(MetricChip(t, 1.0));
     }
 
     // Listen for new metrics from the backend
@@ -55,9 +49,11 @@ class MetricService {
 
   void processNewMetric(proto.MetricUpdate update) {
     // Update the required tile
-    for (int i = 0; i < _metricData.length; i++) {
-      if (_metricData[i].name == update.name) {
-        _metricData[i].update(update);
+    for (int i = 0; i < chips.length; i++) {
+      if (chips[i].data.name == update.name) {
+        MetricData d = chips[i].data;
+        d.update(update);
+        chips[i] = MetricChip(d, 1.0);
         _updates.add(i);
       }
     }
@@ -75,14 +71,10 @@ class MetricService {
   }
 
   List<Tile> getTiles() {
-    return _metricData
-        .map((data) => MetricChip(data, 1.0))
-        .toList()
-        .map((chip) => Tile(chip, false, 2, 1))
-        .toList();
+    return chips.map((chip) => Tile(chip, false, 2, 1)).toList();
   }
 
-  int get numberOfTiles => _metricData.length;
+  int get numberOfTiles => chips.length;
 }
 
 class MetricData {

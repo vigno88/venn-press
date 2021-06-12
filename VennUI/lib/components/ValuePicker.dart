@@ -1,20 +1,32 @@
-import 'package:VennUI/dialogs/ValuePickerDialog.dart';
+import 'package:VennUI/components/Notification.dart';
+import 'package:VennUI/dialogs/EditSingleNumberDialog.dart';
+import 'package:VennUI/providers/NotificationProvider.dart';
 import 'package:VennUI/utilies.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:provider/provider.dart';
 
 class ValuePicker extends StatefulWidget {
-  // final double value;
+  ValuePicker(
+      this.index, this.initialValue, this.max, this.min, this.updateValue);
 
-  // const ValuePicker(this.value);
+  final double initialValue;
+  final double max;
+  final double min;
+  final void Function(double, int) updateValue;
+  final int index;
 
   @override
-  _ValuePickerState createState() => _ValuePickerState();
+  _ValuePickerState createState() => _ValuePickerState(initialValue);
 }
 
 class _ValuePickerState extends State<ValuePicker> {
-  double value = 2.0030;
+  _ValuePickerState(this.value);
+
+  double value;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +45,7 @@ class _ValuePickerState extends State<ValuePicker> {
                 flex: 4,
                 child: ValuePickerButton(
                   Feather.minus,
-                  () => decreaseByOne(),
+                  () => decreaseByOne(context),
                 )),
             Expanded(
                 flex: 5,
@@ -42,9 +54,8 @@ class _ValuePickerState extends State<ValuePicker> {
                         onTap: () => showDialog(
                             context: context,
                             builder: (_) {
-                              return ValuePickerDialogBox();
-                              // return ChangeNotifierProvider.value(
-                              //     // value: provider, child: EditDialogBox());
+                              return EditSingleNumberDialogBox(
+                                  value, widget.max, widget.min, update);
                             }),
                         child: AutoSizeText(
                           doubleAsString(value),
@@ -56,7 +67,7 @@ class _ValuePickerState extends State<ValuePicker> {
                 flex: 4,
                 child: ValuePickerButton(
                   Feather.plus,
-                  () => increaseByOne(),
+                  () => increaseByOne(context),
                 )),
           ],
         ),
@@ -64,15 +75,34 @@ class _ValuePickerState extends State<ValuePicker> {
     );
   }
 
-  void increaseByOne() {
+  void update(BuildContext context, double v) {
+    value = v;
+    widget.updateValue(v, widget.index);
+  }
+
+  void increaseByOne(BuildContext context) {
+    if (value + 1 > widget.max) {
+      context.read<NotificationProvider>().displayNotification(NotificationData(
+          NotificationType.Warning,
+          "Cannot increase more than the maximum value: " +
+              widget.max.toString()));
+      return;
+    }
     setState(() {
-      value += 1;
+      widget.updateValue(++value, widget.index);
     });
   }
 
-  void decreaseByOne() {
+  void decreaseByOne(BuildContext context) {
+    if (value - 1 < widget.min) {
+      context.read<NotificationProvider>().displayNotification(NotificationData(
+          NotificationType.Warning,
+          "Cannot decrease more than the minimum value: " +
+              widget.min.toString()));
+      return;
+    }
     setState(() {
-      value -= 1;
+      widget.updateValue(--value, widget.index);
     });
   }
 }

@@ -622,9 +622,9 @@ class SettingsButtons extends StatelessWidget {
             SizedBox(
               height: 15,
             ),
-            SettingButton('Info', (arg) {
-              context.read<SettingsProvider>().showInfoModal(arg);
-            }),
+            // SettingButton('Info', (arg) {
+            //   context.read<SettingsProvider>().showInfoModal(arg);
+            // }),
           ],
         ));
   }

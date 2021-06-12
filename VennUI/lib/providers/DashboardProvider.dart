@@ -1,5 +1,6 @@
 import 'package:VennUI/components/Grid.dart';
 import 'package:VennUI/providers/dashboard_services/Control.dart';
+import 'package:VennUI/providers/dashboard_services/Graphics.dart';
 import 'package:VennUI/providers/dashboard_services/Metrics.dart';
 import 'package:flutter/material.dart';
 import 'package:VennUI/utilies.dart';
@@ -14,6 +15,7 @@ class DashboardProvider with ChangeNotifier {
   final grid = Grid();
   MetricService? metricService;
   ControlService? controlService;
+  GraphicService? graphicService;
 
   // modifiedTileIndex tells to the Selector (of this provider) which tiles needs to be updated
   int modifiedTileIndex = 0;
@@ -27,9 +29,10 @@ class DashboardProvider with ChangeNotifier {
   bool isAlert = false;
 
   // dragTargets are placeholder for tiles that will be used when tiles are movable
-  List<Widget> _dragTargets = [];
-
   List<Widget> widgets = [];
+  int _dragTargetLen = 0;
+
+  // List<Tile> tiles = [];
 
   // tilePositions are the position of each of the widget on the grid
   List<Tuple2> _tilePositions = [
@@ -38,13 +41,14 @@ class DashboardProvider with ChangeNotifier {
     Tuple2(2, 0),
     Tuple2(0, 0),
     Tuple2(0, 2),
-    // Tuple2(4, 2),
-    // Tuple2(5, 2),
+    Tuple2(4, 0),
+    Tuple2(4, 2),
   ];
 
-  DashboardProvider(MetricService m, ControlService c) {
+  DashboardProvider(MetricService m, ControlService c, GraphicService g) {
     metricService = m;
     controlService = c;
+    graphicService = g;
     initiate();
   }
 
@@ -52,34 +56,37 @@ class DashboardProvider with ChangeNotifier {
     // Wait until both service initiate
     await metricService!.initiate();
     await controlService!.initiate();
-    _dragTargets = getDragTargets();
+    await graphicService!.initiate();
+    widgets.addAll(getDragTargets());
+    widgets.addAll(getDashboardWidgets());
     isLoading = false;
-    // Get the list of widgets to display on dashboard
-    widgets = new List<Widget>.from(getWidgets());
     notifyListeners();
 
     // Listen to the update stream of the metric service
     metricService!.updateStream.listen((update) {
-      modifiedTileIndex = _dragTargets.length + update;
-      // Get the updated list of widgets
-      widgets[modifiedTileIndex] = getWidgets()[modifiedTileIndex];
+      modifiedTileIndex = _dragTargetLen + update;
+      widgets[modifiedTileIndex] =
+          (widgets[modifiedTileIndex] as DashboardWidget)
+              .copy(metricService!.getTiles()[update]);
       notifyListeners();
     });
 
     // Listen to the update stream of the control service
     controlService!.updateStream.listen((update) {
       modifiedTileIndex =
-          _dragTargets.length + metricService!.numberOfTiles + update;
-      // Get the updated list of widgets
-      widgets[modifiedTileIndex] = getWidgets()[modifiedTileIndex];
+          _dragTargetLen + metricService!.numberOfTiles + update;
+      widgets[modifiedTileIndex] =
+          (widgets[modifiedTileIndex] as DashboardWidget)
+              .copy(controlService!.getTiles()[update]);
       notifyListeners();
     });
   }
 
   List<Tile> getTiles() {
-    List<Tile> tiles = new List<Tile>.from(metricService!.getTiles());
+    List<Tile> tiles = [];
+    tiles.addAll(metricService!.getTiles());
     tiles.addAll(controlService!.getTiles());
-    // tiles.add(Tile(PressionChip(), false, 2, 1));
+    tiles.addAll(graphicService!.getTiles());
     return tiles;
   }
 
@@ -92,9 +99,7 @@ class DashboardProvider with ChangeNotifier {
   }
 
   List<Widget> getWidgets() {
-    List<Widget> w = new List<Widget>.from(_dragTargets);
-    w.addAll(getDashboardWidgets());
-    return w;
+    return widgets;
   }
 
   List<Widget> getDragTargets() {
@@ -103,6 +108,7 @@ class DashboardProvider with ChangeNotifier {
       targets.add(CellDragTarget(
           getXCoord(i, grid.width), getYCoord(i, grid.width), grid));
     }
+    _dragTargetLen = targets.length;
     return targets;
   }
 

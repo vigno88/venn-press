@@ -40,6 +40,7 @@ const MetricUpdate$json = const {
     const {'1': 'name', '3': 1, '4': 1, '5': 9, '10': 'name'},
     const {'1': 'value', '3': 2, '4': 1, '5': 1, '10': 'value'},
     const {'1': 'target', '3': 3, '4': 1, '5': 1, '10': 'target'},
+    const {'1': 'timestamp', '3': 4, '4': 1, '5': 9, '10': 'timestamp'},
   ],
 };
 
@@ -140,8 +141,10 @@ const GraphSettings$json = const {
     const {'1': 'name', '3': 1, '4': 1, '5': 9, '10': 'name'},
     const {'1': 'unitVerticalAxis', '3': 2, '4': 1, '5': 9, '10': 'unitVerticalAxis'},
     const {'1': 'unitHorizontalAxis', '3': 3, '4': 1, '5': 9, '10': 'unitHorizontalAxis'},
-    const {'1': 'points', '3': 4, '4': 3, '5': 11, '6': '.v1.Point', '10': 'points'},
-    const {'1': 'isStatic', '3': 9, '4': 1, '5': 8, '10': 'isStatic'},
+    const {'1': 'verticalAxis', '3': 4, '4': 1, '5': 9, '10': 'verticalAxis'},
+    const {'1': 'horizontalAxis', '3': 5, '4': 1, '5': 9, '10': 'horizontalAxis'},
+    const {'1': 'points', '3': 6, '4': 3, '5': 11, '6': '.v1.Point', '10': 'points'},
+    const {'1': 'isStatic', '3': 7, '4': 1, '5': 8, '10': 'isStatic'},
   ],
 };
 

@@ -1,7 +1,7 @@
-import 'package:VennUI/grpc/v1/ui.pb.dart';
 import 'package:VennUI/providers/SettingsProvider.dart';
 import 'package:VennUI/providers/dashboard_services/Metrics.dart';
 import 'package:VennUI/utilies.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -62,6 +62,10 @@ class DashboardWidget extends StatefulWidget {
     this.grid,
     this.tile,
   );
+
+  DashboardWidget copy(Tile t) {
+    return DashboardWidget(this.posX, this.posY, this.grid, t);
+  }
 
   @override
   _DashboardWidgetState createState() => _DashboardWidgetState();
@@ -131,7 +135,7 @@ class Tile extends StatelessWidget {
   }
 }
 
-class MetricChip extends StatelessWidget {
+class MetricChip extends StatefulWidget {
   MetricChip(
     this.data,
     this.opacityValue,
@@ -141,15 +145,36 @@ class MetricChip extends StatelessWidget {
   final double opacityValue;
 
   @override
+  _MetricChipState createState() => _MetricChipState(data);
+}
+
+class _MetricChipState extends State<MetricChip> {
+  // @override
+  // void didUpdateWidget(oldWidget) {
+  //   super.didUpdateWidget(oldWidget);
+
+  // }
+  _MetricChipState(this.data);
+  MetricData data;
+
+  updateData(MetricData data) {
+    setState(() {
+      this.data = data;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
-          showModal(context, "Information of" + data.name, data.info);
+          showModal(
+              context, "Information of" + widget.data.name, widget.data.info);
         },
         child: Container(
           decoration: BoxDecoration(
-            color:
-                data.isAlert ? Colors.redAccent.withOpacity(0.6) : Colors.white,
+            color: widget.data.isAlert
+                ? Colors.redAccent.withOpacity(0.6)
+                : Colors.white,
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
           padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
@@ -165,10 +190,12 @@ class MetricChip extends StatelessWidget {
                       borderRadius: BorderRadius.all(Radius.circular(10))),
                   child: Center(
                     child: IconButton(
-                        icon: data.icon,
+                        icon: widget.data.icon,
                         onPressed: () {
-                          showModal(context, "Information of " + data.name,
-                              data.info);
+                          showModal(
+                              context,
+                              "Information of " + widget.data.name,
+                              widget.data.info);
                         },
                         iconSize: 70.0,
                         color: Colors.white),
@@ -185,32 +212,35 @@ class MetricChip extends StatelessWidget {
                             TextSpan(
                               children: [
                                 TextSpan(
-                                    text: data.value.toStringAsFixed(1) + " ",
+                                    text: widget.data.value.toStringAsFixed(1) +
+                                        " ",
                                     style: TextStyle(
                                       fontSize: 160,
                                     )),
                                 TextSpan(
-                                    text: data.unit,
+                                    text: widget.data.unit,
                                     style: TextStyle(
                                       fontSize: 125,
                                     )),
                                 TextSpan(
                                     text: ' (' +
-                                        data.target.toString() +
+                                        widget.data.target.toString() +
                                         ' ' +
-                                        data.unit +
+                                        widget.data.unit +
                                         ')',
                                     style: TextStyle(
                                         fontSize: 85,
-                                        color: data.hasTarget
-                                            ? (data.isAlert
+                                        color: widget.data.hasTarget
+                                            ? (widget.data.isAlert
                                                 ? Colors.white
                                                 : paleColor.withOpacity(0.7))
                                             : Colors.transparent)),
                               ],
                             ),
                             style: TextStyle(
-                              color: data.isAlert ? Colors.white : baseColor,
+                              color: widget.data.isAlert
+                                  ? Colors.white
+                                  : baseColor,
                               fontWeight: FontWeight.bold,
                               fontSize: 150,
                             ),
@@ -224,18 +254,18 @@ class MetricChip extends StatelessWidget {
                               child: AutoSizeText.rich(
                             TextSpan(children: [
                               TextSpan(
-                                  text: data.type + " ",
+                                  text: widget.data.type + " ",
                                   style: TextStyle(
                                       fontSize: 30,
-                                      color: data.isAlert
+                                      color: widget.data.isAlert
                                           ? Colors.white.withOpacity(0.6)
                                           : infoColor)),
                               TextSpan(
-                                text: data.name,
+                                text: widget.data.name,
                                 style: TextStyle(
                                     fontSize: 30,
                                     fontWeight: FontWeight.bold,
-                                    color: data.isAlert
+                                    color: widget.data.isAlert
                                         ? Colors.white
                                         : infoColor),
                               )

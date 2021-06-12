@@ -5,7 +5,6 @@ import 'package:VennUI/components/Grid.dart';
 import 'package:VennUI/grpc/control.dart';
 import 'package:VennUI/grpc/v1/ui.pb.dart' as proto;
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 
 class ControlService {
   // _updates is used to tell the provider which widget needs to be updated
@@ -17,51 +16,6 @@ class ControlService {
 
   // metricChip is the list of metricChip widget
   List<ButtonData> _buttonsData = [];
-
-  // List<ButtonData> buttonsData = [
-  //   ButtonData("Motion", [
-  //     "UP",
-  //     "UP"
-  //   ], [
-  //     proto.Action(name: "motor", payload: "m#up"),
-  //     proto.Action(name: "motor", payload: "m#up")
-  //   ]),
-  //   ButtonData("Motion", [
-  //     "DOWN",
-  //     "DOWN"
-  //   ], [
-  //     proto.Action(name: "motor", payload: "m#down"),
-  //     proto.Action(name: "motor", payload: "m#down")
-  //   ]),
-  //   ButtonData("Test", [
-  //     "Start",
-  //     "Stop"
-  //   ], [
-  //     proto.Action(name: "test", payload: "t#start"),
-  //     proto.Action(name: "test", payload: "t#stop")
-  //   ]),
-  //   ButtonData("Heat", [
-  //     "Start",
-  //     "Stop"
-  //   ], [
-  //     proto.Action(name: "heat", payload: "h#start"),
-  //     proto.Action(name: "heat", payload: "h#stop")
-  //   ]),
-  //   ButtonData("Pression", [
-  //     "Tare",
-  //     "Tare"
-  //   ], [
-  //     proto.Action(name: "pression", payload: "p#tare"),
-  //     proto.Action(name: "pression", payload: "p#tare")
-  //   ]),
-  //   ButtonData("Distance", [
-  //     "Tare",
-  //     "Tare"
-  //   ], [
-  //     proto.Action(name: "distance", payload: "d#tare"),
-  //     proto.Action(name: "distance", payload: "d#tare")
-  //   ]),
-  // ];
 
   List<Tile> tiles = [];
 
@@ -107,27 +61,11 @@ class ControlService {
     }
     return [
       Tile(ControlContainer(buttons), false, 4, 2),
-      // Tile(
-      //     ControlContainer(
-      //       [
-      //         ActionButton(buttonsData[7].title,
-      //             buttonsData[7].texts[buttonsData[7].state], 7, 1),
-      //         ActionButton(buttonsData[8].title,
-      //             buttonsData[8].texts[buttonsData[8].state], 8, 1),
-      //       ],
-      //     ),
-      //     false,
-      //     1,
-      //     2),
-      // Tile(
-      //     ControlContainer([
-      //       ActionButton(buttonsData[9].title,
-      //           buttonsData[9].texts[buttonsData[9].state], 9, 2),
-      //     ]),
-      //     false,
-      //     1,
-      //     1),
     ];
+  }
+
+  int numberOfTiles() {
+    return 1;
   }
 
   Future<void> pressButton(

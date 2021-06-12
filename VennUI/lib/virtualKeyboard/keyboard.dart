@@ -30,7 +30,7 @@ class VirtualKeyboard extends StatefulWidget {
   final double fontSize;
 
   /// The builder function will be called for each Key object.
-  late Widget Function(BuildContext context, VirtualKeyboardKey key)? builder;
+  final Widget Function(BuildContext context, VirtualKeyboardKey key)? builder;
 
   /// Set to true if you want only to show Caps letters.
   final bool alwaysCaps;
@@ -178,10 +178,6 @@ class _VirtualKeyboardState extends State<VirtualKeyboard> {
               } else {
                 // Call the builder function, so the user can specify custom UI for keys.
                 keyWidget = builder!(context, virtualKeyboardKey);
-
-                if (keyWidget == null) {
-                  throw 'builder function must return Widget';
-                }
               }
 
               return keyWidget!;
@@ -223,7 +219,7 @@ class _VirtualKeyboardState extends State<VirtualKeyboard> {
     Widget actionKey = GestureDetector();
 
     // Switch the action type to build action Key widget.
-    switch (key.action) {
+    switch (key.action!) {
       case VirtualKeyboardKeyAction.Backspace:
         actionKey = GestureDetector(
             onLongPress: () {

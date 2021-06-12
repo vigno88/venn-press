@@ -4,7 +4,9 @@ package service
 
 import (
 	"context"
+	"fmt"
 	"log"
+	"time"
 
 	proto "github.com/vigno88/Venn/VennServer/pkg/api/v1"
 	"github.com/vigno88/Venn/VennServer/pkg/metrics"
@@ -35,16 +37,21 @@ func (s *metricServiceServer) GetAll(ctx context.Context, e *proto.Empty) (*prot
 
 func (s *metricServiceServer) Subscribe(e *proto.Empty, stream proto.MetricService_SubscribeServer) error {
 	log.Print("Metrics Subscribe requested")
+	value := 10.0
 	for {
-		m := <-metricsChan
-		// metrics.Put(context.Background(), m)
-		if err :=
-			stream.Send(&proto.MetricUpdates{Updates: m.Updates}); err != nil {
-			// put message back to the channel
-			metricsChan <- m
-			log.Printf("Stream connection failed: %v", err)
-			return nil
-		}
+		fmt.Println("send metrics")
+		time.Sleep(2 * time.Second)
+		stream.Send(&proto.MetricUpdates{Updates: []*proto.MetricUpdate{{Name: "Top", Value: value}, {Name: "Bottom", Value: value}, {Name: "Plates", Value: value}, {Name: "Load Cell", Value: value}}})
+		value += 0.1
+		// m := <-metricsChan
+		// // metrics.Put(context.Background(), m)
+		// if err :=
+		// 	stream.Send(&proto.MetricUpdates{Updates: m.Updates}); err != nil {
+		// 	// put message back to the channel
+		// 	metricsChan <- m
+		// 	log.Printf("Stream connection failed: %v", err)
+		// 	return nil
+		// }
 	}
 }
 

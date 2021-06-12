@@ -12,6 +12,7 @@ import 'package:VennUI/providers/SettingsProvider.dart';
 import 'package:VennUI/providers/UserProvider.dart';
 import 'package:VennUI/providers/DashboardProvider.dart';
 import 'package:VennUI/providers/dashboard_services/Control.dart';
+import 'package:VennUI/providers/dashboard_services/Graphics.dart';
 import 'package:VennUI/providers/dashboard_services/Metrics.dart';
 import 'package:flutter/material.dart';
 import 'package:VennUI/router.dart';
@@ -43,13 +44,14 @@ void main() {
     // Launch dashboard services
     var mService = MetricService(mAPI);
     var cService = ControlService(ctlAPI);
+    var gService = GraphicService(rAPI);
 
     // Intl.defaultLocale = 'en_CA';
     RouterVenn.setupRouter();
     runApp(MultiProvider(providers: [
       ChangeNotifierProvider(create: (_) => SettingsProvider(rAPI, mAPI)),
       ChangeNotifierProvider(
-          create: (_) => DashboardProvider(mService, cService)),
+          create: (_) => DashboardProvider(mService, cService, gService)),
       ChangeNotifierProvider(create: (_) => NetworkProvider(nAPI)),
       ChangeNotifierProvider(create: (_) => UserProvider(aAPI)),
       ChangeNotifierProvider(
@@ -67,6 +69,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      // showPerformanceOverlay: true,
       debugShowCheckedModeBanner: false,
       title: 'VennUI',
       theme: ThemeData(fontFamily: 'Helvetica'),

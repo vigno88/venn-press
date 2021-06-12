@@ -6,14 +6,13 @@ import 'package:VennUI/providers/NotificationProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:VennUI/grpc/v1/ui.pb.dart' as proto;
 import 'package:VennUI/utilies.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 import 'package:provider/provider.dart';
 
 class SettingsProvider with ChangeNotifier {
   // current page
   String currentPage = "list";
 
-  // Sliders
+  // setting
   final int sliderPerPage = 4;
 
   bool isLoading = true;
@@ -23,6 +22,8 @@ class SettingsProvider with ChangeNotifier {
 
   List<proto.Setting> settings = [];
   List<double> oldSettings = [];
+
+  List<proto.GraphSettings> graphSettings = [];
 
   // Selectors
   final int selectorPerPage = 4;
@@ -46,7 +47,7 @@ class SettingsProvider with ChangeNotifier {
     initiate();
   }
 
-  Future<void> initiate() async {
+  void initiate() async {
     // Retrieve the initial settings
     // var currentRecipe = await _settingAPI.readRecipe('default');
     var currentRecipe = await _settingAPI!.readCurrentRecipe();
@@ -55,6 +56,8 @@ class SettingsProvider with ChangeNotifier {
     oldSettings =
         List.generate(settings.length, (index) => settings[index].value);
     numPagesSliders = (settings.length / sliderPerPage).ceil();
+
+    graphSettings = currentRecipe.graphs;
 
     // Send the initial settings to the backend
     for (var s in settings) {
@@ -145,6 +148,7 @@ class SettingsProvider with ChangeNotifier {
   }
 
   Future<void> saveRecipe(BuildContext context) async {
+    // Send update settings
     var modified = false;
     for (int i = 0; i < settings.length; i++) {
       if (settings[i].value != oldSettings[i]) {
@@ -158,6 +162,11 @@ class SettingsProvider with ChangeNotifier {
         oldSettings[i] = settings[i].value;
         modified = true;
       }
+    }
+    // Send update graph
+    for (proto.GraphSettings s in graphSettings) {
+      _settingAPI!.updateGraph(proto.GraphUpdate(
+          isStatic: false, name: s.name, newPoints: s.points));
     }
     if (modified) {
       context.read<NotificationProvider>().displayNotification(NotificationData(
@@ -290,6 +299,34 @@ class SettingsProvider with ChangeNotifier {
 
   void updateSettingsPage(String newPage) {
     currentPage = newPage;
+    notifyListeners();
+  }
+
+  // Graph related methods
+  void editGraph(int ig, int ip, double v, Coord c) {
+    if (c == Coord.X) {
+      graphSettings[ig].points[ip].x = v;
+    } else {
+      graphSettings[ig].points[ip].y = v;
+    }
+    notifyListeners();
+  }
+
+  void removeLastGraphPoint(int i) {
+    if (graphSettings[i].points.length > 0) {
+      graphSettings[i].points.removeLast();
+    }
+    notifyListeners();
+  }
+
+  void appdOnePointGraph(int i) {
+    if (graphSettings[i].points.length == 0) {
+      graphSettings[i].points.add(proto.Point(x: 0, y: 0));
+    } else {
+      proto.Point p =
+          graphSettings[i].points[graphSettings[i].points.length - 1];
+      graphSettings[i].points.add(proto.Point(x: p.x, y: p.y));
+    }
     notifyListeners();
   }
 }

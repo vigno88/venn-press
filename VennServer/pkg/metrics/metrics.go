@@ -15,7 +15,8 @@ var db storm.DB
 // var bucketName string
 
 type Metric struct {
-	Name      string `storm:"id"`
+	Id        int `storm:"id,increment"`
+	Name      string
 	SmallName string
 	Unit      string
 	Target    float32
