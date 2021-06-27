@@ -5,8 +5,8 @@ package service
 import (
 	"context"
 
-	proto "github.com/vigno88/Venn/VennServer/pkg/api/v1"
-	"github.com/vigno88/Venn/VennServer/pkg/motors"
+	proto "github.com/vigno88/venn-press/VennServer/pkg/api/v1"
+	"github.com/vigno88/venn-press/VennServer/pkg/motors"
 )
 
 type motorControlServiceServer struct {

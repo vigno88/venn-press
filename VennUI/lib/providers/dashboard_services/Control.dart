@@ -105,7 +105,8 @@ class ButtonData {
 
   void updateState() {
     // Only switch the state if the button is a two-state button
-    if (type == proto.ControlConfig_ControlType.TWO_STATE_BUTTON) {
+    if (type == proto.ControlConfig_ControlType.TWO_STATE_BUTTON ||
+        type == proto.ControlConfig_ControlType.ICON_BUTTON) {
       if (state == 0) {
         state = 1;
       } else {

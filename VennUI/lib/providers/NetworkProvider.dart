@@ -28,9 +28,7 @@ class NetworkProvider with ChangeNotifier {
     }
     // Get the list of wifi
     var wifis = await _networkAPI!.readWifiList();
-    if (wifis.sSIDs != null) {
-      wifiSSIDs = wifis.sSIDs;
-    }
+    wifiSSIDs = wifis.sSIDs;
     isLoading = false;
     notifyListeners();
   }

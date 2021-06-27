@@ -1,9 +1,7 @@
 import 'package:VennUI/providers/DashboardProvider.dart';
 import 'package:VennUI/utilies.dart';
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:provider/provider.dart';
 
@@ -62,10 +60,10 @@ class _ActionButtonState extends State<ActionButton> {
           SizedBox(
             height: 10,
           ),
-          GestureDetector(
-              onTapDown: (details) => _tapDown(context),
-              onTapUp: (details) => _tapUp(context),
-              onTap: () => _onTap(context),
+          Listener(
+              onPointerDown: (details) => _tapDown(context),
+              onPointerUp: (details) => _tapUp(context),
+              // onTap: () => _onTap(context),
               child: Container(
                   height: 110,
                   width: 110,
@@ -89,11 +87,11 @@ class _ActionButtonState extends State<ActionButton> {
     setState(() {
       colorButton = paleBlue;
     });
-    if (widget.type == buttonType.ICON_BUTTON) {
-      context
-          .read<DashboardProvider>()
-          .pressButton(context, widget.buttonIndex, widget.tileIndex);
-    }
+    // if (widget.type == buttonType.ICON_BUTTON) {
+    context
+        .read<DashboardProvider>()
+        .pressButton(context, widget.buttonIndex, widget.tileIndex);
+    // }
   }
 
   void _tapDown(BuildContext context) {
@@ -109,11 +107,11 @@ class _ActionButtonState extends State<ActionButton> {
 
   void _onTap(BuildContext context) {
     // Icon button actions are sent on tap down and tap up
-    if (widget.type != buttonType.ICON_BUTTON) {
-      context
-          .read<DashboardProvider>()
-          .pressButton(context, widget.buttonIndex, widget.tileIndex);
-    }
+    // if (widget.type != buttonType.ICON_BUTTON) {
+    //   context
+    //       .read<DashboardProvider>()
+    //       .pressButton(context, widget.buttonIndex, widget.tileIndex);
+    // }
   }
 
   Widget? getContent() {

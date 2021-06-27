@@ -6,10 +6,10 @@ import (
 	"os"
 	"runtime/debug"
 
-	proto "github.com/vigno88/Venn/VennServer/pkg/api/v1"
-	"github.com/vigno88/Venn/VennServer/pkg/orchestrator"
-	"github.com/vigno88/Venn/VennServer/pkg/protocol/grpc"
-	"github.com/vigno88/Venn/VennServer/pkg/service"
+	proto "github.com/vigno88/venn-press/VennServer/pkg/api/v1"
+	"github.com/vigno88/venn-press/VennServer/pkg/orchestrator"
+	"github.com/vigno88/venn-press/VennServer/pkg/protocol/grpc"
+	"github.com/vigno88/venn-press/VennServer/pkg/service"
 )
 
 func main() {

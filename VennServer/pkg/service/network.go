@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"log"
 
-	proto "github.com/vigno88/Venn/VennServer/pkg/api/v1"
-	"github.com/vigno88/Venn/VennServer/pkg/wifi"
+	proto "github.com/vigno88/venn-press/VennServer/pkg/api/v1"
+	"github.com/vigno88/venn-press/VennServer/pkg/wifi"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )

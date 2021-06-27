@@ -1,5 +1,4 @@
 import 'package:VennUI/virtualKeyboard/key.dart';
-import 'package:VennUI/virtualKeyboard/type.dart';
 import 'package:VennUI/virtualKeyboard/key_type.dart';
 import 'package:VennUI/virtualKeyboard/key_action.dart';
 

@@ -1,31 +1,18 @@
-module github.com/vigno88/Venn/VennServer
+module github.com/vigno88/venn-press/VennServer
 
-go 1.13
+go 1.15
 
 require (
-	github.com/DataDog/zstd v1.4.5 // indirect
 	github.com/asdine/storm/v3 v3.2.1
-	github.com/dgraph-io/badger/v2 v2.2007.2
-	github.com/dgraph-io/badger/v3 v3.2011.1
-	github.com/dgryski/go-farm v0.0.0-20200201041132-a6ae2369ad13 // indirect
-	github.com/go-ping/ping v0.0.0-20210402232549-1726e5ede5b6
-	github.com/golang/protobuf v1.4.3
-	github.com/golang/snappy v0.0.2 // indirect
-	github.com/mark2b/wpa-connect v1.3.1
-	github.com/pkg/errors v0.9.1 // indirect
-	github.com/rs/xid v1.2.1
-	go.bug.st/serial v1.1.1
-	go.etcd.io/bbolt v1.3.5
-	golang.org/x/net v0.0.0-20210331212208-0fccb6fa2b5c // indirect
-	golang.org/x/sync v0.0.0-20201207232520-09787c993a3a // indirect
-	golang.org/x/sys v0.0.0-20210403161142-5e06dd20ab57 // indirect
-	golang.org/x/text v0.3.5 // indirect
-	golang.org/x/tools v0.0.0-20210107193943-4ed967dd8eff // indirect
-	golang.org/x/tools/gopls v0.6.2-0.20210107193943-4ed967dd8eff // indirect
-	google.golang.org/appengine v1.6.7
-	google.golang.org/genproto v0.0.0-20210106152847-07624b53cd92 // indirect
-	google.golang.org/grpc v1.34.0
+	github.com/go-ping/ping v0.0.0-20210506233800-ff8be3320020
+	github.com/mark2b/wpa-connect v1.5.1
+	github.com/rs/xid v1.3.0
+	github.com/tinylib/msgp v1.1.5
+	github.com/vmihailenco/msgpack v4.0.4+incompatible
+	go.bug.st/serial v1.1.3
+	golang.org/x/sys v0.0.0-20210616094352-59db8d763f22 // indirect
+	golang.org/x/tools v0.1.3 // indirect
+	google.golang.org/appengine v1.6.7 // indirect
+	google.golang.org/grpc v1.38.0
 	google.golang.org/protobuf v1.25.0
-	gopkg.in/yaml.v2 v2.4.0
-	honnef.co/go/tools v0.1.0 // indirect
 )

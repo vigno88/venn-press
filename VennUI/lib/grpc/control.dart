@@ -4,9 +4,7 @@ import 'package:VennUI/components/Notification.dart';
 import 'package:VennUI/grpc/utilities.dart';
 import 'package:flutter/material.dart';
 import 'package:grpc/grpc.dart';
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:VennUI/grpc/v1/ui.pb.dart' as proto;
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:VennUI/grpc/v1/ui.pbgrpc.dart' as grpc;
 import 'package:VennUI/utilies.dart';
 
@@ -56,7 +54,7 @@ class ControlGrpcAPI {
     }
     try {
       var request = proto.Empty().createEmptyInstance();
-      var stream = grpc.ControlServiceClient(_clientSend).subscribe(request);
+      var stream = grpc.ControlServiceClient(_clientSend!).subscribe(request);
       await for (proto.ControlEvent m in stream) {
         yield m;
       }
@@ -80,7 +78,7 @@ class ControlGrpcAPI {
     }
     try {
       proto.SendResponse response =
-          await grpc.ControlServiceClient(_clientSend).send(a);
+          await grpc.ControlServiceClient(_clientSend!).send(a);
       if (response.error != "") {
         print(response.error);
         _notifStream!
@@ -112,7 +110,7 @@ class ControlGrpcAPI {
 
     try {
       var configs =
-          await grpc.ControlServiceClient(_clientSend).readConfig(request);
+          await grpc.ControlServiceClient(_clientSend!).readConfig(request);
       return configs;
     } catch (e) {
       if (!_isShutdown) {

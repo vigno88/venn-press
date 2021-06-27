@@ -4,9 +4,9 @@ import (
 	"context"
 	"log"
 
-	config "github.com/vigno88/Venn/VennServer/configs"
-	"github.com/vigno88/Venn/VennServer/pkg/control"
-	"github.com/vigno88/Venn/VennServer/pkg/util"
+	config "github.com/vigno88/venn-press/VennServer/configs"
+	"github.com/vigno88/venn-press/VennServer/pkg/control"
+	"github.com/vigno88/venn-press/VennServer/pkg/util"
 )
 
 func main() {

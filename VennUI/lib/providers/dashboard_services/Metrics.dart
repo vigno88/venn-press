@@ -38,6 +38,9 @@ class MetricService {
         m.updates[i].target,
         config[i].hasTarget_6,
       );
+      if (m.updates[i].name == "Plates") {
+        t.decimalCount = 5;
+      }
       chips.add(MetricChip(t, 1.0));
     }
 
@@ -88,6 +91,7 @@ class MetricData {
   bool _hasTarget = false;
   bool _isAlert = false;
   double _uncertainty = 2;
+  int decimalCount = 2;
 
   MetricData(
     String name,

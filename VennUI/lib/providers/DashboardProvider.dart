@@ -125,4 +125,14 @@ class DashboardProvider with ChangeNotifier {
   void pressButton(BuildContext context, int buttonIndex, int tileIndex) {
     controlService!.pressButton(context, buttonIndex, tileIndex);
   }
+
+  Future<void> updateGraphics() async {
+    await graphicService!.update();
+    widgets.clear();
+    notifyListeners();
+    widgets.addAll(getDragTargets());
+    widgets.addAll(getDashboardWidgets());
+    notifyListeners();
+    print("updated all tiles");
+  }
 }

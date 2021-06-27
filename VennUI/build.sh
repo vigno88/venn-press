@@ -4,7 +4,7 @@
 flutter build bundle
 
 # Build kernel snapshot 
-~/snap/flutter/common/flutter/bin/cache/dart-sdk/bin/dart \
+~/snap/flutter/common/flutter/bin/cache/dart-sdk/bin/dart  \
   ~/snap/flutter/common/flutter/bin/cache/dart-sdk/bin/snapshots/frontend_server.dart.snapshot \
   --sdk-root /home/nathan/snap/flutter/common/flutter/bin/cache/artifacts/engine/common/flutter_patched_sdk_product \
   --target=flutter \

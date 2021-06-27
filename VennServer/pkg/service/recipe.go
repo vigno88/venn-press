@@ -6,11 +6,11 @@ import (
 	"context"
 	"log"
 
-	proto "github.com/vigno88/Venn/VennServer/pkg/api/v1"
-	motors "github.com/vigno88/Venn/VennServer/pkg/motors"
-	recipe "github.com/vigno88/Venn/VennServer/pkg/recipes"
-	"github.com/vigno88/Venn/VennServer/pkg/serial"
-	"github.com/vigno88/Venn/VennServer/pkg/util"
+	proto "github.com/vigno88/venn-press/VennServer/pkg/api/v1"
+	motors "github.com/vigno88/venn-press/VennServer/pkg/motors"
+	recipe "github.com/vigno88/venn-press/VennServer/pkg/recipes"
+	"github.com/vigno88/venn-press/VennServer/pkg/serial"
+	"github.com/vigno88/venn-press/VennServer/pkg/util"
 )
 
 // settingServiceServer is implementation of proto.settingServiceServer proto interface

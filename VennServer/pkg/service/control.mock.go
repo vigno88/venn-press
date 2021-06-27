@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"log"
 
-	proto "github.com/vigno88/Venn/VennServer/pkg/api/v1"
-	"github.com/vigno88/Venn/VennServer/pkg/control"
+	proto "github.com/vigno88/venn-press/VennServer/pkg/api/v1"
+	"github.com/vigno88/venn-press/VennServer/pkg/control"
 )
 
 // metricServiceServer is implementation of proto.metricServiceServer proto interface

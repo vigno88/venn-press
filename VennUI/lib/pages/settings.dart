@@ -383,8 +383,6 @@ class SettingsPageIndicator extends StatelessWidget {
 class SelectorPageIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    int count = context.watch<SettingsProvider>().numPagesSelectors;
-    int index = context.watch<SettingsProvider>().activeIndexSelectors;
     return Container(
         height: 10,
         child: AnimatedSmoothIndicator(

@@ -43,8 +43,8 @@ final Color greyBackground = Color(0xfff6f8f9);
 final Color greyIcon = Color(0xff767c7d);
 final Color greyBorder = Color(0xffc5c6c7);
 
-// const serverIP = "127.0.0.1";
-const serverIP = "10.0.2.2";
+const serverIP = "127.0.0.1";
+// const serverIP = "10.0.2.2";
 
 int get1DCoord(int x, int y, int width) {
   return x + width * y;

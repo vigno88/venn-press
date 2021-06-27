@@ -1,8 +1,6 @@
 import 'package:VennUI/grpc/utilities.dart';
 import 'package:grpc/grpc.dart';
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:VennUI/grpc/v1/ui.pbgrpc.dart' as grpc;
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:VennUI/grpc/v1/ui.pb.dart' as proto;
 import 'package:VennUI/utilies.dart';
 
@@ -52,7 +50,8 @@ class MetricGrpcAPI {
     var request = grpc.Empty().createEmptyInstance();
 
     try {
-      var metrics = await grpc.MetricServiceClient(_clientSend).getAll(request);
+      var metrics =
+          await grpc.MetricServiceClient(_clientSend!).getAll(request);
       return metrics;
     } catch (e) {
       if (!_isShutdown) {
@@ -78,7 +77,7 @@ class MetricGrpcAPI {
 
     try {
       var configs =
-          await grpc.MetricServiceClient(_clientSend).readConfig(request);
+          await grpc.MetricServiceClient(_clientSend!).readConfig(request);
       return configs;
     } catch (e) {
       if (!_isShutdown) {
@@ -100,7 +99,7 @@ class MetricGrpcAPI {
       _clientSend = newClient(serverIP, serverPort);
     }
     try {
-      await grpc.MetricServiceClient(_clientSend).updateConfig(c);
+      await grpc.MetricServiceClient(_clientSend!).updateConfig(c);
     } catch (e) {
       if (!_isShutdown) {
         // Invalidate current client
@@ -123,7 +122,7 @@ class MetricGrpcAPI {
     var request = grpc.Empty().createEmptyInstance();
 
     try {
-      var stream = grpc.MetricServiceClient(_clientReceive).subscribe(request);
+      var stream = grpc.MetricServiceClient(_clientReceive!).subscribe(request);
       await for (proto.MetricUpdates M in stream) {
         for (var m in M.updates) {
           yield m;

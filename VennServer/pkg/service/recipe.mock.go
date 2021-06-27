@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"log"
 
-	proto "github.com/vigno88/Venn/VennServer/pkg/api/v1"
-	recipe "github.com/vigno88/Venn/VennServer/pkg/recipes"
-	"github.com/vigno88/Venn/VennServer/pkg/util"
+	proto "github.com/vigno88/venn-press/VennServer/pkg/api/v1"
+	recipe "github.com/vigno88/venn-press/VennServer/pkg/recipes"
+	"github.com/vigno88/venn-press/VennServer/pkg/util"
 )
 
 // settingServiceServer is implementation of proto.settingServiceServer proto interface

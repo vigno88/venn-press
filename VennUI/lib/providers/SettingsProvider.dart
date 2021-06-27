@@ -2,6 +2,7 @@ import 'package:VennUI/components/Notification.dart';
 import 'package:VennUI/components/SettingPages.dart';
 import 'package:VennUI/grpc/metric.dart';
 import 'package:VennUI/grpc/settings.dart';
+import 'package:VennUI/providers/DashboardProvider.dart';
 import 'package:VennUI/providers/NotificationProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:VennUI/grpc/v1/ui.pb.dart' as proto;
@@ -165,17 +166,19 @@ class SettingsProvider with ChangeNotifier {
     }
     // Send update graph
     for (proto.GraphSettings s in graphSettings) {
-      _settingAPI!.updateGraph(proto.GraphUpdate(
+      await _settingAPI!.updateGraph(proto.GraphUpdate(
           isStatic: false, name: s.name, newPoints: s.points));
     }
-    if (modified) {
-      context.read<NotificationProvider>().displayNotification(NotificationData(
-          NotificationType.Success, "Sucessfully saved the new settings."));
-    } else {
-      context.read<NotificationProvider>().displayNotification(NotificationData(
-          NotificationType.Info,
-          "Nothing to save, all the settings are the same."));
-    }
+    // if (modified) {
+    context.read<NotificationProvider>().displayNotification(NotificationData(
+        NotificationType.Success, "Sucessfully saved the new settings."));
+    // }
+    // else {
+    //   context.read<NotificationProvider>().displayNotification(NotificationData(
+    //       NotificationType.Info,
+    //       "Nothing to save, all the settings are the same."));
+    // }
+    await context.read<DashboardProvider>().updateGraphics();
     notifyListeners();
   }
 

@@ -4,9 +4,9 @@ import (
 	"context"
 	"log"
 
-	config "github.com/vigno88/Venn/VennServer/configs"
-	recipe "github.com/vigno88/Venn/VennServer/pkg/recipes"
-	"github.com/vigno88/Venn/VennServer/pkg/util"
+	config "github.com/vigno88/venn-press/VennServer/configs"
+	recipe "github.com/vigno88/venn-press/VennServer/pkg/recipes"
+	"github.com/vigno88/venn-press/VennServer/pkg/util"
 )
 
 func main() {
@@ -14,7 +14,7 @@ func main() {
 	// Add the default recipe to the recipe store
 	// uuid := util.GetNewUUID(context.Background())
 	uuid := `default`
-	c.DefaultRecipe.UUID = uuid
+	c.DefaultRecipe.UUID = `default`
 	err := recipe.Init(context.Background(), util.PathRecipe)
 	if err != nil {
 		log.Fatalf("Error while init : %s\n", err.Error())

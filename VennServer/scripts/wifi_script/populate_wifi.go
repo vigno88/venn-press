@@ -4,8 +4,8 @@ import (
 	"context"
 	"log"
 
-	"github.com/vigno88/Venn/VennServer/pkg/util"
-	"github.com/vigno88/Venn/VennServer/pkg/wifi"
+	"github.com/vigno88/venn-press/VennServer/pkg/util"
+	"github.com/vigno88/venn-press/VennServer/pkg/wifi"
 )
 
 func main() {

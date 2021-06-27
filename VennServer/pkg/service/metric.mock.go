@@ -8,8 +8,8 @@ import (
 	"log"
 	"time"
 
-	proto "github.com/vigno88/Venn/VennServer/pkg/api/v1"
-	"github.com/vigno88/Venn/VennServer/pkg/metrics"
+	proto "github.com/vigno88/venn-press/VennServer/pkg/api/v1"
+	"github.com/vigno88/venn-press/VennServer/pkg/metrics"
 )
 
 // metricServiceServer is implementation of proto.metricServiceServer proto interface

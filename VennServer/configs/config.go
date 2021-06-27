@@ -1,10 +1,10 @@
 package config
 
 import (
-	proto "github.com/vigno88/Venn/VennServer/pkg/api/v1"
-	"github.com/vigno88/Venn/VennServer/pkg/control"
-	"github.com/vigno88/Venn/VennServer/pkg/metrics"
-	recipe "github.com/vigno88/Venn/VennServer/pkg/recipes"
+	proto "github.com/vigno88/venn-press/VennServer/pkg/api/v1"
+	"github.com/vigno88/venn-press/VennServer/pkg/control"
+	"github.com/vigno88/venn-press/VennServer/pkg/metrics"
+	recipe "github.com/vigno88/venn-press/VennServer/pkg/recipes"
 )
 
 func GetMetricName(smallName string) string {
@@ -31,6 +31,14 @@ type ReadableConfig struct {
 	Metrics       []metrics.Metric
 	Controls      []control.Config
 }
+
+const (
+	motorUp       = "mU"
+	motorUpSlow   = "mUs"
+	motorDown     = "mD"
+	motorDownSlow = "mDs"
+	motorStop     = "mS"
+)
 
 // This function is to be a human readable config
 func GetDefaultConfig() *ReadableConfig {
@@ -162,7 +170,7 @@ func GetDefaultConfig() *ReadableConfig {
 				Type:               int(proto.ControlConfig_ICON_BUTTON),
 				IconType:           "up_arrow",
 				ActionName:         "motor",
-				StateActionPayload: []string{"mUp", "mStop"},
+				StateActionPayload: []string{motorUp, motorStop},
 			},
 			{
 				// Id:                 `motion-down`,
@@ -170,7 +178,23 @@ func GetDefaultConfig() *ReadableConfig {
 				Type:               int(proto.ControlConfig_ICON_BUTTON),
 				IconType:           "down_arrow",
 				ActionName:         "motor",
-				StateActionPayload: []string{"mDown", "mStop"},
+				StateActionPayload: []string{motorDown, motorStop},
+			},
+			{
+				// Id:                 `motion-up`,
+				Title:              `Slow Motion`,
+				Type:               int(proto.ControlConfig_ICON_BUTTON),
+				IconType:           "up_arrow",
+				ActionName:         "motor",
+				StateActionPayload: []string{motorUpSlow, motorStop},
+			},
+			{
+				// Id:                 `motion-down`,
+				Title:              `Slow Motion`,
+				Type:               int(proto.ControlConfig_ICON_BUTTON),
+				IconType:           "down_arrow",
+				ActionName:         "motor",
+				StateActionPayload: []string{motorDownSlow, motorStop},
 			},
 			{
 				// Id:                 `test`,

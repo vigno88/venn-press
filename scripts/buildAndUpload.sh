@@ -2,7 +2,7 @@
 
 USER=pi
 PASSWORD=pi
-IP=192.168.0.110
+IP=192.168.0.121
 
 # Build proto files
 ./compileProto.sh

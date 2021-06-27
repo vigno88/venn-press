@@ -8,7 +8,6 @@ import 'package:VennUI/providers/UserProvider.dart';
 import 'package:VennUI/utilies.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:typicons_flutter/typicons_flutter.dart';
 import 'package:VennUI/components/StatusBar.dart';

@@ -5,7 +5,7 @@ package motors
 import (
 	"log"
 
-	proto "github.com/vigno88/Venn/VennServer/pkg/api/v1"
+	proto "github.com/vigno88/venn-press/VennServer/pkg/api/v1"
 )
 
 type CMotors struct {

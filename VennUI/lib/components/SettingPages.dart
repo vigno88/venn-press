@@ -6,7 +6,6 @@ import 'package:VennUI/providers/SettingsProvider.dart';
 import 'package:VennUI/utilies.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:provider/provider.dart';
 
@@ -189,8 +188,6 @@ class _PressureSettingsState extends State<PressureSettings> {
   }
 
   List<Point> g(BuildContext context) {
-    List<proto.Point> ps =
-        context.watch<SettingsProvider>().graphSettings[index].points;
     return context
         .watch<SettingsProvider>()
         .graphSettings[index]

@@ -4,8 +4,8 @@ import (
 	"context"
 	"log"
 
-	authentifaction "github.com/vigno88/Venn/VennServer/pkg/authentification"
-	"github.com/vigno88/Venn/VennServer/pkg/util"
+	authentifaction "github.com/vigno88/venn-press/VennServer/pkg/authentification"
+	"github.com/vigno88/venn-press/VennServer/pkg/util"
 )
 
 func main() {

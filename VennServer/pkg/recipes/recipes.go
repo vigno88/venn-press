@@ -6,7 +6,7 @@ import (
 	"strconv"
 
 	"github.com/asdine/storm/v3"
-	proto "github.com/vigno88/Venn/VennServer/pkg/api/v1"
+	proto "github.com/vigno88/venn-press/VennServer/pkg/api/v1"
 )
 
 // var defaultRecipe *proto.Recipe

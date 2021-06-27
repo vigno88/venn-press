@@ -1,8 +1,6 @@
 import 'package:VennUI/grpc/utilities.dart';
 import 'package:grpc/grpc.dart';
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:VennUI/grpc/v1/ui.pbgrpc.dart' as grpc;
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:VennUI/grpc/v1/ui.pb.dart' as proto;
 import 'package:VennUI/utilies.dart';
 
@@ -52,7 +50,7 @@ class NetworkGrpcAPI {
     try {
       var request = grpc.Empty().createEmptyInstance();
       var names =
-          await grpc.NetworkServiceClient(_clientSend).readWifiList(request);
+          await grpc.NetworkServiceClient(_clientSend!).readWifiList(request);
       return names;
     } catch (e) {
       if (!_isShutdown) {
@@ -74,7 +72,7 @@ class NetworkGrpcAPI {
       _clientSend = newClient(serverIP, serverPort);
     }
     try {
-      await grpc.NetworkServiceClient(_clientSend).connectWifi(c);
+      await grpc.NetworkServiceClient(_clientSend!).connectWifi(c);
     } catch (e) {
       if (!_isShutdown) {
         // Invalidate current client
@@ -95,7 +93,7 @@ class NetworkGrpcAPI {
     try {
       var request = grpc.Empty().createEmptyInstance();
       var status =
-          await grpc.NetworkServiceClient(_clientSend).readStatus(request);
+          await grpc.NetworkServiceClient(_clientSend!).readStatus(request);
       return status;
     } catch (e) {
       if (!_isShutdown) {

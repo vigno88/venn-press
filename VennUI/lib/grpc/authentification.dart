@@ -1,8 +1,6 @@
 import 'package:VennUI/grpc/utilities.dart';
 import 'package:grpc/grpc.dart';
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:VennUI/grpc/v1/ui.pbgrpc.dart' as grpc;
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:VennUI/grpc/v1/ui.pb.dart' as proto;
 import 'package:VennUI/utilies.dart';
 
@@ -50,7 +48,7 @@ class AuthentificationGrpcAPI {
     }
     try {
       var request = grpc.Empty().createEmptyInstance();
-      var users = await grpc.AuthentificationServiceClient(_clientSend)
+      var users = await grpc.AuthentificationServiceClient(_clientSend!)
           .readUserList(request);
       return users;
     } catch (e) {
@@ -73,7 +71,7 @@ class AuthentificationGrpcAPI {
       _clientSend = newClient(serverIP, serverPort);
     }
     try {
-      await grpc.AuthentificationServiceClient(_clientSend)
+      await grpc.AuthentificationServiceClient(_clientSend!)
           .updateCurrentUser(u);
     } catch (e) {
       if (!_isShutdown) {
@@ -94,7 +92,7 @@ class AuthentificationGrpcAPI {
     }
     try {
       var request = grpc.Empty().createEmptyInstance();
-      var user = await grpc.AuthentificationServiceClient(_clientSend)
+      var user = await grpc.AuthentificationServiceClient(_clientSend!)
           .getCurrentUser(request);
       return user;
     } catch (e) {

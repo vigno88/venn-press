@@ -7,15 +7,15 @@ import (
 	"log"
 	"os"
 
-	proto "github.com/vigno88/Venn/VennServer/pkg/api/v1"
-	authentifaction "github.com/vigno88/Venn/VennServer/pkg/authentification"
-	"github.com/vigno88/Venn/VennServer/pkg/control"
-	metrics "github.com/vigno88/Venn/VennServer/pkg/metrics"
-	motors "github.com/vigno88/Venn/VennServer/pkg/motors"
-	recipes "github.com/vigno88/Venn/VennServer/pkg/recipes"
-	"github.com/vigno88/Venn/VennServer/pkg/serial"
-	"github.com/vigno88/Venn/VennServer/pkg/util"
-	"github.com/vigno88/Venn/VennServer/pkg/wifi"
+	proto "github.com/vigno88/venn-press/VennServer/pkg/api/v1"
+	authentifaction "github.com/vigno88/venn-press/VennServer/pkg/authentification"
+	"github.com/vigno88/venn-press/VennServer/pkg/control"
+	metrics "github.com/vigno88/venn-press/VennServer/pkg/metrics"
+	recipes "github.com/vigno88/venn-press/VennServer/pkg/recipes"
+	action_scheduler "github.com/vigno88/venn-press/VennServer/pkg/scheduler"
+	"github.com/vigno88/venn-press/VennServer/pkg/serial"
+	"github.com/vigno88/venn-press/VennServer/pkg/util"
+	"github.com/vigno88/venn-press/VennServer/pkg/wifi"
 )
 
 func Run(ctx context.Context, c chan *proto.MetricUpdates) {
@@ -35,12 +35,17 @@ func Run(ctx context.Context, c chan *proto.MetricUpdates) {
 	handle(err)
 	err = control.Init(ctx, util.PathControl)
 	handle(err)
-	err = motors.Init()
+	// err = motors.Init()
 	handle(err)
+	action_scheduler.Init()
+	serial.MetricManager.Init()
+
 	exit := make(chan string)
 	go serial.Run(ctx, exit)
 	go wifi.Run()
-	go motors.Run()
+	go action_scheduler.Run()
+	go serial.MetricManager.Run()
+	// go motors.Run()
 	err = recipes.Init(ctx, util.PathRecipe)
 	handle(err)
 	log.Printf("Orchestrator is running..\n")

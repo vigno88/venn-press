@@ -3,24 +3,24 @@ package serial
 import (
 	"bufio"
 	"context"
+	"encoding/binary"
 	"fmt"
+	"io"
 	"log"
-	"strconv"
-	"strings"
 	"time"
 
-	config "github.com/vigno88/Venn/VennServer/configs"
-	proto "github.com/vigno88/Venn/VennServer/pkg/api/v1"
+	config "github.com/vigno88/venn-press/VennServer/configs"
+	proto "github.com/vigno88/venn-press/VennServer/pkg/api/v1"
 
-	// "github.com/vigno88/Venn/VennServer/pkg/service"
+	"github.com/vmihailenco/msgpack"
 	"go.bug.st/serial"
 )
 
 type serialManager struct {
 	Port     serial.Port
 	Response map[string]chan string
-	ToSend   chan string
-	Received chan string
+	ToSend   chan []byte
+	Received chan []byte
 	ErrChan  chan error
 	gRPCChan chan *proto.MetricUpdates
 }
@@ -37,9 +37,9 @@ func Init(ctx context.Context, c chan *proto.MetricUpdates) error {
 	manager = serialManager{
 		Port:     p,
 		Response: mapChan,
-		Received: make(chan string),
+		Received: make(chan []byte),
 		ErrChan:  make(chan error),
-		ToSend:   make(chan string),
+		ToSend:   make(chan []byte),
 		gRPCChan: c,
 	}
 	return nil
@@ -49,7 +49,7 @@ func (m *serialManager) openPort() (serial.Port, error) {
 	mode := &serial.Mode{
 		BaudRate: 115200,
 	}
-	port, err := serial.Open("/dev/serial0", mode)
+	port, err := serial.Open("/dev/ttyAMA2", mode)
 	if err != nil {
 		log.Fatal(err)
 		return nil, err
@@ -64,8 +64,8 @@ func Run(ctx context.Context, exit chan<- string) {
 	for {
 		select {
 		case request := <-manager.ToSend:
-			_, err := manager.Port.Write([]byte(request + "\n"))
-			log.Printf("Print %s to the serial port\n", request[:len(request)-1])
+			_, err := manager.Port.Write([]byte(request))
+			log.Printf("Print %s to the serial port\n", request)
 			if err != nil {
 				manager.ErrChan <- fmt.Errorf("Error writing port: %v", err)
 				stopRead <- "done"
@@ -79,12 +79,8 @@ func Run(ctx context.Context, exit chan<- string) {
 	}
 }
 
-func SendSetting(setting *proto.Setting) {
-	SendString(fmt.Sprintf("p#%s#%d", setting.SmallName, int(setting.GetValue())))
-}
-
 func SendString(s string) {
-	manager.ToSend <- s
+	manager.ToSend <- []byte(s)
 }
 
 func (m *serialManager) readPort(stop <-chan string) {
@@ -95,39 +91,95 @@ func (m *serialManager) readPort(stop <-chan string) {
 		case <-stop:
 			return
 		default:
-			payload, err := serialReader.ReadString('\n')
+			// // Read 2 bytes to get length
+			l := make([]byte, 2)
+			_, err := io.ReadFull(serialReader, l)
 			if err != nil {
 				log.Printf("Error reading from the serial port: %v\n", err)
-				m.ErrChan <- fmt.Errorf("Error reading from the serial port: %v\n", err)
 			}
-			payload = payload[:len(payload)-1]
+			// Convert the 2 byte to a uint16
+			lP := binary.LittleEndian.Uint16(l)
+			payload := make([]byte, lP)
+			_, err = io.ReadFull(serialReader, payload)
+			if err != nil {
+				log.Printf("Error reading from the serial port: %v\n", err)
+			}
 			m.Received <- payload
 			time.Sleep(time.Millisecond)
 		}
 	}
 }
 
-func (m *serialManager) process(ctx context.Context, packet string) error {
-	if strings.Contains(packet, "ok") {
-		log.Print("Received the ok response")
-		return nil
+func (m *serialManager) process(ctx context.Context, packet []byte) error {
+	// Get the type of packet
+	var out map[string]interface{}
+	err := msgpack.Unmarshal(packet, &out)
+	if err != nil {
+		return err
 	}
-	// If string is a metric, send the metric package
-	parts := strings.Split(packet, "#")
-	if len(parts) != 3 {
-		log.Printf("Payload invalid: %s\n", packet)
-		return fmt.Errorf("Payload invalid: %s\n", packet)
-	}
-	if strings.Contains(parts[0], "m") {
-		f, err := strconv.ParseFloat(parts[2], 64)
-		if err != nil {
-			return err
-		}
-		metric := &proto.MetricUpdate{}
-		metric.Name = config.GetMetricName(parts[1])
-		metric.Target = float64(config.GetTarget(metric.Name))
-		metric.Value = f
-		manager.gRPCChan <- &proto.MetricUpdates{Updates: []*proto.MetricUpdate{metric}}
+	if out["t"].(int8) == 3 {
+		parseEvent(packet)
+	} else if out["t"].(int8) == 4 {
+		parseMetrics(packet)
+	} else {
+		return fmt.Errorf("Received an invalid mspPack message\n")
 	}
 	return nil
+}
+
+func SendSetting(setting *proto.Setting) {
+	b, err := msgpack.Marshal(&ParameterMsgPack{T: 2, Ps: []map[string]int{{setting.SmallName: int(setting.GetValue())}}})
+	if err != nil {
+		log.Printf("Error while sending new settings: %v\n", err)
+	}
+	// Send the length of the payload
+	length := make([]byte, 2)
+	binary.LittleEndian.PutUint16(length, uint16(len(b)))
+	manager.ToSend <- length
+	// Send the payload
+	manager.ToSend <- b
+}
+
+func SendCommand(action *proto.Action) {
+	c := CommandMsgPack{T: 1, Name: action.Name, Arg: action.Payload}
+	b, err := c.MarshalMsg(nil)
+	if err != nil {
+		log.Printf("Error while sending new settings: %v\n", err)
+	}
+	// Send the length of the payload
+	length := make([]byte, 2)
+	binary.LittleEndian.PutUint16(length, uint16(len(b)))
+	manager.ToSend <- length
+	// Send the payload
+	manager.ToSend <- b
+}
+
+func parseEvent(packet []byte) {
+	var event EventMsgPack
+	event.UnmarshalMsg(packet)
+	// Turn into an event and Send to a channel - TODO
+}
+
+func parseMetrics(packet []byte) {
+	var metrics MetricsMsgPack
+	_, err := metrics.UnmarshalMsg(packet)
+	if err != nil {
+		log.Printf("Error while unmarshalling msgpack: %v", err)
+		return
+	}
+
+	var updates []*proto.MetricUpdate
+	for _, v := range metrics.Ms {
+		for k, v := range v {
+			metric := &proto.MetricUpdate{}
+			metric.Name = config.GetMetricName(k)
+			metric.Target = float64(config.GetTarget(metric.Name))
+			metric.Value = float64(v)
+			updates = append(updates, metric)
+		}
+	}
+	// Send the received metrics to the UI
+	manager.gRPCChan <- &proto.MetricUpdates{Updates: updates}
+	// Send the received metrics to the serial output
+	MetricManager.Send(&proto.MetricUpdates{Updates: updates})
 }

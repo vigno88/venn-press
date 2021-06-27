@@ -7,12 +7,12 @@ import (
 	"log"
 	"os"
 
-	proto "github.com/vigno88/Venn/VennServer/pkg/api/v1"
-	authentifaction "github.com/vigno88/Venn/VennServer/pkg/authentification"
-	"github.com/vigno88/Venn/VennServer/pkg/control"
-	metrics "github.com/vigno88/Venn/VennServer/pkg/metrics"
-	recipes "github.com/vigno88/Venn/VennServer/pkg/recipes"
-	"github.com/vigno88/Venn/VennServer/pkg/util"
+	proto "github.com/vigno88/venn-press/VennServer/pkg/api/v1"
+	authentifaction "github.com/vigno88/venn-press/VennServer/pkg/authentification"
+	"github.com/vigno88/venn-press/VennServer/pkg/control"
+	metrics "github.com/vigno88/venn-press/VennServer/pkg/metrics"
+	recipes "github.com/vigno88/venn-press/VennServer/pkg/recipes"
+	"github.com/vigno88/venn-press/VennServer/pkg/util"
 )
 
 func Run(ctx context.Context, c chan *proto.MetricUpdates) {

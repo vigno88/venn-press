@@ -1,7 +1,6 @@
 import 'package:VennUI/providers/SettingsProvider.dart';
 import 'package:VennUI/providers/dashboard_services/Metrics.dart';
 import 'package:VennUI/utilies.dart';
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -212,7 +211,8 @@ class _MetricChipState extends State<MetricChip> {
                             TextSpan(
                               children: [
                                 TextSpan(
-                                    text: widget.data.value.toStringAsFixed(1) +
+                                    text: widget.data.value.toStringAsFixed(
+                                            this.widget.data.decimalCount) +
                                         " ",
                                     style: TextStyle(
                                       fontSize: 160,

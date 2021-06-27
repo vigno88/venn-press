@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"log"
 
-	proto "github.com/vigno88/Venn/VennServer/pkg/api/v1"
-	authentifaction "github.com/vigno88/Venn/VennServer/pkg/authentification"
+	proto "github.com/vigno88/venn-press/VennServer/pkg/api/v1"
+	authentifaction "github.com/vigno88/venn-press/VennServer/pkg/authentification"
 )
 
 type authentificationServiceServer struct {
