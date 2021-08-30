@@ -89,6 +89,16 @@ class ControlService {
     _updates.add(tileIndex);
   }
 
+  Future<void> cancelButton(
+      BuildContext context, int buttonIndex, int tileIndex) async {
+    // Send the button press to the API
+    await _controlAPI!.send(context, _buttonsData[buttonIndex].actions[1]);
+    // Update the button data to the other state
+    _buttonsData[buttonIndex].state = 0;
+    // Send the update to the dashboard provider
+    _updates.add(tileIndex);
+  }
+
   void processNewEvent(proto.ControlEvent e) {
     if (e.name == "test") {
       if (e.payload == "start") {

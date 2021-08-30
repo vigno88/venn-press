@@ -116,6 +116,10 @@ class _GeneralSettingsState extends State<GeneralSettings> {
                             "Max Load (kg) - Safety",
                             ValuePicker(12, settings[12].value,
                                 settings[12].max, settings[12].min, update)),
+                        SettingsItem(
+                            "Delay (ms) between steps in slow move",
+                            ValuePicker(13, settings[13].value,
+                                settings[13].max, settings[13].min, update)),
                       ],
                     ))),
           ],

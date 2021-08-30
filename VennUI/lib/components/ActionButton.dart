@@ -63,6 +63,7 @@ class _ActionButtonState extends State<ActionButton> {
           Listener(
               onPointerDown: (details) => _tapDown(context),
               onPointerUp: (details) => _tapUp(context),
+              onPointerCancel: (details) => _tapCancel(context),
               // onTap: () => _onTap(context),
               child: Container(
                   height: 110,
@@ -91,6 +92,17 @@ class _ActionButtonState extends State<ActionButton> {
     context
         .read<DashboardProvider>()
         .pressButton(context, widget.buttonIndex, widget.tileIndex);
+    // }
+  }
+
+  void _tapCancel(BuildContext context) {
+    setState(() {
+      colorButton = paleBlue;
+    });
+    // if (widget.type == buttonType.ICON_BUTTON) {
+    context
+        .read<DashboardProvider>()
+        .cancelButton(context, widget.buttonIndex, widget.tileIndex);
     // }
   }
 

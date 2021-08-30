@@ -136,6 +136,10 @@ class DashboardProvider with ChangeNotifier {
     controlService!.pressButton(context, buttonIndex, tileIndex);
   }
 
+  void cancelButton(BuildContext context, int buttonIndex, int tileIndex) {
+    controlService!.cancelButton(context, buttonIndex, tileIndex);
+  }
+
   Future<void> updateGraphics() async {
     await graphicService!.update();
     widgets.clear();

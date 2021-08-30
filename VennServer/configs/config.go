@@ -193,6 +193,17 @@ func GetDefaultConfig() *ReadableConfig {
 		IsStatic:    false,
 	}
 
+	delaySlow := &proto.Setting{
+		Destination: proto.Destination_MICROCONTROLLER,
+		Value:       150,
+		Max:         5000,
+		Min:         50,
+		Name:        "Delay Step Slow Move",
+		SmallName:   "dS",
+		Info:        "Delay in ms between each step in the slow move action.",
+		IsStatic:    false,
+	}
+
 	return &ReadableConfig{
 		DefaultRecipe: recipe.Recipe{
 			UUID:      "",
@@ -200,7 +211,7 @@ func GetDefaultConfig() *ReadableConfig {
 			Info:      "This is the default recipe from config.",
 			Selectors: []*proto.Selector{},
 			Settings: []*proto.Setting{
-				loadFactor, pMotor, iMotor, dMotor, stepMult, pidST, maxLoad,
+				loadFactor, pMotor, iMotor, dMotor, stepMult, pidST, maxLoad, delaySlow,
 			},
 			Graphs: []*proto.GraphSettings{
 				{Name: "Weight", UnitVerticalAxis: "kg", UnitHorizontalAxis: "s", VerticalAxis: "Weight", HorizontalAxis: "Time", Points: []*proto.Point{}, IsStatic: false},
