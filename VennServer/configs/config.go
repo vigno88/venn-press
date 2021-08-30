@@ -46,7 +46,7 @@ func GetDefaultConfig() *ReadableConfig {
 	// Static settings
 	pTopPlate := &proto.Setting{
 		Destination: proto.Destination_MICROCONTROLLER,
-		Value:       0,
+		Value:       4,
 		Max:         1000,
 		Min:         -1000,
 		Name:        "P Constant Top",
@@ -56,7 +56,7 @@ func GetDefaultConfig() *ReadableConfig {
 	}
 	iTopPlate := &proto.Setting{
 		Destination: proto.Destination_MICROCONTROLLER,
-		Value:       0,
+		Value:       0.2,
 		Max:         1000,
 		Min:         -1000,
 		Name:        "I Constant Top",
@@ -66,7 +66,7 @@ func GetDefaultConfig() *ReadableConfig {
 	}
 	dTopPlate := &proto.Setting{
 		Destination: proto.Destination_MICROCONTROLLER,
-		Value:       0,
+		Value:       1,
 		Max:         1000,
 		Min:         -1000,
 		Name:        "D Constant Top",
@@ -76,7 +76,7 @@ func GetDefaultConfig() *ReadableConfig {
 	}
 	pBottomPlate := &proto.Setting{
 		Destination: proto.Destination_MICROCONTROLLER,
-		Value:       0,
+		Value:       4,
 		Max:         1000,
 		Min:         -1000,
 		Name:        "P Constant Bottom",
@@ -86,7 +86,7 @@ func GetDefaultConfig() *ReadableConfig {
 	}
 	iBottomPlate := &proto.Setting{
 		Destination: proto.Destination_MICROCONTROLLER,
-		Value:       0,
+		Value:       0.2,
 		Max:         1000,
 		Min:         -1000,
 		Name:        "I Constant Bottom",
@@ -96,13 +96,101 @@ func GetDefaultConfig() *ReadableConfig {
 	}
 	dBottomPlate := &proto.Setting{
 		Destination: proto.Destination_MICROCONTROLLER,
-		Value:       0,
+		Value:       1,
 		Max:         1000,
 		Min:         -1000,
 		Name:        "D Constant Bottom",
 		SmallName:   "dBot",
 		Info:        "Derivative constant of the PID of the bottom hot plate",
-		IsStatic:    true,
+		IsStatic:    false,
+	}
+
+	// hardnessParam := &proto.Setting{
+	// 	Destination: proto.Destination_MICROCONTROLLER,
+	// 	Value:       0.7,
+	// 	Max:         1,
+	// 	Min:         0,
+	// 	Name:        "Hardness Constant",
+	// 	SmallName:   "hC",
+	// 	Info:        "Hardness Constant is used for the calibration of the force put on objects when loading weight.",
+	// 	IsStatic:    false,
+	// }
+
+	loadFactor := &proto.Setting{
+		Destination: proto.Destination_MICROCONTROLLER,
+		Value:       13550,
+		Max:         100000,
+		Min:         -100000,
+		Name:        "Load Cell Factor",
+		SmallName:   "lcF",
+		Info:        "Load Cell Factor is used to calibrate the load cell.",
+		IsStatic:    false,
+	}
+
+	pMotor := &proto.Setting{
+		Destination: proto.Destination_MICROCONTROLLER,
+		Value:       1,
+		Max:         1000,
+		Min:         -1000,
+		Name:        "P Constant Motor",
+		SmallName:   "pM",
+		Info:        "Proportional constant of the PID of the motor controller.",
+		IsStatic:    false,
+	}
+
+	iMotor := &proto.Setting{
+		Destination: proto.Destination_MICROCONTROLLER,
+		Value:       1,
+		Max:         1000,
+		Min:         -1000,
+		Name:        "I Constant Motor",
+		SmallName:   "iM",
+		Info:        "Integral constant of the PID of the motor controller.",
+		IsStatic:    false,
+	}
+
+	dMotor := &proto.Setting{
+		Destination: proto.Destination_MICROCONTROLLER,
+		Value:       1,
+		Max:         1000,
+		Min:         -1000,
+		Name:        "D Constant Motor",
+		SmallName:   "dM",
+		Info:        "Derivative constant of the PID of the motor controller.",
+		IsStatic:    false,
+	}
+
+	stepMult := &proto.Setting{
+		Destination: proto.Destination_MICROCONTROLLER,
+		Value:       1,
+		Max:         100,
+		Min:         0,
+		Name:        "Step Multiplier",
+		SmallName:   "sMu",
+		Info:        "Multiply the output of the PID with this value",
+		IsStatic:    false,
+	}
+
+	pidST := &proto.Setting{
+		Destination: proto.Destination_MICROCONTROLLER,
+		Value:       100,
+		Max:         10000,
+		Min:         0,
+		Name:        "PID Sample Time (ms)",
+		SmallName:   "pidST",
+		Info:        "Sample time in milliseconds of the PID",
+		IsStatic:    false,
+	}
+
+	maxLoad := &proto.Setting{
+		Destination: proto.Destination_MICROCONTROLLER,
+		Value:       900,
+		Max:         10000,
+		Min:         0,
+		Name:        "Max load (kg) - Safety",
+		SmallName:   "mL",
+		Info:        "Maximum Load possible that can be applied to the load cell",
+		IsStatic:    false,
 	}
 
 	return &ReadableConfig{
@@ -111,7 +199,9 @@ func GetDefaultConfig() *ReadableConfig {
 			Name:      "Default",
 			Info:      "This is the default recipe from config.",
 			Selectors: []*proto.Selector{},
-			Settings:  []*proto.Setting{},
+			Settings: []*proto.Setting{
+				loadFactor, pMotor, iMotor, dMotor, stepMult, pidST, maxLoad,
+			},
 			Graphs: []*proto.GraphSettings{
 				{Name: "Weight", UnitVerticalAxis: "kg", UnitHorizontalAxis: "s", VerticalAxis: "Weight", HorizontalAxis: "Time", Points: []*proto.Point{}, IsStatic: false},
 				{Name: "Temperature", UnitVerticalAxis: "°c", UnitHorizontalAxis: "s", VerticalAxis: "Temperature", HorizontalAxis: "Time", Points: []*proto.Point{}, IsStatic: false},

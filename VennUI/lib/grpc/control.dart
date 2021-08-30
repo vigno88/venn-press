@@ -77,16 +77,15 @@ class ControlGrpcAPI {
       _clientSend = newClient(serverIP, serverPort);
     }
     try {
-      proto.SendResponse response =
-          await grpc.ControlServiceClient(_clientSend!).send(a);
-      if (response.error != "") {
-        print(response.error);
-        _notifStream!
-            .add(NotificationData(NotificationType.Warning, response.error));
-        print("Added a notif to the stream");
-        // context.read()<NotificationProvider>().displayNotification(
-        //     NotificationData(NotificationType.Warning, response.error));
-      }
+      await grpc.ControlServiceClient(_clientSend!).send(a);
+      // if (response.error != "") {
+      //   print(response.error);
+      //   _notifStream!
+      //       .add(NotificationData(NotificationType.Warning, response.error));
+      //   print("Added a notif to the stream");
+      //   // context.read()<NotificationProvider>().displayNotification(
+      //   //     NotificationData(NotificationType.Warning, response.error));
+      // }
     } catch (e) {
       if (!_isShutdown) {
         // Invalidate current client

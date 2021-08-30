@@ -2,7 +2,7 @@ package metrics
 
 import (
 	"context"
-	"fmt"
+	// "fmt"
 	"log"
 
 	"github.com/asdine/storm/v3"
@@ -55,7 +55,6 @@ func ToMetric(m *proto.MetricConfig) *Metric {
 func Init(ctx context.Context, path string) error {
 	log.Printf("Initiating the metrics store at %s\n", path)
 	// pathDB = path
-	fmt.Println(path)
 	newDb, err := storm.Open(path)
 	if err != nil {
 		return err

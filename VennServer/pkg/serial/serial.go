@@ -65,7 +65,6 @@ func Run(ctx context.Context, exit chan<- string) {
 		select {
 		case request := <-manager.ToSend:
 			_, err := manager.Port.Write([]byte(request))
-			log.Printf("Print %s to the serial port\n", request)
 			if err != nil {
 				manager.ErrChan <- fmt.Errorf("Error writing port: %v", err)
 				stopRead <- "done"
@@ -128,7 +127,9 @@ func (m *serialManager) process(ctx context.Context, packet []byte) error {
 }
 
 func SendSetting(setting *proto.Setting) {
-	b, err := msgpack.Marshal(&ParameterMsgPack{T: 2, Ps: []map[string]int{{setting.SmallName: int(setting.GetValue())}}})
+	// b, err := msgpack.Marshal(&ParameterMsgPack{T: 2, Ps: []map[string]int{{setting.SmallName: int(setting.GetValue())}}})
+	p := ParameterMsgPack{T: 2, Ps: []map[string]float32{{setting.SmallName: float32(setting.GetValue())}}}
+	b, err := p.MarshalMsg(nil)
 	if err != nil {
 		log.Printf("Error while sending new settings: %v\n", err)
 	}

@@ -41,7 +41,7 @@ class _GeneralSettingsState extends State<GeneralSettings> {
 
   @override
   Widget build(BuildContext context) {
-    List<proto.Setting> settings = context.read<SettingsProvider>().settings;
+    List<proto.Setting> settings = context.watch<SettingsProvider>().settings;
     return ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(20)),
         child: Column(
@@ -81,6 +81,41 @@ class _GeneralSettingsState extends State<GeneralSettings> {
                             "D Constant",
                             ValuePicker(5, settings[5].value, settings[5].max,
                                 settings[5].min, update)),
+                        // SettingsSubtitle("Material"),
+                        // SettingsItem(
+                        //     "Hardness Constant",
+                        //     ValuePicker(6, settings[6].value, settings[6].max,
+                        //         settings[6].min, update)),
+                        SettingsSubtitle("Load cell"),
+                        SettingsItem(
+                            "Load cell Factor",
+                            ValuePicker(6, settings[6].value, settings[6].max,
+                                settings[6].min, update)),
+                        SettingsSubtitle("Motor Controller"),
+                        SettingsItem(
+                            "P Constant",
+                            ValuePicker(7, settings[7].value, settings[7].max,
+                                settings[7].min, update)),
+                        SettingsItem(
+                            "I Constant",
+                            ValuePicker(8, settings[8].value, settings[8].max,
+                                settings[8].min, update)),
+                        SettingsItem(
+                            "D Constant",
+                            ValuePicker(9, settings[9].value, settings[9].max,
+                                settings[9].min, update)),
+                        SettingsItem(
+                            "Step Multiplier",
+                            ValuePicker(10, settings[10].value,
+                                settings[10].max, settings[10].min, update)),
+                        SettingsItem(
+                            "PID Sample Time",
+                            ValuePicker(11, settings[11].value,
+                                settings[11].max, settings[11].min, update)),
+                        SettingsItem(
+                            "Max Load (kg) - Safety",
+                            ValuePicker(12, settings[12].value,
+                                settings[12].max, settings[12].min, update)),
                       ],
                     ))),
           ],
@@ -88,7 +123,8 @@ class _GeneralSettingsState extends State<GeneralSettings> {
   }
 
   void update(double v, int i) {
-    context.read<SettingsProvider>().settings[i].value = v;
+    context.read<SettingsProvider>().setSetting(i, v);
+    // context.read<SettingsProvider>().settings[i].value = v;
   }
 }
 
@@ -235,7 +271,7 @@ class _HeatingSettingsState extends State<HeatingSettings> {
 
   void a(BuildContext context) {
     setState(() {
-      var list = context.read<SettingsProvider>().graphSettings[index].points;
+      var list = context.watch<SettingsProvider>().graphSettings[index].points;
       if (list.length == 0) {
         context
             .read<SettingsProvider>()
@@ -265,7 +301,7 @@ class _HeatingSettingsState extends State<HeatingSettings> {
 
   List<Point> g(BuildContext context) {
     return context
-        .read<SettingsProvider>()
+        .watch<SettingsProvider>()
         .graphSettings[index]
         .points
         .map((p) => Point.fromProto(p))
@@ -285,7 +321,7 @@ class _HeatingSettingsState extends State<HeatingSettings> {
   @override
   Widget build(BuildContext context) {
     proto.GraphSettings s =
-        context.read<SettingsProvider>().graphSettings[index];
+        context.watch<SettingsProvider>().graphSettings[index];
     GraphInfo i = GraphInfo(s.horizontalAxis, s.verticalAxis,
         s.unitHorizontalAxis, s.unitVerticalAxis);
     return ClipRRect(

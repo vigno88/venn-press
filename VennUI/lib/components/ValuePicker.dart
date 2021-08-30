@@ -1,6 +1,7 @@
 import 'package:VennUI/components/Notification.dart';
 import 'package:VennUI/dialogs/EditSingleNumberDialog.dart';
 import 'package:VennUI/providers/NotificationProvider.dart';
+import 'package:VennUI/providers/SettingsProvider.dart';
 import 'package:VennUI/utilies.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +29,7 @@ class _ValuePickerState extends State<ValuePicker> {
 
   @override
   Widget build(BuildContext context) {
+    value = context.watch<SettingsProvider>().settings[widget.index].value;
     return Container(
       padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
       child: Container(

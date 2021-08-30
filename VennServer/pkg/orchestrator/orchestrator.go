@@ -18,7 +18,7 @@ import (
 	"github.com/vigno88/venn-press/VennServer/pkg/wifi"
 )
 
-func Run(ctx context.Context, c chan *proto.MetricUpdates) {
+func Run(ctx context.Context, cm chan *proto.MetricUpdates, cc chan *proto.ControlEvent) {
 	// Verify validity software
 	// err := validate(util.PathKey)
 	// if err != nil {
@@ -27,15 +27,14 @@ func Run(ctx context.Context, c chan *proto.MetricUpdates) {
 	// Initialize all the modules
 	err := authentifaction.Init(ctx, util.PathAuth)
 	handle(err)
-	err = serial.Init(ctx, c)
+	err = serial.Init(ctx, cm)
 	handle(err)
 	err = metrics.Init(ctx, util.PathMetric)
 	handle(err)
 	err = wifi.Init(ctx, util.PathWifi)
 	handle(err)
-	err = control.Init(ctx, util.PathControl)
+	err = control.Init(ctx, util.PathControl, cc)
 	handle(err)
-	// err = motors.Init()
 	handle(err)
 	action_scheduler.Init()
 	serial.MetricManager.Init()
@@ -45,7 +44,6 @@ func Run(ctx context.Context, c chan *proto.MetricUpdates) {
 	go wifi.Run()
 	go action_scheduler.Run()
 	go serial.MetricManager.Run()
-	// go motors.Run()
 	err = recipes.Init(ctx, util.PathRecipe)
 	handle(err)
 	log.Printf("Orchestrator is running..\n")

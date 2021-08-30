@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:VennUI/components/Notification.dart';
 import 'package:VennUI/components/SettingPages.dart';
 import 'package:VennUI/grpc/metric.dart';
@@ -62,7 +64,7 @@ class SettingsProvider with ChangeNotifier {
 
     // Send the initial settings to the backend
     for (var s in settings) {
-      _settingAPI!.updateSetting(proto.SettingUpdate(
+      await _settingAPI!.updateSetting(proto.SettingUpdate(
           name: s.name, value: s.value, isStatic: s.isStatic));
     }
 
@@ -92,7 +94,7 @@ class SettingsProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void setSetting(int i, int value) {
+  void setSetting(int i, double value) {
     settings[i].value = value.toDouble();
     modifiedSlider = i;
     notifyListeners();
@@ -145,6 +147,8 @@ class SettingsProvider with ChangeNotifier {
     settings = recipe.settings;
     oldSettings =
         List.generate(settings.length, (index) => settings[index].value);
+    graphSettings = recipe.graphs;
+    notifyListeners();
     return same;
   }
 
@@ -156,7 +160,7 @@ class SettingsProvider with ChangeNotifier {
         if (settings[i].hasTarget()) {
           updateTarget(settings[i]);
         }
-        _settingAPI!.updateSetting(proto.SettingUpdate(
+        await _settingAPI!.updateSetting(proto.SettingUpdate(
             name: settings[i].name,
             value: settings[i].value,
             isStatic: settings[i].isStatic));
@@ -240,8 +244,8 @@ class SettingsProvider with ChangeNotifier {
     // Get the old recipe and updates its information text and title
     proto.Recipe r = await _settingAPI!.readRecipe(i.uuid);
     r.info = i.info;
-    r.title = i.info;
-    _settingAPI!.updateRecipe(r);
+    r.title = i.title;
+    await _settingAPI!.updateRecipe(r);
     recipesInfo[hoverRecipe] = i;
     context.read<NotificationProvider>().displayNotification(NotificationData(
         NotificationType.Success,
@@ -262,9 +266,13 @@ class SettingsProvider with ChangeNotifier {
           NotificationType.Error, "Cannot remove the default recipe."));
       return;
     }
-    _settingAPI!.deleteRecipe(recipesInfo.elementAt(hoverRecipe).uuid);
+    await _settingAPI!.deleteRecipe(recipesInfo.elementAt(hoverRecipe).uuid);
     recipesInfo.removeAt(hoverRecipe);
+    hoverRecipe = 0;
+    await selectRecipe(context);
     hoverRecipe = -1;
+    // // Load the new recipe settings
+    // await getCurrentSettings(context);
     notifyListeners();
   }
 
@@ -276,7 +284,8 @@ class SettingsProvider with ChangeNotifier {
       return;
     }
     // Send the new recipe
-    _settingAPI!.updateCurrentRecipe(recipesInfo.elementAt(hoverRecipe).uuid);
+    await _settingAPI!
+        .updateCurrentRecipe(recipesInfo.elementAt(hoverRecipe).uuid);
     selectedRecipe = hoverRecipe;
     // Load the new recipe settings
     await getCurrentSettings(context);

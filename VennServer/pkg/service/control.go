@@ -25,8 +25,10 @@ func (s *controlServiceServer) Send(c context.Context, a *proto.Action) (*proto.
 	if a.Name == `test` {
 		if a.Payload == `start` {
 			action_scheduler.Start()
+			control.SendEvent(&proto.ControlEvent{Name: "test", Payload: "start"})
 		} else if a.Payload == `stop` {
-			action_scheduler.Stop();
+			action_scheduler.Stop()
+			control.SendEvent(&proto.ControlEvent{Name: "test", Payload: "stop"})
 		}
 		return &proto.SendResponse{}, nil
 	}

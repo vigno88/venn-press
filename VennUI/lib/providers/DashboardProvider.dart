@@ -33,6 +33,7 @@ class DashboardProvider with ChangeNotifier {
   int _dragTargetLen = 0;
 
   // List<Tile> tiles = [];
+  Stopwatch stopwatch = new Stopwatch();
 
   // tilePositions are the position of each of the widget on the grid
   List<Tuple2> _tilePositions = [
@@ -79,6 +80,15 @@ class DashboardProvider with ChangeNotifier {
           (widgets[modifiedTileIndex] as DashboardWidget)
               .copy(controlService!.getTiles()[update]);
       notifyListeners();
+    });
+
+    controlService!.testStateStream.listen((event) {
+      if (event == TestCommand.StartTest) {
+        stopwatch.start();
+      } else if (event == TestCommand.StopTest) {
+        stopwatch.stop();
+        stopwatch.reset();
+      }
     });
   }
 
@@ -133,6 +143,5 @@ class DashboardProvider with ChangeNotifier {
     widgets.addAll(getDragTargets());
     widgets.addAll(getDashboardWidgets());
     notifyListeners();
-    print("updated all tiles");
   }
 }

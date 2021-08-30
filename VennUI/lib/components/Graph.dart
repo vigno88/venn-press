@@ -105,10 +105,12 @@ class _GraphState extends State<Graph> {
           LineChartBarData(
             spots: spots,
             colors: [darkBlue],
-            barWidth: 5,
+            // barWidth: 5,
+            barWidth: 0,
             isStrokeCapRound: true,
             belowBarData: BarAreaData(
-              show: true,
+              // show: true,
+              show: false,
               colors: [darkBlue.withOpacity(0.3)],
             ),
           ),

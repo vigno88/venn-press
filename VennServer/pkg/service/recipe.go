@@ -7,7 +7,6 @@ import (
 	"log"
 
 	proto "github.com/vigno88/venn-press/VennServer/pkg/api/v1"
-	motors "github.com/vigno88/venn-press/VennServer/pkg/motors"
 	recipe "github.com/vigno88/venn-press/VennServer/pkg/recipes"
 	"github.com/vigno88/venn-press/VennServer/pkg/serial"
 	"github.com/vigno88/venn-press/VennServer/pkg/util"
@@ -56,8 +55,9 @@ func (s *settingServiceServer) ReadCurrentRecipe(ctx context.Context, e *proto.E
 		log.Printf("Error while reading this recipe %s: %s ", "static", err.Error())
 		return nil, err
 	}
-	r.Join(staticR)
-	return recipe.ToProto(r), nil
+	staticR.Join(r)
+	// r.Join(staticR)
+	return recipe.ToProto(staticR), nil
 }
 
 // selectRecipe tells the backend what is the active recipe
@@ -78,9 +78,9 @@ func (s *settingServiceServer) UpdateSetting(ctx context.Context, u *proto.Setti
 	case proto.Destination_MICROCONTROLLER:
 		serial.SendSetting(r.Settings[index])
 		break
-	case proto.Destination_MOTOR:
-		motors.ProcessNewSetting(r.Settings[index], int(u.Value))
-		break
+		// case proto.Destination_MOTOR:
+		// 	motors.ProcessNewSetting(r.Settings[index], int(u.Value))
+		// 	break
 	}
 	return &proto.Empty{}, recipe.UpdateRecipe(r)
 }
@@ -154,6 +154,10 @@ func (s *settingServiceServer) ReadRecipesUUID(ctx context.Context, e *proto.Emp
 	}
 	uuids := []string{}
 	for _, r := range recipes {
+		// Do not the static recipe that is common to all recipes
+		if r.UUID == `static` {
+			continue
+		}
 		uuids = append(uuids, r.UUID)
 	}
 	return &proto.UUIDS{Uuids: uuids}, nil

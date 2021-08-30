@@ -1,6 +1,9 @@
 package action_scheduler
 
 import (
+	"fmt"
+
+	proto "github.com/vigno88/venn-press/VennServer/pkg/api/v1"
 	"github.com/vigno88/venn-press/VennServer/pkg/serial"
 )
 
@@ -13,29 +16,29 @@ type ScheduleItem struct {
 
 // The schedule is used to tell
 type Schedule struct {
-	isActive bool
-	index    int
-	items    []ScheduleItem
-	command  SendCommand
+	isActive   bool
+	index      int
+	items      []ScheduleItem
+	actionName string
+	// command  SendCommand
 }
 
-func (s *Schedule) init(i []ScheduleItem, c SendCommand) {
+func (s *Schedule) init(i []ScheduleItem, n string) {
 	s.index = 0
 	s.items = i
-	s.command = c
+	s.actionName = n
+	// s.command = c
 	if len(i) == 0 {
 		s.isActive = false
 	} else {
 		s.isActive = true
-		// Start the output to serial
-		serial.MetricManager.Start()
 	}
 }
 
 func (s *Schedule) stop() {
 	s.isActive = false
-	// Stop the output to serial
-	serial.MetricManager.Stop()
+	a := proto.Action{Name: s.actionName, Payload: "so"}
+	serial.SendCommand(&a)
 }
 
 func (s *Schedule) getTimeNextCommand() int {
@@ -43,7 +46,8 @@ func (s *Schedule) getTimeNextCommand() int {
 }
 
 func (s *Schedule) sendCommand() {
-	s.command(s.items[s.index].requestedValue)
+	a := proto.Action{Name: s.actionName, Payload: fmt.Sprintf("%f", s.items[s.index].requestedValue)}
+	serial.SendCommand(&a)
 	if s.index == len(s.items)-1 {
 		s.stop()
 		return

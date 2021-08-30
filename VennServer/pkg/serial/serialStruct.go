@@ -3,8 +3,8 @@ package serial
 //go:generate msgp
 
 type ParameterMsgPack struct {
-	T  int              `msg:"t"`
-	Ps []map[string]int `msg:"ps"`
+	T  int                  `msg:"t"`
+	Ps []map[string]float32 `msg:"ps"`
 }
 
 type CommandMsgPack struct {

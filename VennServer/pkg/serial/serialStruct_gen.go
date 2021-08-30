@@ -558,7 +558,7 @@ func (z *ParameterMsgPack) DecodeMsg(dc *msgp.Reader) (err error) {
 			if cap(z.Ps) >= int(zb0002) {
 				z.Ps = (z.Ps)[:zb0002]
 			} else {
-				z.Ps = make([]map[string]int, zb0002)
+				z.Ps = make([]map[string]float32, zb0002)
 			}
 			for za0001 := range z.Ps {
 				var zb0003 uint32
@@ -568,7 +568,7 @@ func (z *ParameterMsgPack) DecodeMsg(dc *msgp.Reader) (err error) {
 					return
 				}
 				if z.Ps[za0001] == nil {
-					z.Ps[za0001] = make(map[string]int, zb0003)
+					z.Ps[za0001] = make(map[string]float32, zb0003)
 				} else if len(z.Ps[za0001]) > 0 {
 					for key := range z.Ps[za0001] {
 						delete(z.Ps[za0001], key)
@@ -577,13 +577,13 @@ func (z *ParameterMsgPack) DecodeMsg(dc *msgp.Reader) (err error) {
 				for zb0003 > 0 {
 					zb0003--
 					var za0002 string
-					var za0003 int
+					var za0003 float32
 					za0002, err = dc.ReadString()
 					if err != nil {
 						err = msgp.WrapError(err, "Ps", za0001)
 						return
 					}
-					za0003, err = dc.ReadInt()
+					za0003, err = dc.ReadFloat32()
 					if err != nil {
 						err = msgp.WrapError(err, "Ps", za0001, za0002)
 						return
@@ -637,7 +637,7 @@ func (z *ParameterMsgPack) EncodeMsg(en *msgp.Writer) (err error) {
 				err = msgp.WrapError(err, "Ps", za0001)
 				return
 			}
-			err = en.WriteInt(za0003)
+			err = en.WriteFloat32(za0003)
 			if err != nil {
 				err = msgp.WrapError(err, "Ps", za0001, za0002)
 				return
@@ -661,7 +661,7 @@ func (z *ParameterMsgPack) MarshalMsg(b []byte) (o []byte, err error) {
 		o = msgp.AppendMapHeader(o, uint32(len(z.Ps[za0001])))
 		for za0002, za0003 := range z.Ps[za0001] {
 			o = msgp.AppendString(o, za0002)
-			o = msgp.AppendInt(o, za0003)
+			o = msgp.AppendFloat32(o, za0003)
 		}
 	}
 	return
@@ -701,7 +701,7 @@ func (z *ParameterMsgPack) UnmarshalMsg(bts []byte) (o []byte, err error) {
 			if cap(z.Ps) >= int(zb0002) {
 				z.Ps = (z.Ps)[:zb0002]
 			} else {
-				z.Ps = make([]map[string]int, zb0002)
+				z.Ps = make([]map[string]float32, zb0002)
 			}
 			for za0001 := range z.Ps {
 				var zb0003 uint32
@@ -711,7 +711,7 @@ func (z *ParameterMsgPack) UnmarshalMsg(bts []byte) (o []byte, err error) {
 					return
 				}
 				if z.Ps[za0001] == nil {
-					z.Ps[za0001] = make(map[string]int, zb0003)
+					z.Ps[za0001] = make(map[string]float32, zb0003)
 				} else if len(z.Ps[za0001]) > 0 {
 					for key := range z.Ps[za0001] {
 						delete(z.Ps[za0001], key)
@@ -719,14 +719,14 @@ func (z *ParameterMsgPack) UnmarshalMsg(bts []byte) (o []byte, err error) {
 				}
 				for zb0003 > 0 {
 					var za0002 string
-					var za0003 int
+					var za0003 float32
 					zb0003--
 					za0002, bts, err = msgp.ReadStringBytes(bts)
 					if err != nil {
 						err = msgp.WrapError(err, "Ps", za0001)
 						return
 					}
-					za0003, bts, err = msgp.ReadIntBytes(bts)
+					za0003, bts, err = msgp.ReadFloat32Bytes(bts)
 					if err != nil {
 						err = msgp.WrapError(err, "Ps", za0001, za0002)
 						return
@@ -754,7 +754,7 @@ func (z *ParameterMsgPack) Msgsize() (s int) {
 		if z.Ps[za0001] != nil {
 			for za0002, za0003 := range z.Ps[za0001] {
 				_ = za0003
-				s += msgp.StringPrefixSize + len(za0002) + msgp.IntSize
+				s += msgp.StringPrefixSize + len(za0002) + msgp.Float32Size
 			}
 		}
 	}

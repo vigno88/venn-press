@@ -6,10 +6,20 @@ import 'package:VennUI/grpc/control.dart';
 import 'package:VennUI/grpc/v1/ui.pb.dart' as proto;
 import 'package:flutter/material.dart';
 
+enum TestCommand {
+  StartTest,
+  StopTest,
+}
+
 class ControlService {
   // _updates is used to tell the provider which widget needs to be updated
   StreamController<int> _updates = StreamController<int>();
   Stream<int> get updateStream => _updates.stream;
+
+  // _updatesTestState is used to tell the provider the state of the test
+  StreamController<TestCommand> _updatesTestState =
+      StreamController<TestCommand>();
+  Stream<TestCommand> get testStateStream => _updatesTestState.stream;
 
   // config is constant information about each button
   List<proto.ControlConfig> config = [];
@@ -79,7 +89,15 @@ class ControlService {
     _updates.add(tileIndex);
   }
 
-  void processNewEvent(proto.ControlEvent e) {}
+  void processNewEvent(proto.ControlEvent e) {
+    if (e.name == "test") {
+      if (e.payload == "start") {
+        _updatesTestState.add(TestCommand.StartTest);
+      } else if (e.payload == "stop") {
+        _updatesTestState.add(TestCommand.StopTest);
+      }
+    }
+  }
 }
 
 class ButtonData {

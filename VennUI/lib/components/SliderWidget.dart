@@ -102,7 +102,7 @@ class SliderWidget extends StatelessWidget {
             ),
           ),
           onTap: () => Provider.of<SettingsProvider>(context, listen: false)
-              .setSetting(index, incrementValue()),
+              .setSetting(index, incrementValue().toDouble()),
         ),
         RotatedBox(
           quarterTurns: 3,
@@ -162,7 +162,8 @@ class SliderWidget extends StatelessWidget {
                             onChanged: (value) {
                               Provider.of<SettingsProvider>(context,
                                       listen: false)
-                                  .setSetting(index, getValueInt(value));
+                                  .setSetting(
+                                      index, getValueInt(value).toDouble());
                             }),
                       ),
                     ),
@@ -189,7 +190,7 @@ class SliderWidget extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () => Provider.of<SettingsProvider>(context, listen: false)
-              .setSetting(index, decrementValue()),
+              .setSetting(index, decrementValue().toDouble()),
           child: Container(
             width: sliderHeight,
             height: sliderHeight,

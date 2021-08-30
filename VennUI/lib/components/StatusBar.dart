@@ -1,3 +1,4 @@
+import 'package:VennUI/providers/DashboardProvider.dart';
 import 'package:VennUI/providers/SettingsProvider.dart';
 import 'package:VennUI/utilies.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +51,15 @@ class _StatusBarState extends State<StatusBar> {
                               .recipesInfo[context
                                   .watch<SettingsProvider>()
                                   .selectedRecipe]
-                              .title,
+                              .title +
+                          " - " +
+                          context
+                              .watch<DashboardProvider>()
+                              .stopwatch
+                              .elapsed
+                              .inSeconds
+                              .toString() +
+                          " sec",
                       style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.w600,
@@ -84,6 +93,13 @@ class _StatusBarState extends State<StatusBar> {
       });
     }
   }
+
+  // String _printDuration(Duration duration) {
+  //   String twoDigits(int n) => n.toString().padLeft(2, "0");
+  //   String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+  //   String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+  //   return "${twoDigits(duration.inHours)}:$twoDigitMinutes:$twoDigitSeconds";
+  // }
 
   String _formatDateTime(DateTime dateTime) {
     return DateFormat('HH:mm').format(dateTime);

@@ -10,6 +10,7 @@ import (
 
 // var pathDB string
 var db storm.DB
+var controlChan chan *proto.ControlEvent
 
 type Config struct {
 	Id                 int `storm:"id,increment"`
@@ -45,7 +46,7 @@ func ToConfig(c *proto.ControlConfig) *Config {
 
 // Init open the control config store at the specified path, the store is used to store
 // the control configuration
-func Init(ctx context.Context, path string) error {
+func Init(ctx context.Context, path string, c chan *proto.ControlEvent) error {
 	log.Printf("Initiating the control config store at %s\n", path)
 	// pathDB = path
 	newDb, err := storm.Open(path)
@@ -53,6 +54,7 @@ func Init(ctx context.Context, path string) error {
 	if err != nil {
 		return err
 	}
+	controlChan = c
 	// defer db.Close()
 	return err
 }
@@ -109,4 +111,8 @@ func ReadAll() ([]Config, error) {
 	var metrics []Config
 	err := db.All(&metrics)
 	return metrics, err
+}
+
+func SendEvent(e *proto.ControlEvent) {
+	controlChan <- e
 }

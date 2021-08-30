@@ -9,6 +9,6 @@ GOOS=linux \
 
 echo "Building done"
 sshpass -p pi rsync -a --info=progress2 \
-  populate_metrics pi@192.168.0.121:/home/pi/scripts/.
+  populate_metrics pi@192.168.0.117:/home/pi/scripts/.
 echo "Upload Done"
 

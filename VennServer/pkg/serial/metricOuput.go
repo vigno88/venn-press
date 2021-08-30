@@ -45,27 +45,34 @@ func (m *MetricOutput) openPort() (serial.Port, error) {
 }
 
 func (m *MetricOutput) Run() {
-	for range time.Tick(100 * time.Millisecond) {
+	go m.Ticker()
+	for {
 		select {
 		case request := <-m.ToSend:
 			if m.IsActive {
 				_, err := m.Port.Write([]byte(m.getPackage(&request)))
-				log.Printf("Print %s to the serial port\n", request)
 				if err != nil {
 					log.Printf("Error writing port: %v", err)
 					return
 				}
 			}
 		}
-		m.CurrentTime += 100 * time.Millisecond
+	}
+}
+
+func (m *MetricOutput) Ticker() {
+	ticker := time.NewTicker(100 * time.Millisecond)
+	for {
+		select {
+		case <-ticker.C:
+			m.CurrentTime += 100 * time.Millisecond
+		}
 	}
 }
 
 func (m *MetricOutput) Start() {
 	m.IsActive = true
 	m.CurrentTime = 0
-	// Reset the channel
-	m.ToSend = make(chan proto.MetricUpdates)
 	m.Port.Write([]byte("Pressure test\n"))
 	m.Port.Write([]byte("Time(s),Distance(mm),Weight(kg),TemperatureTop(c),TemperatureBottom(c)\n"))
 }
@@ -94,5 +101,6 @@ func (m *MetricOutput) getPackage(ms *proto.MetricUpdates) []byte {
 			TemperatureBottom = float32(u.Value)
 		}
 	}
+	// fmt.Printf("%f,%f,%f,%f,%f\n", m.CurrentTime.Seconds(), distance, weight, temperatureTop, TemperatureBottom)
 	return []byte(fmt.Sprintf("%f,%f,%f,%f,%f\n", m.CurrentTime.Seconds(), distance, weight, temperatureTop, TemperatureBottom))
 }

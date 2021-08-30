@@ -51,6 +51,5 @@ func (s *authentificationServiceServer) GetCurrentUser(ctx context.Context, e *p
 		log.Printf("Error while reading user: %s", err.Error())
 		return nil, fmt.Errorf("Error while reading this user: %s.", name)
 	}
-	fmt.Printf("%v\n", u)
 	return authentifaction.UserToProto(u), nil
 }
